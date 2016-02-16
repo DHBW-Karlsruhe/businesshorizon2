@@ -1,0 +1,4 @@
+language: java
+jdk: oraclejdk7
+install: "echo"
+script: "mvn test"

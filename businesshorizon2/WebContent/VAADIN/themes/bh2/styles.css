@@ -1,0 +1,738 @@
+/*-------------------------------------------------------------------------------
+# BusinessHorizon2
+# 
+#     Copyright (C) 
+#	  2012-2013  Christian Gahlert, Florian Stier, Kai Westerholz,
+#     Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
+#	  2013-2014  Marcel Rosenberger, Mirko G�pfrich, Annika Weis, Katharina Narlock,
+#	  Volker Maier
+# 
+#     This program is free software: you can redistribute it and/or modify
+#     it under the terms of the GNU Affero General Public License as published by
+#     the Free Software Foundation, either version 3 of the License, or
+#     (at your option) any later version.
+# 
+#     This program is distributed in the hope that it will be useful,
+#     but WITHOUT ANY WARRANTY; without even the implied warranty of
+#     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+#     GNU Affero General Public License for more details.
+# 
+#     You should have received a copy of the GNU Affero General Public License
+#     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+#-------------------------------------------------------------------------------*/
+@import "../chameleon-green/styles.css";
+
+
+input.v-textfield[type="text"], .v-filterselect{
+ 	height: 1em;
+	border-radius: 0px;
+/* 	border: 2px solid black;
+	font-size: 12pt; */
+}
+
+.login_view{
+	margin-top: 200px;
+}
+
+.login_form div.v-button {
+	width: 100px;
+}
+
+.login_form input {
+	width: 100px;
+}
+
+
+.v-panel {
+	background-color: none;
+}
+
+div.projectlist:hover {
+	background: rgba(255, 255, 255, 0.6);
+   	cursor: pointer;
+}
+
+.v-panel-content-projectlist{
+	padding: 10px;
+}
+
+.v-app {
+    background-size:100%;
+    height:100%;
+
+}
+
+.v-verticallayout-LayoutNavigationsButtons {
+	margin:10px;
+}
+
+.v-button {
+	display:inline-block;
+	font-size:16px;
+}
+
+.v-button:focus, .v-button:active, .v-disabled.v-button:focus, .v-disabled.v-button:active {
+	background-color: initial;
+}
+
+
+.v-button-caption{
+}
+
+
+.v-label{
+		
+}
+
+.v-label-ueberschriften{
+}
+
+.v-label-projectname{
+	color: #088A08;
+	font-size:17px;
+	font-style:normal;
+	height:15px;
+	line-height:15px;
+	width:100px;
+	text-decoration:none;
+	text-align:center;
+	text-shadow:1px 2px 0px #ffffff;
+	margin-bottom:50px
+	
+}
+
+.loginTop{
+	background-color: rgb(216, 239, 188);
+    background-size:100%;
+    height:100%;
+}
+
+.v-label-welcomeSlogan{
+	font-size: 70px;
+	font-weight: bold; 
+}
+.v-label-welcomeText{
+	font-size: 20px;
+	font-weight: bold;
+	text-align: right;
+}
+
+.v-caption-logo{
+	width: 40%;
+	position: absolute;
+	right: 2%;	
+	
+}
+
+.registerBtn {
+	background: url("./images/iconsNewUI/head.png");
+	background-size: cover;
+	border: none;
+}
+
+.registerBtnLabel{
+	font-size: 18px;
+	text-align: center;
+}
+.registerAbortBtn {
+	background: url("./images/iconsNewUI/circleCross.png");
+	background-size: cover;
+	border: none;
+}
+
+.registerBtnLabel{
+	font-size: 18px;
+	text-align: center;
+}
+
+.dialogRegBtn {
+	background: url("./images/iconsNewUI/head.png");
+	background-size: cover;
+	border: none;
+}
+
+.dialogRegBtnLabel{
+	font-size: 18px;
+	text-align: center;
+}
+
+.loginBtn {
+	background: url("./images/iconsNewUI/unlock.png");
+	background-size: cover;
+	border: none;
+}
+
+.loginBtnLabel{
+	font-size: 18px;
+	text-align: center;
+}
+
+.v-splitpanel-hsplitter-locked {
+	background-color: black;
+	border: none;
+	background-image: none;
+	width: 3px;
+}
+
+.v-splitpanel-vsplitter-locked {
+	background-color: black;
+	border: none;
+	background-image: none;
+	height: 2px;
+}
+
+.v-button-wrap {
+	background: initial;
+}
+
+.horizontalBottom .v-splitpanel-hsplitter-locked {
+	background-color: black;
+	width: 2px;
+}
+
+.leftContainer {
+	background-color: #D8EFBC;
+}
+
+.rightContainer {
+	background-color: white;
+}
+
+.mainLayout {
+	border-color: black;
+	border-width: 3px;
+	border-style: solid;
+	box-sizing: border-box;
+}
+
+.addProjectButton {
+	background: url("./images/icons/newIcons/1418831401_circle_add_plus-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.addProjectButton:hover{
+	background: url("./images/icons/newIcons/1418766077_circle_add_plus_-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.editProjectButton {
+	background: url("./images/icons/newIcons/1418765965_editor_pencil_pen_edit_write-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.deleteProjectButton {
+	background: url("./images/icons/newIcons/1418831322_editor_trash_delete_recycle_bin-128.png");
+	background-size: cover;
+	border: none;
+	width: 25px;
+}
+
+.saveProjectButton {
+	background: url("./images/icons/newIcons/1418766240_editor_floopy-dish_save-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.cancelButton {
+	background: url("./images/icons/newIcons/1418831406_circle_close_delete-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.homeButton{
+	background: url("./images/icons/newIcons/1418766062_house_home-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.accountButton{
+	background: url("./images/icons/newIcons/1418774135_user_male-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.logoutButton{
+	background: url("./images/icons/newIcons/1418766009_common_logout_signout_exit-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.backButton{
+	background: url("./images/icons/newIcons/1418766041_circle_arrow-backward_previous-128.png");
+	background-size: cover;
+	border: none;
+}
+
+/* .importButton{
+	background: url("./images/icons/newIcons/1421250200_upload-128.png");
+	background-size: cover;
+	border: none;
+} */
+
+form.importButton > div:first-child{
+	width: 100%;
+	height: 100%;
+}
+
+form.importButton .v-button{
+	border: none;
+	opacity: 1;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+	background: initial;
+}
+
+form.importButton .v-button .v-button-wrap{
+	background: url("./images/icons/newIcons/1421250200_upload-128.png");
+	background-size: cover;
+	border: none;
+	opacity: 1;
+	margin: 0;
+	padding: 0;
+	width: 100%;
+	height: 100%;
+}
+
+.exportButton{
+	background: url("./images/icons/newIcons/1421250180_download-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.topBarButtonContainer {
+/* 	margin-top: 10%; */
+	margin-right: 5%;
+}
+
+.topBarButtonLabel {
+/* 	margin-top: 2px; */
+	font-size: 12pt;
+}
+
+.seitenLabel {
+	font-size: 20pt;
+	margin-bottom: 3px;
+}
+
+.descriptionLabel {
+	font-size: 16pt;
+}
+
+.projectName {
+	font-size: 16pt;
+}
+
+.singleProject {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+}
+
+.singleProjectSelected {
+	background-color: #92D050;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+}
+
+.projectDetailsLayout {
+	margin-left: 5%;
+}
+
+.projectCreationLayout {
+	margin-left: 5%;
+	padding-bottom: 5px;
+}
+
+.projectDetailsLabel {
+	font-size: 16pt;
+	font-weight: bold;
+}
+
+.projectDetailsValue {
+	font-size: 16pt;
+}
+
+.v-caption-projectNameInput {
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+input.projectNameInput[type="text"]{
+	border-radius: 0px;
+	border: 2px solid black;
+	font-size: 12pt;
+	box-sizing: border-box;
+	height: 30px;
+}
+
+textarea.projectNameInput{
+	border-radius: 0px;
+	border: 2px solid black;
+	font-size: 12pt;
+	box-sizing: border-box;
+}
+
+.faqManualLayout {
+	box-sizing: border-box;
+	border: 2px solid black;
+	background-color: white;
+}
+
+.faqButton {
+	background: url("./images/icons/newIcons/1418765983_circle_help_question-mark-128.png");
+	background-size: cover;
+	border: none;
+	margin-left: 9px;
+}
+
+.manualButton {
+	background: url("./images/icons/newIcons/1418831533_circle_info_more-information_detail-128.png");
+	background-size: cover;
+	border: none;
+	margin-left: 9px;
+}
+
+.faqLabel {
+	font-size: 14pt;
+	color: #5995D9;
+}
+
+.gotoCalculationLabel {
+	font-size: 16pt;
+}
+
+.gotoCalculationButton {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+}
+
+.gotoCalculationButton:HOVER{
+	background-color: #92D050;
+}
+
+.buttonMiddle {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	font-size: 16pt;
+}
+
+.buttonMiddle:HOVER{
+	background-color: #92D050;
+}
+
+.buttonBottom {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	font-size: 16pt;
+}
+
+.buttonBottom:HOVER {
+	background-color: #92D050;
+}
+
+.v-verticallayout-parameter {
+	margin-left: 5%;
+	margin-top: 5%;
+}
+
+/*
+# TopBar Buttons ParameterScreen
+*/
+.saveButton {
+	background: url("./images/icons/newIcons/1418766240_editor_floopy-dish_save-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.resetInput {
+	background: url("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.back {
+	/*background: url("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png");*/
+	background-size: cover;
+	border: none;
+}
+
+.abbort {
+	background: url("./images/icons/newIcons/1418766146_circle_close_delete_-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.buttonMiddle {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	font-size: 16pt;
+}
+
+.buttonActivated {
+	background-color: #92D050;
+}
+
+.paramButton {
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	/*padding: 50px;*/
+}
+
+.paramButtonActivated .v-icon {
+	width: 30%;
+	text-align: left;
+}
+
+.paramButton .v-icon {
+	width: 30%;
+	text-align: left;
+}
+
+.paramButton .v-button-caption {
+	text-align: left;
+}
+
+.paramButtonActivated .v-button-caption {
+	text-align: left;
+}
+
+.paramButtonActivated {
+	background-color: #92D050;
+	border: 2px solid black;
+	box-sizing: border-box;
+	margin-bottom: 20px;
+	/*padding: 50px;*/
+}
+
+.parameter {
+	font-size: 12pt;
+	font-weight: bold;
+	margin: 5px;
+}
+
+.parameter input[type="text"] {
+    font-size:12pt;
+    margin: 5px;
+  }
+  
+.questionIcon {
+	margin: 5px;
+}
+
+.seitenLabel {
+	font-size: 20pt;
+	margin-bottom: 3px;
+}
+
+.descriptionLabel {
+	font-size: 16pt;
+}
+
+.homeButton{
+	background: url("./images/icons/newIcons/1418766062_house_home-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.accountButton{
+	background: url("./images/icons/newIcons/1418774135_user_male-128.png");
+	background-size: cover;
+	border: none;
+}
+
+.v-form fieldset{
+	border: 2px solid black;
+}
+
+.v-form legend{
+	margin-left: 5px;
+	font-weight: bold;
+}
+
+.v-radiobutton label{
+	font-size: 14pt;
+}
+
+.v-label-wrap {
+	white-space: normal;
+}
+
+.descriptionText {
+	font-size: 12pt;
+	margin-left: 5px;
+}
+
+.descriptionHeadline {
+	font-size: 13pt;
+	margin-left: 5px;
+}
+
+.periodHeaderLabel {
+	font-size: 16pt;
+}
+
+.v-table-row-odd {
+	background-color: #92D050;
+	height: 30px;
+}
+
+.v-table-row {
+	background-color: #D8EFBC;
+	height: 30px;
+}
+
+.v-table-header {
+	background-color: #92D050;
+	font-weight: bold;
+}
+
+.v-table-header-wrap {
+	border: none;
+}
+
+.v-table-caption-container {
+	text-shadow: none;
+}
+
+.v-table-body {
+	border: none;
+	font-weight: bold;
+}
+
+.v-table {
+	font-size: 12pt;
+}
+
+.font12bold{
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+.font14bold{
+	font-size: 14pt;
+	font-weight: bold;
+}
+
+.font12{
+	font-size: 12pt;
+}
+
+.scenarios {
+	font-size: 12pt;
+	margin-left: 5px;
+}
+
+.addScenario {
+	font-weight: bold;
+}
+
+.scenarios input[type="text"] {
+    font-size:12pt;
+    margin: 5px;
+  }
+  
+.deleteScenario:hover > div > div > div {
+	background-color: red;
+}
+
+.resultScenarioLayout{
+	background-color: #D8EFBC;
+	border: 2px solid black;
+	padding: 10px;
+	box-sizing: border-box;
+}
+
+.companyValueLayout{
+	background-color: #FFFF00;
+	border: 2px solid black;
+	padding-left: 10px;
+	padding-right: 10px;
+	box-sizing: border-box;
+}
+
+.v-table-row.v-table-row-yello-row,
+.v-table-row-odd.v-table-row-yello-row {
+  	background-color: #ffff00;
+  	border: 2px solid white;
+}
+
+.v-table-row-yello-row .v-table-cell-content {
+	background-color: #ffff00;
+	border-top: 1px solid white;
+	border-right: 1px solid white;
+	
+}
+
+.v-table-row-table-line .v-table-cell-content {
+	border-top: 1px solid white;
+	border-right: 1px solid white;
+	
+}
+
+.scenarioTable .v-table-cell-content {
+	border-right: 1px solid white;
+}
+
+.scenarioTable .v-table-header {
+	color: white;
+	border-right: 1px solid white;
+}
+
+.scenarioTable .v-table-header .td {
+	border-right: 1px solid white;
+}
+
+.fcfTable .v-table-cell-content {
+	border-right: 1px solid white;
+}
+
+.fcfTable .v-table-header {
+	color: white;
+	border-right: 1px solid white;
+}
+
+.fcfTable .v-table-header .td {
+	border-right: 1px solid white;
+}
+
+.v-table-row .v-table-cell-content {
+	border-top: 1px solid white;
+	border-right: 1px solid white;
+}
+
+.v-table-row-table-capital .v-table-cell-content {
+	background-color: white;
+	border-right: 1px solid black;
+    vertical-align: middle;
+    padding-top: 12px;
+}
+
+.v-loading-indicator,  
+.v-loading-indicator-delay,  
+.v-loading-indicator-wait {  
+   width: 100%;  
+   height: 100%;  
+   margin: 0;  
+   background-position: 50%;  
+   background-color: gray;  
+   background-repeat: no-repeat;  
+   background-attachment: fixed;   
+   opacity: .8;  
+   -ms-filter: alpha(opacity=80);  
+   filter: alpha(opacity=80);  
+ }  
