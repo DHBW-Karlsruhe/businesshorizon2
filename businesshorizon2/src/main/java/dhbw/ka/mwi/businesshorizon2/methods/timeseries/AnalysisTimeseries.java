@@ -73,7 +73,12 @@ public class AnalysisTimeseries {
 	 * @param zeitreihe
 	 *            Durch den Benutzer gegebene Zeitreihe vergangener Werte.
 	 * @return Gibt den Mittelwert einer Zeitreihe zurück.
+	 * 
+	 * 
+	 * 
+	 * Speichern wir die Werte ebenfalls in ein Array ? Falls ja kann die Methode übernommen werden
 	 */
+
 	public double berechneMittelwert(DoubleArrayList zeitreihe) {
 		double mittelwert = 0;
 		double summe = 0;
@@ -89,6 +94,43 @@ public class AnalysisTimeseries {
 		}
 
 		return mittelwert;
+	}
+
+	/**
+	 * Methode zur Berechnung der Varianz * 
+	 * 	 
+	 * Berechnung der Varianz über den zuvor errechneten Mittelwert
+	 */
+
+	public double berechneVarianz(DoubleArrayList zeitreihe) {
+		double mittelwert = berechneMittelwert(zeitreihe);
+		double varianz = 0;
+		double s2 = 0;
+		
+			for (int i = 0; i < zeitreihe.size(); i++) {
+				s2 = zeitreihe.get(i) - mittelwert;
+				s2 = s2 * s2;
+				varianz = varianz +  s2;
+			}
+			 
+		varianz = varianz / zeitreihe.size();
+		return varianz;
+	}
+
+	/**
+	 * Methode zur Berechnung der Standardabweichung * 
+	 * 	 
+	 * Berechnung der Standardabweichung über den zuvor errechneten Varianz
+	 */
+
+	public double berechneStandardabweichung(DoubleArrayList zeitreihe){
+		
+		double standardabweichung = 0;
+		double varianz = berechneVarianz(zeitreihe);
+		
+		standardabweichung = Math.sqrt(varianz);
+		
+		return standardabweichung;
 	}
 
 	/**
