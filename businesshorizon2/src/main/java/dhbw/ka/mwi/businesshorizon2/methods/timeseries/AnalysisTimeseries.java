@@ -53,7 +53,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 
 public class AnalysisTimeseries {
 
-	private static final Logger logger = Logger
+	private static final Logger LOGGER = Logger
 			.getLogger("AnalysisTimeseries.class");
 	private DoubleArrayList autokovarianzen;
 	private DoubleArrayList bereinigteZeitreihe;
@@ -209,10 +209,10 @@ public class AnalysisTimeseries {
 
 		try {
 			matrixPhi = lUDecomp.solve(matrixERG);
-			logger.debug("C-Values of Yule-Walker-Equitation calculated.");
+			LOGGER.debug("C-Values of Yule-Walker-Equitation calculated.");
 		} catch (IllegalArgumentException exception) {
 
-			logger.debug("Calculation of C-Values failed!");
+			LOGGER.debug("Calculation of C-Values failed!");
 			throw new StochasticMethodException(exception.getMessage());
 
 		}
@@ -447,8 +447,8 @@ public double[][] prognoseBerechnenNew(
 			this.bereinigteZeitreihe.add(zeitreihe[i]);
 		}
 
-		logger.debug("Bereinigte Zeitreihe:");
-		logger.debug(bereinigteZeitreihe);
+		LOGGER.debug("Bereinigte Zeitreihe:");
+		LOGGER.debug(bereinigteZeitreihe);
 
 		// Start der zur Prognose benoetigten Berechnungen
 		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
@@ -456,13 +456,13 @@ public double[][] prognoseBerechnenNew(
 		this.modellparameter = berechneModellparameter(autokovarianzen, p);
 		this.standardabweichung = berechneStandardabweichung(autokovarianzen,
 				modellparameter);
-		logger.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
+		LOGGER.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
 
 		// Start der Prognose
 		prognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter,
 				standardabweichung, zuberechnendePerioden, durchlaeufe, p,
 				mittelwert, isfremdkapital);
-		logger.debug("Berechnung der Prognosewerte abgeschlossen.");
+		LOGGER.debug("Berechnung der Prognosewerte abgeschlossen.");
 		// Trendbereinigung wieder draufschlagen
 		// Perioden durchlaufen
 		for (int i = 0; i < prognosewerte[0].length; i++) {
@@ -483,7 +483,7 @@ public double[][] prognoseBerechnenNew(
 			
 		}
 
-		logger.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
+		LOGGER.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
 
 		return prognosewerte;
 	}
@@ -554,7 +554,7 @@ public double[][] prognoseBerechnenNew(
 		double realisierungsWert = trendbereinigtezeitreihe
 				.get(trendbereinigtezeitreihe.size() - 1);
 		realisierungsWert = realisierungsWert + tide.getTideValue(p);
-		logger.debug("Realisierungswert: " + realisierungsWert);
+		LOGGER.debug("Realisierungswert: " + realisierungsWert);
 		
 		// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu passenden
 		// Vergangenheitswert.
