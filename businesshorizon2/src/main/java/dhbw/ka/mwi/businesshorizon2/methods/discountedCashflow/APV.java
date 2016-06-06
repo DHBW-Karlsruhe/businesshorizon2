@@ -110,9 +110,9 @@ public class APV extends AbstractDeterministicMethod {
 //		this.calculateTaxes(szenario);
 
 		double persönlicherSteuersatz = 0.26375;
-		double unternehmenssteuer = 0.75 * szenario.getBusinessTax() / 100 + szenario.getCorporateAndSolitaryTax() / 100;
-		double eigenkapitalKostenVorSteuer = szenario.getRateReturnEquity() / 100;
-		double fremdkapitalKostenVorSteuer = szenario.getRateReturnCapitalStock() / 100;
+		double unternehmenssteuer = 0.75 * szenario.getBusinessTax() + szenario.getCorporateAndSolitaryTax();
+		double eigenkapitalKostenVorSteuer = szenario.getRateReturnEquity();
+		double fremdkapitalKostenVorSteuer = szenario.getRateReturnCapitalStock();
 		double eigenkapitalKostenNachSteuer = eigenkapitalKostenVorSteuer * (1 - persönlicherSteuersatz);
 		double fremdkapitalKostenNachSteuer = fremdkapitalKostenVorSteuer * (1 - persönlicherSteuersatz);
 		
@@ -141,18 +141,21 @@ public class APV extends AbstractDeterministicMethod {
 		double summe = 0;
 
 		// Endlichkeit --> Perioden -1
+                double basis;
+                double potenz;
 		for (int i = 0; i < (cashflows.length - 1); i++) {
 			cf_nach_steuer = cashflows[i] * (1 - persönlicher_steuersatz);
-			barwert = (cf_nach_steuer / (Math.pow((1 + ek_kosten_nach_steuer),
-					(i + 1))));
+                        basis = ek_kosten_nach_steuer + 1.0;
+			potenz = Math.pow(basis, i);
+                        barwert = (cf_nach_steuer / potenz);
 			summe = summe + barwert;
 		}
 
 		// Unendlichkeit
 		cf_nach_steuer = cashflows[cashflows.length - 1]
-				* (1 - persönlicher_steuersatz);
+				* (1.0 - persönlicher_steuersatz);
 		barwert = (cf_nach_steuer / (ek_kosten_nach_steuer * Math.pow(
-				(1 + ek_kosten_nach_steuer), (cashflows.length - 1))));
+				(1.0 + ek_kosten_nach_steuer), (cashflows.length - 2))));
 		summe = summe + barwert;
 
 		return summe;
@@ -187,17 +190,20 @@ public class APV extends AbstractDeterministicMethod {
 		double barwert;
 
 		// Endlichkeit
+                double basis;
+                double exponent;
 		for (int i = 0; i < (verzinsliches_FK.length - 2); i++) {
 			zinsen = verzinsliches_FK[i] * zins_fk_vor_steuer;
 			tax_shield_vor = zinsen * unternehmenssteuersatz;
-			tax_shield_nach = tax_shield_vor * (1 - persönlicher_steuersatz);
-			barwert = tax_shield_nach
-					/ (Math.pow((1 + zins_fk_nach_steuer), i + 1));
+			tax_shield_nach = tax_shield_vor * (1.0 - persönlicher_steuersatz);
+			basis = 1.0 + zins_fk_nach_steuer;
+                        exponent = i+1;
+                        barwert = tax_shield_nach / (Math.pow(basis, exponent ));
 			summe = summe + barwert;
 		}
 
 		// Unendlichkeit
-		zinsen = verzinsliches_FK[verzinsliches_FK.length - 1]
+		zinsen = verzinsliches_FK[verzinsliches_FK.length - 2]
 				* zins_fk_vor_steuer;
 		tax_shield_vor = zinsen * unternehmenssteuersatz;
 		tax_shield_nach = tax_shield_vor * (1 - persönlicher_steuersatz);
