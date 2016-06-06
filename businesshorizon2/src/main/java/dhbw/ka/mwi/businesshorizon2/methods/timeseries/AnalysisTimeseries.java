@@ -33,6 +33,7 @@ import java.util.Random;
 import org.apache.log4j.Logger;
 //import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
 
+
 import cern.colt.list.DoubleArrayList;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
@@ -277,54 +278,84 @@ public class AnalysisTimeseries {
 	 * 				Demowert von 5 in dieser Funktion zugewiesen.
 	 * @return Alle prognostizierten Werte in einem Array.
 	 */		
-public double[][] prognoseBerechnenNew(
-		DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
-		double standardabweichungVarianz, int zuberechnendeperioden,
-		int iterationen, int p, double mittelwert, boolean isfremdkapital, double konstanteC) {
-	konstanteC = 5;//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
-	float[]	valuesForPhi = new float[p+1]; //Deklariere float Array für Phi (length = 1 + Ordnung p). Die
-	for(int k=0; k<valuesForPhi.length;k++){//Initialisiere Phi Array mit Eingaben vom User (ggf. zu Beginn mit Festwerten)
-		valuesForPhi[k] = 1/valuesForPhi.length;
-	}
-	double[][] stochastischeErgebnisseDerCashFlows = new double[1+p+zuberechnendeperioden][iterationen];//Deklariere double Array für ergCF je t (length = 1 + Ordnung p + zu progn. Jahre)
-	int iBackup=0;
-	for(int i=0;i<trendbereinigtezeitreihe.size();i++){//Befüllen der ersten Werte mit den gegebenen Werten
-		stochastischeErgebnisseDerCashFlows[i] = new double[1];
-		stochastischeErgebnisseDerCashFlows[i][0]=trendbereinigtezeitreihe.get(i);
-		iBackup = i;
-	}
-	
-	//Beginn des AR Teils
-	Random r = new Random();
-	for(int h =0;h<iterationen;h++){//Durchführen der Durchläufe
-		double[] cashFlowsJeT = new double[p+1];//Deklariere double Array für CF je t (length = 1 + Ordnung p). Dieses Array wird sich später verschieben.
-		//Dies muss jedes mal neu gemacht werden, da ansosten die Werte des vorherigen Durchlaufes verwendet werden
-		if(trendbereinigtezeitreihe.size()<cashFlowsJeT.length){//Vermeiden dass eine Exception entsteht, da nicht genügend Werte zur Verfügung stehen
-			throw new IllegalArgumentException("Wählen Sie ein kleineres p oder stellen sie eine längere Zeitreihe zur Verfügung");
+	public static double[][] prognoseBerechnenNew(
+			DoubleArrayList trendbereinigtezeitreihe,
+			double standardabweichungVarianz, int zuberechnendeperioden,
+			int iterationen, int p, double mittelwert, boolean isfremdkapital, double konstanteC) {
+		konstanteC = 5;//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
+		float[]	valuesForPhi = new float[p+1]; //Deklariere float Array für Phi (length = 1 + Ordnung p). Die
+		for(int k=0; k<valuesForPhi.length;k++){//Initialisiere Phi Array mit Eingaben vom User (ggf. zu Beginn mit Festwerten)
+			valuesForPhi[k] = 1/valuesForPhi.length;
 		}
-		for(int l =0;l<cashFlowsJeT.length;l++){ //Initialisiere CF je t Array aus Input
-			cashFlowsJeT[l]=trendbereinigtezeitreihe.get(l); 
+		double[][] stochastischeErgebnisseDerCashFlows = new double[trendbereinigtezeitreihe.size()+zuberechnendeperioden][iterationen];//Deklariere double Array für ergCF je t (length = 1 + Ordnung p + zu progn. Jahre)
+		int alreadyOccupiedPlaces=0;
+		for(int i=0;i<trendbereinigtezeitreihe.size();i++){//Befüllen der ersten Werte mit den gegebenen Werten
+			stochastischeErgebnisseDerCashFlows[i] = new double[1];
+			stochastischeErgebnisseDerCashFlows[i][0]=trendbereinigtezeitreihe.get(i);
+			alreadyOccupiedPlaces = i+1;
 		}
-		for(int m = 0;m<zuberechnendeperioden;m++ ){//Anzahl der Perioden die in die Zukunft geschaut werden soll
-			//Wert berechnen für eine Periode
-			double value=0;
-			for(int n=0;n<p;n++){ //einzubeziehende perioden (p)
-				value=valuesForPhi[n] * cashFlowsJeT[n];
+		
+		//Beginn des AR Teils
+		Random r = new Random();
+		for(int h =0;h<iterationen;h++){//Durchführen der Durchläufe
+			double[] cashFlowsJeT = new double[p+1];//Deklariere double Array für CF je t (length = 1 + Ordnung p). Dieses Array wird sich später verschieben.
+			//Dies muss jedes mal neu gemacht werden, da ansosten die Werte des vorherigen Durchlaufes verwendet werden
+			if(trendbereinigtezeitreihe.size()<cashFlowsJeT.length){//Vermeiden dass eine Exception entsteht, da nicht genügend Werte zur Verfügung stehen
+				throw new IllegalArgumentException("Wählen Sie ein kleineres p oder stellen sie eine längere Zeitreihe zur Verfügung");
 			}
-			value = value + konstanteC;//ToDo konstanteC einen Wert zuweisen
-			double epsilonWhiteNoise = r.nextGaussian() *standardabweichungVarianz; //ToDo Den WhiteNoise Wert berechnen
-			value = value + epsilonWhiteNoise;
-			stochastischeErgebnisseDerCashFlows[iBackup+m][h]=value; //Wert zum array hinzufügen, iBackup+m => Verschiebung um die bereits vorhanden Werte h: Durchlauf der Iteration
-			//Vordersten Wert von cashFlowsJeT freimachen
-			for(int n= cashFlowsJeT.length-1;n>0;n--){
-				 cashFlowsJeT[n]= cashFlowsJeT[n-1];
+			for(int l =0;l<cashFlowsJeT.length;l++){ //Initialisiere CF je t Array aus Input
+				cashFlowsJeT[l]=trendbereinigtezeitreihe.get(l); 
 			}
-			cashFlowsJeT[0]=value; //wert am anfang des CFFloat Array setzen
-			
-		}
-	}	
-	return stochastischeErgebnisseDerCashFlows;
-}
+			for(int m = 0;m<zuberechnendeperioden;m++ ){//Anzahl der Perioden die in die Zukunft geschaut werden soll
+				//Wert berechnen für eine Periode
+				double value=0;
+				for(int n=0;n<p;n++){ //einzubeziehende perioden (p)
+					value=valuesForPhi[n] * cashFlowsJeT[n];
+				}
+				value = value + konstanteC;//ToDo konstanteC einen Wert zuweisen
+				//double epsilonWhiteNoise = r.nextGaussian() *standardabweichungVarianz; //ToDo Den WhiteNoise Wert berechnen
+				value = value + getWhiteNoiseValue(standardabweichungVarianz, mittelwert);
+				double[] tmp = stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces+m];
+				try{
+					tmp[h]=value; //Wert zum array hinzufügen, iBackup+m => Verschiebung um die bereits vorhanden Werte h: Durchlauf der Iteration
+				}catch(Exception e){
+					System.out.println(e.getMessage() + ", Cause: " + e.getCause());
+					System.out.println(""+tmp.length);
+					System.out.println(""+h+".");
+					System.out.println(""+stochastischeErgebnisseDerCashFlows.length);
+					System.out.println(""+zuberechnendeperioden);
+					System.out.println(""+alreadyOccupiedPlaces);
+					System.out.println(""+m);
+					System.exit(0);
+				}
+				stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces+m]=tmp;
+				//Vordersten Wert von cashFlowsJeT freimachen
+				for(int n= cashFlowsJeT.length-1;n>0;n--){
+					 cashFlowsJeT[n]= cashFlowsJeT[n-1];
+				}
+				cashFlowsJeT[0]=value; //wert am anfang des CFFloat Array setzen
+				
+			}
+		}	
+		return stochastischeErgebnisseDerCashFlows;
+	}
+	/**
+	 * Methode zur Berechnung des White Noise Wertes (weißes Rauschen).
+	 *  Das Weiße rauschen bildet eine gaussche Normalverteilung ab,
+	 *   welche sich um den Mittelwert bildet und deren Verteilung durch die Standardabweichung bzw. Varianz
+	 *   bestimmt wird.
+	 * @author Philipp Nagel
+	 * @param standardabweichungVarianz
+	 * @param mittelwert
+	 * @return Weißes Rauschen
+	 */
+	public static double getWhiteNoiseValue(double standardabweichungVarianz, double mittelwert){
+		double whiteNoise = 0;
+		Random r = new Random();
+		whiteNoise = r.nextGaussian()*standardabweichungVarianz + mittelwert;
+		return whiteNoise;
+		
+	}
 	/**
 	 * Methode zur Prognose zukünftiger Werte einer gegebenen Zeitreihe und
 	 * einem AR-Modell. Sie berechnet die jeweiligen Prognosewerte und gibt sie
