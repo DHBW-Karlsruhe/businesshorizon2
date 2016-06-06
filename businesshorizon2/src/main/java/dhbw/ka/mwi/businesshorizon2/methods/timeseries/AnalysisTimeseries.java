@@ -29,6 +29,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 //import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
@@ -349,6 +350,88 @@ public class AnalysisTimeseries {
 	 * @param mittelwert
 	 * @return Weißes Rauschen
 	 */
+        
+        /**
+        * Methode zum Erstellen einer Verteilung. Diese Methode teilt die Prognosewerte in verschiedene Werteklassen (Wertebereiche) ein und ordnet die Prognosewerte in diese Werteklassen ein. So wird ein grobes Bild der Verteilung geschaffen.
+        * 
+        * @author Jonathan Janke
+        * 
+        * @param prognosis
+        * 		aus der Methode prognoseWertBerechnen
+        * @param numberOfValueClasses
+        * 		gibt an, wie viele Werteklassen erzeugt werden. Wenn die Prognosewerte von 1 bis 100 gehen und 10 Werteklassen existieren, dann würden immer 10 Werte in eine Klasse gefasst werden.
+        * @return verteilung der Werte
+        */		
+        public Distribution createDistributionFromPrognosis (double [][] prognosis, int numberOfValueClasses) {
+                //Wert 2 zur Erzeugung von double value Paaren
+                //evtl. Lösung durch Klasse
+                for (int i=0; i<prognosis.length; i++) {
+                       Arrays.sort(prognosis[i]);
+                }
+
+                Distribution distribution = new Distribution (prognosis.length, numberOfValueClasses);
+
+                double min = getMin(prognosis);
+                double max = getMax(prognosis);
+                distribution.setMinValue(min);
+                distribution.setMaxValue(max);
+                double difference = max-min;
+                double intervalLength = difference/numberOfValueClasses;
+                distribution.setIntervalLength(intervalLength);
+                double [] intervalValues = new double [numberOfValueClasses];
+                for (int i=0; i<numberOfValueClasses; i++) {
+                        intervalValues[i]=min+i*intervalLength;
+                }
+                distribution.setIntervalStartValues(intervalValues);
+                //iteriert durch die Perioden
+                for (int i=0; i<prognosis.length; i++) {
+                        //fügt die Werte einer Periode in die Verteilung ein
+                        distribution.addValues(i, prognosis [i]);
+                }
+
+                return distribution;
+        }
+
+
+        /**
+         * Methode zum ermitteln des kleinsten Wertes eines Arrays (zweidimensional, absolut kleinster Wert)
+         * 
+         * @author Jonathan Janke
+         * 
+         * @param prognose
+         * 		zweidimensionales Array
+         * @return kleinster Wert
+        */	
+        public double getMin (double [][] prognose) {
+                double min = prognose [0][0];
+                for (int i=0; i<prognose.length; i++) {
+                        if (prognose[i][0]<min) {
+                                min = prognose [i][0];
+                        }
+                }
+                return min;
+        }
+
+        /**
+         * Methode zum ermitteln des größten Wertes eines Arrays (zweidimensional, absolut größter Wert
+         * 
+         * @author Jonathan Janke
+         * 
+         * @param prognose
+         * 		zweidimensionales Array
+         * @return größter Wert des Arrays
+         */	
+        public double getMax (double [][] prognose) {
+               double max = prognose [0][0];
+               for (int i=0; i<prognose.length; i++) {
+                       if (prognose[i][prognose[i].length]>max) {
+                               max = prognose [i][prognose[i].length];
+                       }
+               }
+               return max;
+        }
+
+        
 	public static double getWhiteNoiseValue(double standardabweichungVarianz, double mittelwert){
 		double whiteNoise = 0;
 		Random r = new Random();
