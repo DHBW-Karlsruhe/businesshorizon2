@@ -142,6 +142,8 @@ public class AnalysisTimeseries {
 	 * Hierfür muss jedoch zunächst die eingegebene Zeitreihe zu einer von
 	 * Number erbenden Liste gecastet werden.
 	 * 
+	 * TODO: james ii - Bibliothek ersetzen
+	 * 
 	 * @author Marcel Rosenberger, Nina Brauch, Mirko Göpfrich
 	 * 
 	 * @param zeitreihe
@@ -256,7 +258,10 @@ public class AnalysisTimeseries {
 	 * einem AR-Modell. Sie berechnet die jeweiligen Prognosewerte und gibt sie
 	 * in einem zweidimensionalen Array zurück.
 	 * 
-	 * @author Philipp Nagel, Thuy Anh Nguyen
+	 * JJ: Nomenklatur sollte ausschließlich Englisch sein.
+	 * JJ: Was macht die Variable standardabweichungVarianz?
+	 * 
+	 * @author Philipp Nagel, Thuy Anh Nguyen, Jonathan Janke
 	 * 
 	 * @param trendbereinigtezeitreihe
 	 *            , die bereits trendbereinigte Zeitreihe. Die vordersten Werte sind die aktuellsten.
@@ -279,25 +284,31 @@ public class AnalysisTimeseries {
 	 * 				Demowert von 5 in dieser Funktion zugewiesen.
 	 * @return Alle prognostizierten Werte in einem Array.
 	 */		
-	public static double[][] prognoseBerechnenNew(
-			DoubleArrayList trendbereinigtezeitreihe,
+	public double[][] prognoseBerechnenNew(
+			DoubleArrayList trendbereinigtezeitreihe, double [] valuesForPhi,
 			double standardabweichungVarianz, int zuberechnendeperioden,
 			int iterationen, int p, double mittelwert, boolean isfremdkapital, double konstanteC) {
-		konstanteC = 5;//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
-		float[]	valuesForPhi = new float[p+1]; //Deklariere float Array für Phi (length = 1 + Ordnung p). Die
-		for(int k=0; k<valuesForPhi.length;k++){//Initialisiere Phi Array mit Eingaben vom User (ggf. zu Beginn mit Festwerten)
+		konstanteC = 0;//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
+		/*JJ: Wieso float?
+		* float[]	valuesForPhi = new float[p+1]; //Deklariere float Array für Phi (length = 1 + Ordnung p). Die
+		* for(int k=0; k<valuesForPhi.length;k++){//Initialisiere Phi Array mit Eingaben vom User (ggf. zu Beginn mit Festwerten)
+			//JJ: Was macht diese Operation? Sie überschreibt lediglich jede Stelle des Arrays mit 1/valuesForPhi.length
 			valuesForPhi[k] = 1/valuesForPhi.length;
 		}
+		*/
+		//Testwerte
+		//double [] valuesForPhi = {1, 1, 0, 0, 0};
 		double[][] stochastischeErgebnisseDerCashFlows = new double[trendbereinigtezeitreihe.size()+zuberechnendeperioden][iterationen];//Deklariere double Array für ergCF je t (length = 1 + Ordnung p + zu progn. Jahre)
 		int alreadyOccupiedPlaces=0;
 		for(int i=0;i<trendbereinigtezeitreihe.size();i++){//Befüllen der ersten Werte mit den gegebenen Werten
-			stochastischeErgebnisseDerCashFlows[i] = new double[1];
+			//JJ: Was machst du hier? Warum fügst du ein Array der Länge 1 ein? Du hast doch bereits ein zweidimensionales Array?
+			//stochastischeErgebnisseDerCashFlows[i] = new double[1];
 			stochastischeErgebnisseDerCashFlows[i][0]=trendbereinigtezeitreihe.get(i);
 			alreadyOccupiedPlaces = i+1;
 		}
 		
 		//Beginn des AR Teils
-		Random r = new Random();
+		//replaced with White Noise function: Random r = new Random();
 		for(int h =0;h<iterationen;h++){//Durchführen der Durchläufe
 			double[] cashFlowsJeT = new double[p+1];//Deklariere double Array für CF je t (length = 1 + Ordnung p). Dieses Array wird sich später verschieben.
 			//Dies muss jedes mal neu gemacht werden, da ansosten die Werte des vorherigen Durchlaufes verwendet werden
@@ -311,8 +322,9 @@ public class AnalysisTimeseries {
 				//Wert berechnen für eine Periode
 				double value=0;
 				for(int n=0;n<p;n++){ //einzubeziehende perioden (p)
-					value=valuesForPhi[n] * cashFlowsJeT[n];
+					value+=valuesForPhi[n] * cashFlowsJeT[n];
 				}
+				//LOGGER.debug("value: " + value);
 				value = value + konstanteC;//ToDo konstanteC einen Wert zuweisen
 				//double epsilonWhiteNoise = r.nextGaussian() *standardabweichungVarianz; //ToDo Den WhiteNoise Wert berechnen
 				value = value + getWhiteNoiseValue(standardabweichungVarianz, mittelwert);
@@ -346,10 +358,18 @@ public class AnalysisTimeseries {
 	 *   welche sich um den Mittelwert bildet und deren Verteilung durch die Standardabweichung bzw. Varianz
 	 *   bestimmt wird.
 	 * @author Philipp Nagel
-	 * @param standardabweichungVarianz
+	 * @param standardabweichung
 	 * @param mittelwert
 	 * @return Weißes Rauschen
 	 */
+	
+	public static double getWhiteNoiseValue(double standardabweichung, double mittelwert){
+		double whiteNoise = 0;
+		Random r = new Random();
+		whiteNoise = r.nextGaussian()*standardabweichung + mittelwert;
+		return whiteNoise;
+		
+	}
         
         /**
         * Methode zum Erstellen einer Verteilung. Diese Methode teilt die Prognosewerte in verschiedene Werteklassen (Wertebereiche) ein und ordnet die Prognosewerte in diese Werteklassen ein. So wird ein grobes Bild der Verteilung geschaffen.
@@ -432,13 +452,7 @@ public class AnalysisTimeseries {
         }
 
         
-	public static double getWhiteNoiseValue(double standardabweichungVarianz, double mittelwert){
-		double whiteNoise = 0;
-		Random r = new Random();
-		whiteNoise = r.nextGaussian()*standardabweichungVarianz + mittelwert;
-		return whiteNoise;
-		
-	}
+
 	/**
 	 * Methode zur Prognose zukünftiger Werte einer gegebenen Zeitreihe und
 	 * einem AR-Modell. Sie berechnet die jeweiligen Prognosewerte und gibt sie
