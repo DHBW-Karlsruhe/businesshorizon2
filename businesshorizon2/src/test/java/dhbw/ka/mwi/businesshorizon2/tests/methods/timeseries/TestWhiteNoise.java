@@ -6,7 +6,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
 import junit.framework.TestCase;
 /**
  * Diese Klasse testet die Implementierung der White Noise Berechnung
- * @author D060258
+ * @author Philipp Nagel
  *
  */
 public class TestWhiteNoise extends TestCase {

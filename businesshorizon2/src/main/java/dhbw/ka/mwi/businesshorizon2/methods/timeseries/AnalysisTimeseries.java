@@ -464,7 +464,7 @@ public class AnalysisTimeseries {
         */	
         public double getMin (double [][] prognose) {
                 double min = prognose [0][0];
-                for (int i=0; i<prognose.length; i++) {
+                for (int i=0; i<prognose.length-1; i++) {
                         if (prognose[i][0]<min) {
                                 min = prognose [i][0];
                         }
@@ -484,8 +484,8 @@ public class AnalysisTimeseries {
         public double getMax (double [][] prognose) {
                double max = prognose [0][0];
                for (int i=0; i<prognose.length; i++) {
-                       if (prognose[i][prognose[i].length]>max) {
-                               max = prognose [i][prognose[i].length];
+                       if (prognose[i][prognose[i].length-1]>max) {
+                               max = prognose [i][prognose[i].length-1];
                        }
                }
                return max;

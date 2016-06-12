@@ -33,6 +33,11 @@ public class Distribution {
 			this.values[period][temp]++;
 		}
 	}
+	
+	public double [][] getValues () {
+		return this.values;
+	}
+	
 	public void setIntervalStartValues(double[] values) {
 		this.intervalStartValues=values;
 	}
