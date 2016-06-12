@@ -130,7 +130,7 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
          * Diese Methode ruft die Zeitreihenanalyse auf und speichert die
          * enthaltenen Werte anschließend in einem StochasticResultContainer.
          *
-         * @author Kai Westerholz, Marcel Rosenberger, Maurizio Di Nunzio
+         * @author Kai Westerholz, Marcel Rosenberger, Maurizio Di Nunzio, Jonathan Janke
          *
          * @param project
          * das Projekt für das die Zeitreihenanalyse durchgeführt werden

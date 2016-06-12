@@ -1,11 +1,14 @@
 /*******************************************************************************
- * BusinessHorizon2
+/*
+ *  * BusinessHorizon2
+ * 
  *
  * Copyright (C) 
  * 2012-2013 Christian Gahlert, Florian Stier, Kai Westerholz,
  * Timo Belz, Daniel Dengler, Katharina Huber, Christian Scherer, Julius Hacker
  * 2013-2014 Marcel Rosenberger, Mirko Göpfrich, Annika Weis, Katharina Narlock, 
  * Volker Meier
+ * 
  * 
  *
  *
@@ -21,8 +24,10 @@
  *
  * You should have received a copy of the GNU Affero General Public License
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
- ******************************************************************************/
+ * 
+ * 
 
+ ******************************************************************************/
 
 package dhbw.ka.mwi.businesshorizon2.tests;
 

@@ -40,9 +40,11 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
 
 
 /**
- * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in der Klasse AnalysisTime dar.
+ * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in der Klasse AnalysisTimeseries dar.
  * 
- * @author Volker Maier
+ * Anmerkung2016: Diese Klasse testet die Methode calculate() nicht vernünftig, sondern überprüft lediglich, dass keine leeres Array erzeugt wurde. Die Werte werden aber nicht validiert.
+ * 
+ * @author Volker Maier, Jonathan Janke
  * 
  */
 @Ignore //FIXME seazzle
@@ -58,7 +60,7 @@ public class TestCalculate extends TestCase {
 		int zuberechnendeperioden = 5; 
 		int durchlaeufe = 10000;
 		CallbackInterface callback = null; 
-		boolean isfremdkapital = true;
+		boolean isfremdkapital = false;
 		double[][] prognosewerte = new double[zuberechnendeperioden][durchlaeufe];
 		
 		zeitreihe [0]= 7;
@@ -74,6 +76,8 @@ public class TestCalculate extends TestCase {
 		try {
 			prognosewerte = at.calculate (zeitreihe, p , zuberechnendeperioden, durchlaeufe, callback, isfremdkapital)  ;
 		} catch (StochasticMethodException | InterruptedException e) {
+			logger.debug(e.getMessage());
+		} catch (Exception e) {
 			logger.debug(e.getMessage());
 		}
 				
