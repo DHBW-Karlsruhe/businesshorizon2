@@ -290,9 +290,11 @@ public class AnalysisTimeseries {
 			int iterationen, int p, double mittelwert, boolean isfremdkapital, double konstanteC) {
 		konstanteC = 0;//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
 		/*JJ: Wieso float?
+		 * PN: Weil Anh dies in der Anleitung so geschrieben hat
 		* float[]	valuesForPhi = new float[p+1]; //Deklariere float Array für Phi (length = 1 + Ordnung p). Die
 		* for(int k=0; k<valuesForPhi.length;k++){//Initialisiere Phi Array mit Eingaben vom User (ggf. zu Beginn mit Festwerten)
 			//JJ: Was macht diese Operation? Sie überschreibt lediglich jede Stelle des Arrays mit 1/valuesForPhi.length
+			 * PN: Gute Frage, dies müsste auch von Anh ihrer Anleitun kommen
 			valuesForPhi[k] = 1/valuesForPhi.length;
 		}
 		*/
@@ -302,7 +304,8 @@ public class AnalysisTimeseries {
 		int alreadyOccupiedPlaces=0;
 		for(int i=0;i<trendbereinigtezeitreihe.size();i++){//Befüllen der ersten Werte mit den gegebenen Werten
 			//JJ: Was machst du hier? Warum fügst du ein Array der Länge 1 ein? Du hast doch bereits ein zweidimensionales Array?
-			//stochastischeErgebnisseDerCashFlows[i] = new double[1];
+			//PN: An der Stelle brauche ich nur ein Feld, da es die bereits existierenden Werte sind. Dadurch versuche ich Speicherplatz zu sparen.
+			stochastischeErgebnisseDerCashFlows[i] = new double[1];
 			stochastischeErgebnisseDerCashFlows[i][0]=trendbereinigtezeitreihe.get(i);
 			alreadyOccupiedPlaces = i+1;
 		}
@@ -599,12 +602,36 @@ public class AnalysisTimeseries {
 		// vorbereitende Initialisierung
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
 
+		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist. 
+				// Diese Implementierung ist von Philipp Nagel
+				boolean nichtStationaer = ueberpruefeStationaritaet(zeitreihe);
+				int differenzierungenCounter = 0;
+				while(!nichtStationaer){
+					//Zeitreihe differenzieren
+					double[] newZeitreihe = new double[zeitreihe.length-1];
+					for(int i=0;i<newZeitreihe.length;i++){
+						newZeitreihe[i] = zeitreihe[i+1] -zeitreihe[i];
+					}
+
+					differenzierungenCounter++;
+					//Warnung ausgeben, dass nur noch 2 oder weniger Werte zu rechnen da sind. Es müssen dann neue Werte eingegeben werden
+					if(newZeitreihe.length<=2){
+						throw new Exception("2 oder weniger Werte in der Zeitreihe vorhanden");
+					}
+					nichtStationaer = ueberpruefeStationaritaet(zeitreihe);
+				}
+
+			
+				
+				/*Vorherige Loesung
+		
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
 		tide = new CalculateTide();
 		boolean isStationary = StationaryTest.isStationary(zeitreihe);
 		if (!isStationary) {
 			zeitreihe = tide.reduceTide(zeitreihe);
 		}
+		*/
 		/**
 		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
 		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
