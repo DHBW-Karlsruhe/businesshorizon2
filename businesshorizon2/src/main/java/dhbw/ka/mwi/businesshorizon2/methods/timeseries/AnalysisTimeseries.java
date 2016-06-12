@@ -370,6 +370,46 @@ public class AnalysisTimeseries {
 		return whiteNoise;
 		
 	}
+	
+	/*
+	 * Methode zur Ueberpruefung auf Stationaritaet
+	 * @author: Philipp Nagel
+	 */
+	public boolean ueberpruefeStationaritaet(double[] zeitreihe ){
+		//TODO: Berechne Mittelwert
+		/*
+		 * 1.       Der Mittelwert muss zu jedem Zeitpunkt endlich sein und gleich sein.
+		FÃ¼hrt man einen Zufallsversuch sehr oft durch und bildet aus den Ergebnissen den 
+		( gewichteten ) Mittelwert, so erhÃ¤lt man den Erwartungswert. 
+		 */
+		
+		//Berechnung der Varianz
+		double durchschnitt = 0;
+		for(int i=0; i<zeitreihe.length;i++){
+			durchschnitt = durchschnitt + zeitreihe[i];
+		}
+		durchschnitt = durchschnitt/zeitreihe.length;
+		//Varianz selber berechnen
+		double varianz = 0;
+		for(int i=0; i<zeitreihe.length;i++){
+			varianz = varianz + ((durchschnitt - Math.abs(zeitreihe[i]))*(durchschnitt - Math.abs(zeitreihe[i])));
+		} 
+		varianz = varianz/zeitreihe.length;
+		//TODO: ÃœberprÃ¼fung einbauen
+		//Wie kann die Varianz unendlich sein?
+		
+		/*Zur PrÃ¼fung der StationaritÃ¤t sind 3 PrÃ¼fschritte notwendig:
+		
+
+		2.       Die Varianz muss immer endlich sein (nicht unendlich)
+
+		
+		//TODO: Autokovarianz ermitteln und prÃ¼fen
+		3.       Die Autokovarianz muss zu jedem Zeitpunkt gleich sein
+		*/
+		return false;
+		
+	}
         
         /**
         * Methode zum Erstellen einer Verteilung. Diese Methode teilt die Prognosewerte in verschiedene Werteklassen (Wertebereiche) ein und ordnet die Prognosewerte in diese Werteklassen ein. So wird ein grobes Bild der Verteilung geschaffen.

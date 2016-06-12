@@ -77,6 +77,8 @@ public class TestCalculate extends TestCase {
 			prognosewerte = at.calculate (zeitreihe, p , zuberechnendeperioden, durchlaeufe, callback, isfremdkapital)  ;
 		} catch (StochasticMethodException | InterruptedException e) {
 			logger.debug(e.getMessage());
+		} catch (Exception e) {
+			logger.debug(e.getMessage());
 		}
 				
 		
