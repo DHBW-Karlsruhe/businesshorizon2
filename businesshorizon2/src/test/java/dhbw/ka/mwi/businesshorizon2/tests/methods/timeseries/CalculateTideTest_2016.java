@@ -23,6 +23,8 @@
 package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
 import junit.framework.TestCase;
+import org.apache.log4j.Logger;
+
 
 import org.junit.Test;
 
@@ -42,8 +44,13 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide;
  * 
  */
 
+
 public class CalculateTideTest_2016 extends TestCase {
+	
+	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
+	
 	@Test
+		
 	public void testReduceTide() {
 		double[] timeseries = new double[6];
 		timeseries[0] = 130594000.00;
@@ -65,7 +72,8 @@ public class CalculateTideTest_2016 extends TestCase {
 		System.out.println(timeseries[1]);
 		System.out.println(results[1]);
 		for (int i = 1; i < timeseries.length; i++) {
-			assertEquals(timeseries[i], results[i]);
+			logger.debug("expected: " + results[i] + "; value: "+ timeseries [i]);
+			assertEquals(results[i], timeseries[i]);
 		}
 
 	}
