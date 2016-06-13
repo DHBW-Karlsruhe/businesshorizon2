@@ -33,10 +33,9 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import junit.framework.TestCase;
 
 /**
- * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in
- * der Klasse AnalysisTime dar.
+ * Diese Klasse stellt den jUnit-Test der Klasse APV dar
  * 
- * @author Volker Maier
+ * @author Thomas Zapf, Markus Baader
  * 
  */
 public class TestAPV extends TestCase {
