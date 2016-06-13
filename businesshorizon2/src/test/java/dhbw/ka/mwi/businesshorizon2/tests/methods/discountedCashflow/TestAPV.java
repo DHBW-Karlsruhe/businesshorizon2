@@ -23,69 +23,98 @@
  * along with this program. If not, see <http://www.gnu.org/licenses/>.
  ******************************************************************************/
 
-
 package dhbw.ka.mwi.businesshorizon2.tests.methods.discountedCashflow;
 
-import junit.framework.TestCase;
-
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-
+import junit.framework.TestCase;
 
 /**
- * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in der Klasse AnalysisTime dar.
+ * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in
+ * der Klasse AnalysisTime dar.
  * 
  * @author Volker Maier
  * 
  */
-@Ignore //FIXME seazzle
 public class TestAPV extends TestCase {
-	
+
+	private static final boolean INCLUDE_IN_CALCULATION = true;
+	private static final double CORPORATE_AND_SOLITARY_TAX = 0.15825;
+	private static final double BORROWING_COSTS_WITHOUT_TAXES = 0.080;
+	private static final double EQUITY_COSTS_WITHOUT_TAXES = 0.09969137;
+	private static final double TRADE_TAX = 0.140;
+	private static final double BUSINESS_TAX = 0.75 * TRADE_TAX + CORPORATE_AND_SOLITARY_TAX;
+	private static final double PERSONAL_TAX_RATE = 0.26375;
+	private static final double BORROWING_COSTS_AFTER_TAXES = BORROWING_COSTS_WITHOUT_TAXES * (1 - PERSONAL_TAX_RATE);
+	private static final double EQUITY_COSTs_AFTER_TAXES = EQUITY_COSTS_WITHOUT_TAXES * (1 - PERSONAL_TAX_RATE);
 	private static final Logger logger = Logger.getLogger("TestAPV.class");
-	
-		
+
 	@Test
 	public void testAPV() {
-		double[] cashflow = new double [5]; 
-		double[] fremdkapital= new double [5];
-		double rateReturnEquity = 9.969;  
-		double rateReturnCapitalStock = 8.0;
-		double businessTax = 14.0; 
-		double corporateAndSolitaryTax = 15.825; 
-		boolean includeInCalculation = true;
-		Szenario szenario = new Szenario( rateReturnEquity,  rateReturnCapitalStock,
-				 businessTax,  corporateAndSolitaryTax,  includeInCalculation);
-		double ergebnisVorgabe= 1055.2755762598144;
-		double ergebnis;
-		
-		
-		cashflow [0]= 0.0;
-		cashflow [1]= 138.61;
-		cashflow [2]= 202.31;
-		cashflow [3]= 174.41;
-		cashflow [4]= 202.52;
-		
-		
-		fremdkapital [0]= 1260.0;
-		fremdkapital [1]= 1320.0;
-		fremdkapital [2]= 1330.0;
-		fremdkapital [3]= 1400.0;
-		fremdkapital [4]= 1400.0;
-		
-		APV ap = new APV();
-	
-		ergebnis = ap.calculateValues(cashflow , fremdkapital, szenario);
-				
-		logger.debug(ergebnisVorgabe);
-		logger.debug(ergebnis);
-		
-			assertEquals(ergebnisVorgabe,ergebnis);
-		}
+		double[] cashflow = new double[5];
+		double[] interestBearingDebtCapital = new double[5];
+		Szenario szenario = new Szenario(EQUITY_COSTS_WITHOUT_TAXES, BORROWING_COSTS_WITHOUT_TAXES, TRADE_TAX,
+				CORPORATE_AND_SOLITARY_TAX, INCLUDE_IN_CALCULATION);
+		double expectedResult = 1075.24;
+		double result;
 
+		cashflow[0] = 0.0;
+		cashflow[1] = 138.61;
+		cashflow[2] = 202.31;
+		cashflow[3] = 174.41;
+		cashflow[4] = 202.52;
+
+		interestBearingDebtCapital[0] = 1260.0;
+		interestBearingDebtCapital[1] = 1320.0;
+		interestBearingDebtCapital[2] = 1330.0;
+		interestBearingDebtCapital[3] = 1400.0;
+		interestBearingDebtCapital[4] = 1400.0;
+
+		APV apv = new APV();
+		result = apv.calculateValues(cashflow, interestBearingDebtCapital, szenario);
+
+		result = Math.round(100.0 * result) / 100.0;
+		assertEquals("Result of APV is not valid.", expectedResult,result);
 	}
 
+	@Test
+	public void testCalculateTaxShield() {
+		
+		double[] interestBearingDebtCapital = new double[5];
+		
+		interestBearingDebtCapital[0] = 1260.0;
+		interestBearingDebtCapital[1] = 1320.0;
+		interestBearingDebtCapital[2] = 1330.0;
+		interestBearingDebtCapital[3] = 1400.0;
+		interestBearingDebtCapital[4] = 1400.0;
+		
+		APV apv = new APV();
+		double result = apv.calculateTaxShield(interestBearingDebtCapital, BORROWING_COSTS_AFTER_TAXES, BUSINESS_TAX, PERSONAL_TAX_RATE, BORROWING_COSTS_WITHOUT_TAXES);
 
+		double expectedResult = 364.48;
+		result = Math.round(100.0 * result) / 100.0;
+		assertEquals("TaxShield is not calculated correctly", expectedResult, result);
+	}
+
+	@Test
+	public void testCalculateDebtFreeCompanyValue() {
+		double[] cashflow = new double[5];
+		
+		cashflow[0] = 0.0;
+		cashflow[1] = 138.61;
+		cashflow[2] = 202.31;
+		cashflow[3] = 174.41;
+		cashflow[4] = 202.52;
+		
+		APV apv = new APV();
+		double result = apv.calculateDebtFreeCompanyValue(cashflow, PERSONAL_TAX_RATE, EQUITY_COSTs_AFTER_TAXES);
+		
+		double expectedResult = 1970.77;
+		result = Math.round(100.0 * result) / 100.0;
+		assertEquals("Debt-Free Company Value is not calculated correctly", expectedResult, result);
+	}
+
+}
