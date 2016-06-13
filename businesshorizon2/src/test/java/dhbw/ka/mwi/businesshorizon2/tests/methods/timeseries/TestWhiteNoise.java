@@ -13,7 +13,7 @@ public class TestWhiteNoise extends TestCase {
 	@Test public void testWhiteNoiseMethod(){
 		double standardabweichung = 5;
 		double mittelwert = 5;
-		int werteInnerhalbToleranz=0;
+		double werteInnerhalbToleranz=0;
 		double untereGrenze=mittelwert - standardabweichung;
 		double obereGrenze=mittelwert + standardabweichung;
 		for(int i=0;i<100000;i++){
@@ -30,9 +30,9 @@ public class TestWhiteNoise extends TestCase {
 		if(anteilWerteInToleranz<untereAnteilsToleranzGrenze || anteilWerteInToleranz>obereAnteilsToleranzGrenze){
 			toleranzSchwelleNichtUeberschritten=false;
 		}
-		boolean isANumber = false;
+		boolean isANumber = true;
 		if(Double.isNaN(AnalysisTimeseries.getWhiteNoiseValue(standardabweichung, mittelwert))){
-			isANumber=true;
+			isANumber=false;
 		}
 		assertTrue(toleranzSchwelleNichtUeberschritten);
 		assertTrue(isANumber);
