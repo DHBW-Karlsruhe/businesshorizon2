@@ -616,7 +616,7 @@ public class AnalysisTimeseries {
 					differenzierungenCounter++;
 					//Warnung ausgeben, dass nur noch 2 oder weniger Werte zu rechnen da sind. Es müssen dann neue Werte eingegeben werden
 					if(newZeitreihe.length<=2){
-						throw new Exception("2 oder weniger Werte in der Zeitreihe vorhanden");
+						throw new InterruptedException("2 oder weniger Werte in der Zeitreihe vorhanden");
 					}
 					nichtStationaer = ueberpruefeStationaritaet(zeitreihe);
 				}
