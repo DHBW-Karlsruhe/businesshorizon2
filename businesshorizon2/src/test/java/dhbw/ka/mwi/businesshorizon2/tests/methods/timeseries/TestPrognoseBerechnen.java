@@ -114,9 +114,9 @@ public class TestPrognoseBerechnen extends TestCase {
 		
 		
 		//prüfen, ob Prognosearray rightige Länge besitzt (Dimension 1); richtige Länge, wenn bisherige Cashflows + zuberechnendePerioden enthalten sind
-		assertEquals(prognosewerte.length, cashflows.size()+zuberechnendeperioden);
+		assertEquals(cashflows.size()+zuberechnendeperioden, prognosewerte.length);
 		//prüfen, ob Prognosearray rightige Länge besitzt (Dimension 2); richtige Länge, wenn durchlaeufe in Dimension 2 sind
-		assertEquals(prognosewerte[0].length, durchlaeufe);
+		assertEquals(durchlaeufe, prognosewerte[cashflows.size()].length);
 		assertNotNull(prognosewerte);
 		
 		}

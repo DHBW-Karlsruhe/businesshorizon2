@@ -289,15 +289,7 @@ public class AnalysisTimeseries {
 			double standardabweichungVarianz, int zuberechnendeperioden,
 			int iterationen, int p, double mittelwert, boolean isfremdkapital, double konstanteC) {
 		konstanteC = 0;//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
-		/*JJ: Wieso float?
-		 * PN: Weil Anh dies in der Anleitung so geschrieben hat
-		* float[]	valuesForPhi = new float[p+1]; //Deklariere float Array für Phi (length = 1 + Ordnung p). Die
-		* for(int k=0; k<valuesForPhi.length;k++){//Initialisiere Phi Array mit Eingaben vom User (ggf. zu Beginn mit Festwerten)
-			//JJ: Was macht diese Operation? Sie überschreibt lediglich jede Stelle des Arrays mit 1/valuesForPhi.length
-			 * PN: Gute Frage, dies müsste auch von Anh ihrer Anleitun kommen
-			valuesForPhi[k] = 1/valuesForPhi.length;
-		}
-		*/
+		
 		//Testwerte
 		//double [] valuesForPhi = {1, 1, 0, 0, 0};
 		double[][] stochastischeErgebnisseDerCashFlows = new double[trendbereinigtezeitreihe.size()+zuberechnendeperioden][iterationen];//Deklariere double Array für ergCF je t (length = 1 + Ordnung p + zu progn. Jahre)
