@@ -24,9 +24,9 @@ public class TestWhiteNoise extends TestCase {
 			
 		}
 		boolean toleranzSchwelleNichtUeberschritten = true;
-		double untereAnteilsToleranzGrenze = 65; //innerhalb von der standardabweichung sind  68,27% der der Werte 
-		double obereAnteilsToleranzGrenze = 70.5;
-		double anteilWerteInToleranz = werteInnerhalbToleranz/100000;
+		double untereAnteilsToleranzGrenze = 0.65; //innerhalb von der standardabweichung sind  68,27% der der Werte 
+		double obereAnteilsToleranzGrenze = 0.705;
+		double anteilWerteInToleranz = werteInnerhalbToleranz / 100000.0;
 		if(anteilWerteInToleranz<untereAnteilsToleranzGrenze || anteilWerteInToleranz>obereAnteilsToleranzGrenze){
 			toleranzSchwelleNichtUeberschritten=false;
 		}
@@ -34,9 +34,8 @@ public class TestWhiteNoise extends TestCase {
 		if(Double.isNaN(AnalysisTimeseries.getWhiteNoiseValue(standardabweichung, mittelwert))){
 			isANumber=true;
 		}
-		assertTrue(isANumber);
 		assertTrue(toleranzSchwelleNichtUeberschritten);
-		
+		assertTrue(isANumber);
 	}
 	
 }
