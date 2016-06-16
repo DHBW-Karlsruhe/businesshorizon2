@@ -72,6 +72,12 @@
 			<dependency> <groupId>com.mvplite</groupId> <artifactId>mvp-lite</artifactId> 
 			<version>1.0</version> </dependency> -->
 
+		<!-- http://mvnrepository.com/artifact/org.simpleframework/simple-xml -->
+		<dependency>
+			<groupId>org.simpleframework</groupId>
+			<artifactId>simple-xml</artifactId>
+			<version>2.7.1</version>
+		</dependency>
 		<dependency>
 			<groupId>log4j</groupId>
 			<artifactId>log4j</artifactId>
@@ -118,11 +124,8 @@
 			<version>1.2.0</version>
 		</dependency>
 
-		<!--<dependency>
-			<groupId>org.jamesii</groupId>
-			<artifactId>core</artifactId>
-			<version>0.9.4</version>
-		</dependency>-->
+		<!--<dependency> <groupId>org.jamesii</groupId> <artifactId>core</artifactId> 
+			<version>0.9.4</version> </dependency> -->
 		<!-- ... -->
 	</dependencies>
 
@@ -160,26 +163,26 @@
 					</archive>
 				</configuration>
 			</plugin>
-			
-			 <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <formats>
-                        <format>xml</format>
-                    </formats>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>cobertura</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-			
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<formats>
+						<format>xml</format>
+					</formats>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>cobertura</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>com.googlecode.addjars-maven-plugin</groupId>
 				<artifactId>addjars-maven-plugin</artifactId>
@@ -256,7 +259,7 @@
 				<artifactId>vaadin-maven-plugin</artifactId>
 				<version>1.0.2</version>
 				<executions>
-				 	<execution>
+					<execution>
 						<configuration>
 						</configuration>
 						<goals>
