@@ -12,7 +12,7 @@ import org.simpleframework.xml.Root;
 @Root
 public class UserProjects {
 	
-	@ElementList
+	@ElementList(required=false)
 	private List<Project> projects = new ArrayList<Project>();
 	
 	
