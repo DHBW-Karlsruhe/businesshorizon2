@@ -28,6 +28,10 @@ package dhbw.ka.mwi.businesshorizon2.models;
 import java.io.Serializable;
 import java.util.ArrayList;
 
+import org.simpleframework.xml.Element;
+import org.simpleframework.xml.ElementList;
+import org.simpleframework.xml.Root;
+
 /**
  * Das User Objekt beinhaltet die für Loginzwecke zu speichernden Daten wie auch
  * seine zugehörigen Projekte
@@ -35,6 +39,7 @@ import java.util.ArrayList;
  * @author Christian Scherer
  * 
  */
+@Root(name="USER")
 public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -45,6 +50,7 @@ public class User implements Serializable {
 	private String emailAdress;
 	private int password;
 
+	@ElementList(name="PROJEKTE", required=false)
 	protected ArrayList<Project> projects = new ArrayList<Project>();
 
 	public User(){

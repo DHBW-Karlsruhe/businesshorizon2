@@ -35,16 +35,13 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-
-
-
-
 import java.util.Date;
 
 import javax.annotation.PostConstruct;
 
 import org.apache.log4j.Logger;
+import org.simpleframework.xml.Serializer;
+import org.simpleframework.xml.core.Persister;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
@@ -472,6 +469,9 @@ public class PersistenceService implements PersistenceServiceInterface {
 
 			fileOutput.close();
 			objectOutput.close();
+			
+			serializeAsXML(user);
+			
 			logger.debug("Projekt erfolgreich exportiert.");
 
 		} catch (NotSerializableException e){
@@ -483,6 +483,17 @@ public class PersistenceService implements PersistenceServiceInterface {
 		} 
 		
 		return exportFileName;
+	}
+	
+	public synchronized void serializeAsXML(User user){
+		Serializer serializer = new Persister();
+		File result = new File(TMPDIRECTORY+separator+"PROJECTS.xml");
+
+		try {
+			serializer.write(user, result);
+		} catch (Exception e) {
+			logger.error("error on generating xml file: "+e.getMessage());
+		}
 	}
 
 }

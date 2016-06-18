@@ -35,8 +35,7 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 
 import org.apache.log4j.Logger;
-
-import com.vaadin.ui.Label;
+import org.simpleframework.xml.Element;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
@@ -44,7 +43,6 @@ import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsException;
 
 /**
  * Bei dieser Klasse handelt es sich um eine Art Container-Objekt. Dieses Objekt
@@ -56,12 +54,9 @@ import dhbw.ka.mwi.businesshorizon2.services.persistence.ProjectAlreadyExistsExc
  * @author Christian Gahlert
  * 
  */
+@Element(name="PROJEKT")
 public class Project implements Serializable {
 
-
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = 9199799755347070847L;
 
 	private static final Logger logger = Logger
@@ -73,9 +68,13 @@ public class Project implements Serializable {
 
 	private User createdFrom;
 
+	@Element(name="NAME")
 	private String name;
+	
+	@Element(name="TYP")
 	private String typ;
 
+	@Element(name="BESCHREIBUNG")
 	private String description;
 
 	private AbstractPeriodContainer stochasticPeriods, deterministicPeriods;
@@ -108,7 +107,7 @@ public class Project implements Serializable {
 	private int iterations;
 	private int basisYear;
 	private ProjectInputType projectInputType;
-
+	
 	private SortedSet<AbstractStochasticMethod> methods;
 
 	/**
@@ -377,6 +376,7 @@ public class Project implements Serializable {
 
 	public void setProjectInputType(ProjectInputType projectInputType) {
 		this.projectInputType = projectInputType;
+
 	}
 
 	/**
