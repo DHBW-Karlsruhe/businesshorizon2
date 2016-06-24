@@ -46,7 +46,7 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahren
  * zusätzlicher Unit-Test aber sinnvoll, da CashFlowCalculator unterschiedliche
  * Einstiegspunkte hat je nach dem ob Deterministische oder Stochastische Berechnung verwendet wird.
  * 
- * @author Marcel Rosenberger
+ * @author Marcel Rosenberger, ...
  * 
  */
 
