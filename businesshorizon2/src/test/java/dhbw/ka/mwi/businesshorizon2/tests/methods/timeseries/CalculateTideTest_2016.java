@@ -24,6 +24,7 @@ package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
 import junit.framework.TestCase;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide;
@@ -34,13 +35,17 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide;
  * Bisher wurde versucht, eine Trendgerade zu legen und die Zeitreihe über den Abstand zur Trendgeraden zu differenzieren.
  * 
  * bisherige Formel: Y(t) = X(t) - T(t) mit T(t) = Trendgerade
- * jetzige Formel: X'(t) = X(t) - X(t-1)
+ * jetzige Formel: X'(t) = X(t) - X(t-1) [nicht mehr notwendig]
+ * 
+ * Dieser Test und die zugehörige Methode ist nach dem Gespräch mit H. Pohl am 20.06.2016 obsolet.
  * 
  * Für eine korrekte Versionsverwaltung sollte man langfristig eine der beiden Testmethoden löschen und die andere entsprechend umbenennen.
  * 
  * @author Jonathan Janke
  * 
  */
+
+@Ignore //OBSOLETE Jonathan
 
 public class CalculateTideTest_2016 extends TestCase {
 	@Test

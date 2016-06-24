@@ -6,8 +6,10 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
  *
  * Diese Klasse wird durch die Zeitreihenanalyse erstellt und weitergegeben. Sie beinhaltet
  * stellt die Verteilung nicht durch Mittelwert und Varianz, sondern anhand ihrer Werte
- * dar. 
- */
+ * dar.
+ * 
+ * Update 20.06.2016: Diese Klasse muss übearbeitet werden, weil die Schnittstelle zwischen AR-Modell und APV-Methode anders als angenommen gestaltet wird
+*/
 public class Distribution {
 	//Werte der Verteilung mit den Dimensionen [perioden] [Werte klassiert nach Wertebereichen]
 	double [][] values;

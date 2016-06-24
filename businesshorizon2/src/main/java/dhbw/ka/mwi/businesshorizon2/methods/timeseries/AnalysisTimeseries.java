@@ -49,7 +49,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
  * und implementiert das AR-Modell.
  * 
  * @author Kai Westerholz, Nina Brauch, Raffaele Cipolla, Mirko Göpfrich, Marcel
- *         Rosenberger
+ *         Rosenberger, Jonathan Janke
  * 
  */
 
@@ -59,13 +59,12 @@ public class AnalysisTimeseries {
 			.getLogger("AnalysisTimeseries.class");
 	private DoubleArrayList autokovarianzen;
 	private DoubleArrayList bereinigteZeitreihe;
-	private DoubleMatrix2D modellparameter;;
+	private DoubleMatrix2D modellparameter;
 	private double standardabweichung;
 	private double mittelwert;
 	private double[] erwarteteCashFlows;
 	private double[] erwartetesFremdkapital;
 	private double abweichung;
-	private CalculateTide tide;
 
 	/**
 	 * Methode zur Berechnung des Mittelwerts einer Zeitreihe.
@@ -235,8 +234,10 @@ public class AnalysisTimeseries {
 	 * @param matrixPhi
 	 *            Vektor der Phi-Werte ( =Modellparameter)
 	 * @return Gibt die Standardabweichung zurück.
+	 * 
+	 * Warum ist dise Methode notwendig? Es gibt oben eine Methode zur Berechnung der Standardabweichung
 	 */
-	//
+	
 	public double berechneStandardabweichung(DoubleArrayList autokovarianzen,
 			DoubleMatrix2D matrixPhi) {
 		double standardabweichung = 0;
@@ -259,7 +260,6 @@ public class AnalysisTimeseries {
 	 * in einem zweidimensionalen Array zurück.
 	 * 
 	 * JJ: Nomenklatur sollte ausschließlich Englisch sein.
-	 * JJ: Was macht die Variable standardabweichungVarianz?
 	 * 
 	 * @author Philipp Nagel, Thuy Anh Nguyen, Jonathan Janke
 	 * 
@@ -286,9 +286,11 @@ public class AnalysisTimeseries {
 	 */		
 	public double[][] prognoseBerechnenNew(
 			DoubleArrayList trendbereinigtezeitreihe, double [] valuesForPhi,
-			double standardabweichungVarianz, int zuberechnendeperioden,
+			double standardabweichung, int zuberechnendeperioden,
 			int iterationen, int p, double mittelwert, boolean isfremdkapital, double konstanteC) {
-		konstanteC = 0;//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
+		//JJ: konstanteC kann weggelassen werden
+		konstanteC = 0;
+		//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
 		/*JJ: Wieso float?
 		* float[]	valuesForPhi = new float[p+1]; //Deklariere float Array für Phi (length = 1 + Ordnung p). Die
 		* for(int k=0; k<valuesForPhi.length;k++){//Initialisiere Phi Array mit Eingaben vom User (ggf. zu Beginn mit Festwerten)
@@ -326,8 +328,8 @@ public class AnalysisTimeseries {
 				}
 				//LOGGER.debug("value: " + value);
 				value = value + konstanteC;//ToDo konstanteC einen Wert zuweisen
-				//double epsilonWhiteNoise = r.nextGaussian() *standardabweichungVarianz; //ToDo Den WhiteNoise Wert berechnen
-				value = value + getWhiteNoiseValue(standardabweichungVarianz, mittelwert);
+				//double epsilonWhiteNoise = r.nextGaussian() *standardabweichung; //ToDo Den WhiteNoise Wert berechnen
+				value = value + getWhiteNoiseValue(standardabweichung, mittelwert);
 				double[] tmp = stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces+m];
 				try{
 					tmp[h]=value; //Wert zum array hinzufügen, iBackup+m => Verschiebung um die bereits vorhanden Werte h: Durchlauf der Iteration
@@ -355,63 +357,22 @@ public class AnalysisTimeseries {
 	/**
 	 * Methode zur Berechnung des White Noise Wertes (weißes Rauschen).
 	 *  Das Weiße rauschen bildet eine gaussche Normalverteilung ab,
-	 *   welche sich um den Mittelwert bildet und deren Verteilung durch die Standardabweichung bzw. Varianz
+	 *   welche sich um den Mittelwert bildet und deren Verteilung durch die Standardabweichung
 	 *   bestimmt wird.
-	 * @author Philipp Nagel
+	 * @author Philipp Nagel, Jonathan Janke
 	 * @param standardabweichung
 	 * @param mittelwert
-	 * @return Weißes Rauschen
+	 * @return Weißes Rauschen : 1 Wert für White Noise Fehlerterm
 	 */
 	
 	public static double getWhiteNoiseValue(double standardabweichung, double mittelwert){
 		double whiteNoise = 0;
 		Random r = new Random();
+		// Berechnung des WhiteNoise Stoerterms über Std.Abweichung
 		whiteNoise = r.nextGaussian()*standardabweichung + mittelwert;
 		return whiteNoise;
-		
 	}
-	
-	/*
-	 * Methode zur Ueberpruefung auf Stationaritaet
-	 * @author: Philipp Nagel
-	 */
-	public boolean ueberpruefeStationaritaet(double[] zeitreihe ){
-		//TODO: Berechne Mittelwert
-		/*
-		 * 1.       Der Mittelwert muss zu jedem Zeitpunkt endlich sein und gleich sein.
-		FÃ¼hrt man einen Zufallsversuch sehr oft durch und bildet aus den Ergebnissen den 
-		( gewichteten ) Mittelwert, so erhÃ¤lt man den Erwartungswert. 
-		 */
-		
-		//Berechnung der Varianz
-		double durchschnitt = 0;
-		for(int i=0; i<zeitreihe.length;i++){
-			durchschnitt = durchschnitt + zeitreihe[i];
-		}
-		durchschnitt = durchschnitt/zeitreihe.length;
-		//Varianz selber berechnen
-		double varianz = 0;
-		for(int i=0; i<zeitreihe.length;i++){
-			varianz = varianz + ((durchschnitt - Math.abs(zeitreihe[i]))*(durchschnitt - Math.abs(zeitreihe[i])));
-		} 
-		varianz = varianz/zeitreihe.length;
-		//TODO: ÃœberprÃ¼fung einbauen
-		//Wie kann die Varianz unendlich sein?
-		
-		/*Zur PrÃ¼fung der StationaritÃ¤t sind 3 PrÃ¼fschritte notwendig:
-		
-
-		2.       Die Varianz muss immer endlich sein (nicht unendlich)
-
-		
-		//TODO: Autokovarianz ermitteln und prÃ¼fen
-		3.       Die Autokovarianz muss zu jedem Zeitpunkt gleich sein
-		*/
-		return false;
-		
-	}
-        
-        /**
+	  /**
         * Methode zum Erstellen einer Verteilung. Diese Methode teilt die Prognosewerte in verschiedene Werteklassen (Wertebereiche) ein und ordnet die Prognosewerte in diese Werteklassen ein. So wird ein grobes Bild der Verteilung geschaffen.
         * 
         * @author Jonathan Janke
@@ -534,12 +495,13 @@ public class AnalysisTimeseries {
 		this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi,
 				zuberechnendeperioden, p, mittelwert, isfremdkapital);
 		
-		//Modellgenauigkeit validieren
+		/*
+		 * Modellgenauigkeit validieren
 		if(this.tide != null){
 			this.validierung( trendbereinigtezeitreihe,
 				 matrixPhi,  p);
 		}
-	
+		*/
 		// Ein Durchlauf der Schleife entpricht einer Prognose für j
 		// Zukunftswerte
 		for (int i = 0; i < durchlaeufe; i++) {
@@ -600,11 +562,11 @@ public class AnalysisTimeseries {
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
 
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
-		tide = new CalculateTide();
-		boolean isStationary = StationaryTest.isStationary(zeitreihe);
-		if (!isStationary) {
-			zeitreihe = tide.reduceTide(zeitreihe);
-		}
+		Trendgerade trend = new Trendgerade();
+		trend.getTrendgerade(zeitreihe);
+		LOGGER.debug("Trendgerade lt. Philipp");
+		LOGGER.debug("M: " + trend.getM());
+		LOGGER.debug("B: " + trend.getB());
 		/**
 		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
 		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
@@ -635,7 +597,7 @@ public class AnalysisTimeseries {
 		// Perioden durchlaufen
 		for (int i = 0; i < prognosewerte[0].length; i++) {
 			// den Trend pro Periode ermitteln
-			double newtide = tide.getTideValue(i + p + 1);
+			double newtide = trend.getValue(i + p + 1);
 			
 			if(isfremdkapital){
 				this.erwartetesFremdkapital[i] = this.erwartetesFremdkapital[i] + newtide;
@@ -721,7 +683,7 @@ public class AnalysisTimeseries {
 		double prognosewert = 0;
 		double realisierungsWert = trendbereinigtezeitreihe
 				.get(trendbereinigtezeitreihe.size() - 1);
-		realisierungsWert = realisierungsWert + tide.getTideValue(p);
+		realisierungsWert = realisierungsWert + Trendgerade.getTrendgerade(new double [1]).getValue(p);
 		LOGGER.debug("Realisierungswert: " + realisierungsWert);
 		
 		// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu passenden
@@ -733,7 +695,7 @@ public class AnalysisTimeseries {
 					* trendbereinigtezeitreihe.get(trendbereinigtezeitreihe
 							.size() - (t + 2)));			
 		}
-		prognosewert = prognosewert + tide.getTideValue(p);
+		prognosewert = prognosewert + Trendgerade.getTrendgerade(new double [1]).getValue(p);
 		// Berechnung der prozentualen Abweichung
 		double h = prognosewert / (realisierungsWert / 100);
 		// Die Variable abweichung enthält die Abweichung in %, abweichung =1

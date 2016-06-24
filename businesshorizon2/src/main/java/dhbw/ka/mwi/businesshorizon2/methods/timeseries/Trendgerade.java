@@ -2,12 +2,18 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 /**
  * Klasse zur Berechnung der Trendgerade mit der Formel f(x) = m*x +b
  * Annahme: Erster Wert ist das Ergebnis von f(1)
- * @author Philipp Nagel
+ * @author Philipp Nagel, Jonathan Janke
  *
  */
 public class Trendgerade {
 	private double m;
 	private double b;
+	
+	//method to get value from f(x) = m*x+b;
+	public double getValue(int x) {
+		return this.getM()*x + this.getB();
+	}
+	
 	public static Trendgerade getTrendgerade(double[] zeitreihe) {
 		boolean improvement = true;
 		//trendgerade erzeugen
@@ -19,6 +25,8 @@ public class Trendgerade {
 		double autokovarianz;
 		
 		double stepsize= tG.b/10;
+		
+		//Schleife wird solange iteriert, bis sie über den Befehl "break;" abgebrochen wird s.u.
 		while(true){
 			autokovarianz = getAutoKoVarianz(tG.m, tG.b, zeitreihe);
 			//m+stepsize und b gleich

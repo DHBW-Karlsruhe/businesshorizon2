@@ -31,7 +31,7 @@ import org.apache.log4j.Logger;
 /**
  * Diese Klasse stellt die Methoden fuer die Trendbereinigung zur Verfuegung.
  * 
- * @author Kai Westerholz
+ * @author Kai Westerholz, Jonathan Janke
  * 
  */
 
