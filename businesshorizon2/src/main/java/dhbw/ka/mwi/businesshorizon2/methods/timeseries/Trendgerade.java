@@ -114,8 +114,16 @@ public class Trendgerade {
 		
 		return tG;
 	}
-
-	private static double getAutoKoVarianz(double m2, double b2, double[] urspruenglicheZeitreihe) {
+/**
+ * Methode um die Autokovarianz in Abhängigkeit von m und b in der Funktion f(x) = m*x+b zu berechnen
+ * Dazu wird auch die ursprüngliche Zeitreihe übergeben
+ * @param m2
+ * @param b2
+ * @param urspruenglicheZeitreihe
+ * @return Wert der Autokovarianz
+ * @author Philipp Nagel
+ */
+	public static double getAutoKoVarianz(double m2, double b2, double[] urspruenglicheZeitreihe) {
 		double autoKovarianz = 0;
 		double[] ergebnisse = new double[urspruenglicheZeitreihe.length];
 		for(int i=0; i<ergebnisse.length;i++){
@@ -126,12 +134,18 @@ public class Trendgerade {
 		}
 		return autoKovarianz;
 	}
-
+/**
+ * gibt den Wert von m zurück
+ * @author Philipp Nagel
+ */
 	public double getM() {
 		// TODO Auto-generated method stub
 		return this.m;
 	}
-	
+	/**
+	 * gibt den Wert von b zurück
+	 * @author Philipp Nagel
+	 */	
 	public double getB(){
 		return this.b;
 	}
