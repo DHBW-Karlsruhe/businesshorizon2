@@ -30,8 +30,8 @@ public class TestStationaritaetTrendgerade extends TestCase{
 		
 		zeitreihe = new double [] {3,3,3,3,3,3,3,3,3,4,5};
 		gerade = Trendgerade.getTrendgerade(zeitreihe);
-		logger.debug("m: " + gerade.getM());
-		logger.debug("b: " + gerade.getB());
+	//	logger.debug("m: " + gerade.getM());
+	//	logger.debug("b: " + gerade.getB());
 		
 		
 	}
@@ -39,5 +39,10 @@ public class TestStationaritaetTrendgerade extends TestCase{
 	@Test public void testStationaritaet(){
 		
 	}
-
+	@Test public void testAutokovarianz(){
+		double[] zeitreihe = {1,2,3,4};
+		
+		double autoKovarianz = Trendgerade.getAutoKoVarianz(1., 0., zeitreihe);
+		assertEquals(autoKovarianz, 4);
+	}
 }
