@@ -42,6 +42,8 @@ import cern.colt.matrix.linalg.LUDecomposition;
 import cern.jet.stat.Descriptive;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
+import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
+import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 
 /**
  * Diese Klasse stellt die Methoden zur Verfuegung, die benoetigt werden, um die
@@ -383,74 +385,26 @@ public class AnalysisTimeseries {
         * 		gibt an, wie viele Werteklassen erzeugt werden. Wenn die Prognosewerte von 1 bis 100 gehen und 10 Werteklassen existieren, dann würden immer 10 Werte in eine Klasse gefasst werden.
         * @return verteilung der Werte
         */		
-        public Distribution createDistributionFromPrognosis (double [][] prognosis, int numberOfValueClasses) {
+        public Distribution createStochasticPrognosis (double [][] prognosis, int numberOfValueClasses, double [] interestBearingDebtCapital, Szenario scenario) {
                 //Wert 2 zur Erzeugung von double value Paaren
                 //evtl. Lösung durch Klasse
-                for (int i=0; i<prognosis.length; i++) {
-                       Arrays.sort(prognosis[i]);
-                }
-
-                Distribution distribution = new Distribution (prognosis.length, numberOfValueClasses);
-
-                double min = getMin(prognosis);
-                double max = getMax(prognosis);
-                distribution.setMinValue(min);
-                distribution.setMaxValue(max);
-                double difference = max-min;
-                double intervalLength = difference/numberOfValueClasses;
-                distribution.setIntervalLength(intervalLength);
-                double [] intervalValues = new double [numberOfValueClasses];
-                for (int i=0; i<numberOfValueClasses; i++) {
-                        intervalValues[i]=min+i*intervalLength;
-                }
-                distribution.setIntervalStartValues(intervalValues);
-                //iteriert durch die Perioden
-                for (int i=0; i<prognosis.length; i++) {
-                        //fügt die Werte einer Periode in die Verteilung ein
-                        distribution.addValues(i, prognosis [i]);
-                }
-
+        		APV apvCalc = new APV();
+        		double [] apvPrognosis = new double [prognosis[0].length];
+        		double [] tempPrognosis = new double [prognosis.length];
+        		for (int i=0; i<prognosis[0].length; i++) {
+        			//invertieren der Werte, um periodische Werte auszulesen
+        			for (int j=0; j<prognosis.length; j++) {
+        				tempPrognosis[j] = prognosis [j][i];
+        			}
+        			apvPrognosis[i] = apvCalc.calculateValues(tempPrognosis, interestBearingDebtCapital, scenario);
+        		}
+        		
+                Distribution distribution = new Distribution (numberOfValueClasses, apvPrognosis);
                 return distribution;
         }
 
 
-        /**
-         * Methode zum ermitteln des kleinsten Wertes eines Arrays (zweidimensional, absolut kleinster Wert)
-         * 
-         * @author Jonathan Janke
-         * 
-         * @param prognose
-         * 		zweidimensionales Array
-         * @return kleinster Wert
-        */	
-        public double getMin (double [][] prognose) {
-                double min = prognose [0][0];
-                for (int i=0; i<prognose.length-1; i++) {
-                        if (prognose[i][0]<min) {
-                                min = prognose [i][0];
-                        }
-                }
-                return min;
-        }
-
-        /**
-         * Methode zum ermitteln des größten Wertes eines Arrays (zweidimensional, absolut größter Wert
-         * 
-         * @author Jonathan Janke
-         * 
-         * @param prognose
-         * 		zweidimensionales Array
-         * @return größter Wert des Arrays
-         */	
-        public double getMax (double [][] prognose) {
-               double max = prognose [0][0];
-               for (int i=0; i<prognose.length; i++) {
-                       if (prognose[i][prognose[i].length-1]>max) {
-                               max = prognose [i][prognose[i].length-1];
-                       }
-               }
-               return max;
-        }
+        
 
         
 

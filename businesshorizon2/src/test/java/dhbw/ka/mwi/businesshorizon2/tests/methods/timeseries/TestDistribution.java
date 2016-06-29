@@ -27,6 +27,8 @@ package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
 import junit.framework.TestCase;
 
+import java.util.*;
+
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -53,33 +55,53 @@ public class TestDistribution extends TestCase {
 	@Test
 
 	public void testDistribution() {
-		int periods = 5;
-		int numberOfValueClasses = 10;
-		int iterations = 10000;
-		double intervalLength = 9999;
-		double minValue = 0;
-		double maxValue = 99990;
-		double [][] prognosis = new double [periods][iterations];
-		double testValue;
-		
-		for (int h=0; h<periods; h++) {
-			testValue =0;
-			for (int i=0; i<iterations; i++) {
-				prognosis [h][i]= testValue;
-				testValue=testValue+10;
-			}
-		}
-		
-		AnalysisTimeseries at = new AnalysisTimeseries();
-		Distribution dist;
-		dist = at.createDistributionFromPrognosis(prognosis, numberOfValueClasses);
-		
-		assertEquals(intervalLength, dist.getIntervalLength());
-		assertEquals(minValue, dist.getMinValue());
-		assertEquals(maxValue, dist.getMaxValue());
-		for (int i=0; i<dist.getValues()[0].length; i++) {
-			logger.debug("Wertebereich: " + dist.getIntervalStartValues()[i] + " - " +(dist.getIntervalStartValues()[i]+dist.getIntervalLength()) + ": " +  dist.getValues()[0][i]);
-		}
+		//logged results might have to be ignored with high test number
+		testingPart(0);
+		testingPart(1);
+		testingPart(10);
+		testingPart(10000);
+		testingPart(100000);
+		testingPart (100);
 	}
+	
+	public void testingPart(int numberOfValueClasses) {
+	int iterations = 10000;
+	
+	double minValue = 0;
+	double maxValue = 99990;
+	double intervalLength;
+	if (numberOfValueClasses>0) intervalLength = maxValue/numberOfValueClasses;
+	else intervalLength = maxValue/1;
+	double [] prognosisDeterministic = new double [iterations];
+	double [] prognosisStochastic = new double [iterations];
+	double testValueDeterministic = 0;
+	double testValueStochastic;
+	Random gaussian = new Random();
+	 
+	for (int i=0; i<iterations; i++) {
+		prognosisDeterministic [i]= testValueDeterministic;
+		testValueDeterministic=testValueDeterministic+10;
+	}
+	for (int i=0; i<iterations; i++) {
+		testValueStochastic=5000+gaussian.nextGaussian()* 1000;
+		prognosisStochastic [i]= testValueStochastic;
+	}
+	
+	Distribution distDeterministic = new Distribution(numberOfValueClasses, prognosisDeterministic);
+	Distribution distStochastic = new Distribution(numberOfValueClasses, prognosisStochastic);
+
+	
+	assertEquals(intervalLength, distDeterministic.getIntervalLength());
+	assertEquals(minValue, distDeterministic.getMinValue());
+	assertEquals(maxValue, distDeterministic.getMaxValue());
+	logger.debug("Die folgenden Werte sollten genau gleichverteilt sein:");
+	for (int i=0; i<distDeterministic.getValues().length; i++) {
+		logger.debug("Wertebereich: " + distDeterministic.getIntervalStartValues()[i] + " - " +(distDeterministic.getIntervalStartValues()[i]+distDeterministic.getIntervalLength()) + ": " +  distDeterministic.getValues()[i]);
+	}
+	logger.debug("\nIn den folgenden Werten muss geguckt werden, ob diese in etwa einer Normalverteilung ähneln:");
+	for (int i=0; i<distStochastic.getValues().length; i++) {
+		logger.debug("Wertebereich: " + distStochastic.getIntervalStartValues()[i] + " - " +(distStochastic.getIntervalStartValues()[i]+distStochastic.getIntervalLength()) + ": " +  distStochastic.getValues()[i]);
+	}
+}
 
 }
