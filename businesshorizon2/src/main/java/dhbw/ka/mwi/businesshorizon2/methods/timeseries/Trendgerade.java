@@ -14,7 +14,7 @@ public class Trendgerade {
 		return this.getM()*x + this.getB();
 	}
 	
-	public static Trendgerade getTrendgerade(double[] zeitreihe) {
+	public Trendgerade getTrendgerade(double[] zeitreihe) {
 		boolean improvement = true;
 		//trendgerade erzeugen
 		Trendgerade tG = new Trendgerade();

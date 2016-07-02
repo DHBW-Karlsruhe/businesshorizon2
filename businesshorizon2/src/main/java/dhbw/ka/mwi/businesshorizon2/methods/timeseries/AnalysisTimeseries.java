@@ -67,6 +67,7 @@ public class AnalysisTimeseries {
 	private double[] erwarteteCashFlows;
 	private double[] erwartetesFremdkapital;
 	private double abweichung;
+	private double[] autocorrelation;
 
 	/**
 	 * Methode zur Berechnung des Mittelwerts einer Zeitreihe.
@@ -209,7 +210,7 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 	 * @throws StochasticMethodException
 	 */
 	public DoubleMatrix2D berechneModellparameter(
-			DoubleArrayList autokovarianzen, int p)
+			double [] autocorellation, int p)
 			throws StochasticMethodException {
 
 		// linke Seite des Gleichungssystems
@@ -508,6 +509,16 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 
 		return prognosewertSammlung;
 	}
+	
+	public double [][] createMatrix(double [] zeitreihe) {
+		double [][] resultMatrix = new double [zeitreihe.length][zeitreihe.length];
+		
+		double[] autocorrelations = this.calculateAutocorrelations(new DoubleArrayList(zeitreihe));
+		
+		
+		
+		return resultMatrix;
+	}
 
 	/**
 	 * Methode für die Durchführung einer Zeitreihenanalyse und Prognostizierung
@@ -552,7 +563,7 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 
 		this.bereinigteZeitreihe = new DoubleArrayList();
 		for (int i = 0; i < zeitreihe.length; i++) {
-			this.bereinigteZeitreihe.add(zeitreihe[i]);
+			this.bereinigteZeitreihe.add(zeitreihe[i]-trend.getValue(i));
 		}
 
 		LOGGER.debug("Bereinigte Zeitreihe:");
@@ -560,8 +571,9 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 
 		// Start der zur Prognose benoetigten Berechnungen
 		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
-		this.autokovarianzen = new DoubleArrayList(calculateAutocovariances(bereinigteZeitreihe));
-		this.modellparameter = berechneModellparameter(autokovarianzen, p);
+		//this.autokovarianzen = new DoubleArrayList(calculateAutocovariances(bereinigteZeitreihe));
+		this.autocorrelation = calculateAutocorrelations(bereinigteZeitreihe);
+		this.modellparameter = berechneModellparameter(autocorrelation, p);
 		this.standardabweichung = berechneStandardabweichung(autokovarianzen,
 				modellparameter);
 		LOGGER.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
@@ -661,7 +673,8 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 		double prognosewert = 0;
 		double realisierungsWert = trendbereinigtezeitreihe
 				.get(trendbereinigtezeitreihe.size() - 1);
-		realisierungsWert = realisierungsWert + Trendgerade.getTrendgerade(new double [1]).getValue(p);
+		Trendgerade trend = new Trendgerade();
+		realisierungsWert = realisierungsWert + trend.getTrendgerade(new double [1]).getValue(p);
 		LOGGER.debug("Realisierungswert: " + realisierungsWert);
 		
 		// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu passenden
@@ -673,7 +686,7 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 					* trendbereinigtezeitreihe.get(trendbereinigtezeitreihe
 							.size() - (t + 2)));			
 		}
-		prognosewert = prognosewert + Trendgerade.getTrendgerade(new double [1]).getValue(p);
+		prognosewert = prognosewert + trend.getTrendgerade(new double [1]).getValue(p);
 		// Berechnung der prozentualen Abweichung
 		double h = prognosewert / (realisierungsWert / 100);
 		// Die Variable abweichung enthält die Abweichung in %, abweichung =1
