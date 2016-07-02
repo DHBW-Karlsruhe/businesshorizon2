@@ -61,7 +61,7 @@ public class AnalysisTimeseries {
 			.getLogger("AnalysisTimeseries.class");
 	private DoubleArrayList autokovarianzen;
 	private DoubleArrayList bereinigteZeitreihe;
-	private DoubleMatrix2D modellparameter;
+	private double [] modellparameter;
 	private double standardabweichung;
 	private double mittelwert;
 	private double[] erwarteteCashFlows;
@@ -314,9 +314,8 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 	public double[][] prognoseBerechnenNew(
 			DoubleArrayList trendbereinigtezeitreihe, double [] valuesForPhi,
 			double standardabweichung, int zuberechnendeperioden,
-			int iterationen, int p, double mittelwert, boolean isfremdkapital, double konstanteC) {
+			int iterationen, int p, double mittelwert, boolean isfremdkapital) {
 		//JJ: konstanteC kann weggelassen werden
-		konstanteC = 0;
 		//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
 		/*JJ: Wieso float?
 		* float[]	valuesForPhi = new float[p+1]; //Deklariere float Array für Phi (length = 1 + Ordnung p). Die
@@ -354,7 +353,6 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 					value+=valuesForPhi[n] * cashFlowsJeT[n];
 				}
 				//LOGGER.debug("value: " + value);
-				value = value + konstanteC;//ToDo konstanteC einen Wert zuweisen
 				//double epsilonWhiteNoise = r.nextGaussian() *standardabweichung; //ToDo Den WhiteNoise Wert berechnen
 				value = value + getWhiteNoiseValue(standardabweichung, mittelwert);
 				double[] tmp = stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces+m];
@@ -562,6 +560,7 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 		 */
 
 		this.bereinigteZeitreihe = new DoubleArrayList();
+		
 		for (int i = 0; i < zeitreihe.length; i++) {
 			this.bereinigteZeitreihe.add(zeitreihe[i]-trend.getValue(i));
 		}
@@ -573,15 +572,17 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
 		//this.autokovarianzen = new DoubleArrayList(calculateAutocovariances(bereinigteZeitreihe));
 		this.autocorrelation = calculateAutocorrelations(bereinigteZeitreihe);
-		this.modellparameter = berechneModellparameter(autocorrelation, p);
-		this.standardabweichung = berechneStandardabweichung(autokovarianzen,
-				modellparameter);
+		//TODO: berechne Modellparameter anpassen an:
+		// - Autokorrelation
+		// - eigene Matrixmethode
+		//this.modellparameter = berechneModellparameter(autocorrelation, p);
+		this.modellparameter = calculateModelParameters();
+		this.standardabweichung = this.berechneStandardabweichung(bereinigteZeitreihe);
 		LOGGER.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
 
 		// Start der Prognose
-		prognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter,
-				standardabweichung, zuberechnendePerioden, durchlaeufe, p,
-				mittelwert, isfremdkapital);
+		prognosewerte = prognoseBerechnenNew(bereinigteZeitreihe, modellparameter, standardabweichung, zuberechnendePerioden, durchlaeufe, p, mittelwert, isfremdkapital);
+		//prognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter, standardabweichung, zuberechnendePerioden, durchlaeufe, p,mittelwert, isfremdkapital);
 		LOGGER.debug("Berechnung der Prognosewerte abgeschlossen.");
 		// Trendbereinigung wieder draufschlagen
 		// Perioden durchlaufen
@@ -598,7 +599,7 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 			for (int j = 0; j < prognosewerte.length; j++) {
 				// auf jeden Wert (Prognosewerte und die erwarteten Cashflows)
 				// den Trend wieder aufaddieren
-				prognosewerte[j][i] = prognosewerte[j][i] + newtide;
+				prognosewerte[j][i] += newtide;
 			}
 			
 		}
@@ -606,6 +607,11 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 		LOGGER.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
 
 		return prognosewerte;
+	}
+
+	private double [] calculateModelParameters() {
+		
+		return null;
 	}
 
 	/*
@@ -665,6 +671,8 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 	 * berechnet.
 	 * 
 	 * @author: Nina Brauch
+	 * 
+	 * TODO: trendgerade Validierung mit realistischem Wert anstatt "new double [1]"
 	 */
 
 	public void validierung(DoubleArrayList trendbereinigtezeitreihe,
