@@ -25,21 +25,16 @@
 
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Random;
-import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 //import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
 
-
+import Jama.Matrix;
 import cern.colt.list.DoubleArrayList;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
 import cern.colt.matrix.linalg.LUDecomposition;
-import cern.jet.stat.Descriptive;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
@@ -57,11 +52,10 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 
 public class AnalysisTimeseries {
 
-	private static final Logger LOGGER = Logger
-			.getLogger("AnalysisTimeseries.class");
+	private static final Logger LOGGER = Logger.getLogger("AnalysisTimeseries.class");
 	private DoubleArrayList autokovarianzen;
 	private DoubleArrayList bereinigteZeitreihe;
-	private double [] modellparameter;
+	private double[] modellparameter;
 	private double standardabweichung;
 	private double mittelwert;
 	private double[] erwarteteCashFlows;
@@ -137,15 +131,18 @@ public class AnalysisTimeseries {
 
 		return standardabweichung;
 	}
-	
+
 	/**
-	 * Berechnung der Autokovarianzen einer Zeitreihe für verschiedene lags(Verschiebung)
-	 * lag geht von 0 bis p-1
+	 * Berechnung der Autokovarianzen einer Zeitreihe für verschiedene
+	 * lags(Verschiebung) lag geht von 0 bis p-1
 	 * 
 	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
-	 * @param zeitreihe: Arraylist der Messwerte für die Zeitreihe von Zeitpunkt 0 bis zur Ordnung p
+	 * @param zeitreihe:
+	 *            Arraylist der Messwerte für die Zeitreihe von Zeitpunkt 0 bis
+	 *            zur Ordnung p
 	 * 
-	 * @return results: beinhaltet alle Autokovarianzen der Zeitreihe für jedes lag
+	 * @return results: beinhaltet alle Autokovarianzen der Zeitreihe für jedes
+	 *         lag
 	 */
 	public double[] calculateAutocorrelations(DoubleArrayList zeitreihe) {
 
@@ -156,15 +153,18 @@ public class AnalysisTimeseries {
 		}
 		return results;
 	}
-	
+
 	/**
-	 * Berechnung der Autokokorrelationen einer Zeitreihe für verschiedene lags(Verschiebung)
-	 * lag geht von 0 bis p-1
+	 * Berechnung der Autokokorrelationen einer Zeitreihe für verschiedene
+	 * lags(Verschiebung) lag geht von 0 bis p-1
 	 * 
 	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
-	 * @param zeitreihe: Arraylist der Messwerte für die Zeitreihe von Zeitpunkt 0 bis zur Ordnung p
+	 * @param zeitreihe:
+	 *            Arraylist der Messwerte für die Zeitreihe von Zeitpunkt 0 bis
+	 *            zur Ordnung p
 	 * 
-	 * @return results: beinhaltet alle Autokokorrelationen der Zeitreihe für jedes lag
+	 * @return results: beinhaltet alle Autokokorrelationen der Zeitreihe für
+	 *         jedes lag
 	 */
 	public double[] calculateAutocovariances(DoubleArrayList zeitreihe) {
 
@@ -180,8 +180,11 @@ public class AnalysisTimeseries {
 	 * Berechnung der Autokovarianzen einer Zeitreihe zum gegebenen lag
 	 * 
 	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
-	 * @param zeitreihe: Arraylist der Messwerte für die Zeitreihe von Zeitpunkt 0 bis zur Ordnung p
-	 * @param lag: gibt die Verschiebung der Zeitreihen an
+	 * @param zeitreihe:
+	 *            Arraylist der Messwerte für die Zeitreihe von Zeitpunkt 0 bis
+	 *            zur Ordnung p
+	 * @param lag:
+	 *            gibt die Verschiebung der Zeitreihen an
 	 * @return autocovariance: autorvarianz der Zeitreihe zum gegebenen lag
 	 */
 	public double calculateAutocovariance(DoubleArrayList zeitreihe, int lag) {
@@ -192,8 +195,8 @@ public class AnalysisTimeseries {
 
 		DoubleArrayList lokalezeitreihe = new DoubleArrayList(zeitreihe.size());
 
-		//duplizierte Zeitreihenarray um Parameter lag verschoben
-		for (int i = lag; i < zeitreihe.size()-lag; i++) {
+		// duplizierte Zeitreihenarray um Parameter lag verschoben
+		for (int i = lag; i < zeitreihe.size() - lag; i++) {
 			lokalezeitreihe.add(zeitreihe.get(i));
 		}
 
@@ -206,14 +209,16 @@ public class AnalysisTimeseries {
 	}
 
 	/**
-	 * Methode zur Berechnung der Autokorrelation einer Zeitreihe;
-	 * Ausgangswert ist die Berechnung der Autokovarianz
+	 * Methode zur Berechnung der Autokorrelation einer Zeitreihe; Ausgangswert
+	 * ist die Berechnung der Autokovarianz
 	 * 
 	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
-	 * @param zeitreihe: Arraylist der Zeitreihe mit den einzelnen Messwerten
-	 * @param lag: gibt den Wert der Verschiebung der Zeitreihe an
+	 * @param zeitreihe:
+	 *            Arraylist der Zeitreihe mit den einzelnen Messwerten
+	 * @param lag:
+	 *            gibt den Wert der Verschiebung der Zeitreihe an
 	 * @return Autokorrelation: berechnet aus Autokovarianz/Varianz
-	 */	
+	 */
 	public double calculateAutocorrelation(DoubleArrayList zeitreihe, int lag) {
 		return this.calculateAutocovariance(zeitreihe, lag) / this.berechneVarianz(zeitreihe);
 	}
@@ -332,126 +337,179 @@ public class AnalysisTimeseries {
 	 *            wird. Momentan wird dieser Konstante ein Demowert von 5 in
 	 *            dieser Funktion zugewiesen.
 	 * @return Alle prognostizierten Werte in einem Array.
-	 */		
-	public double[][] prognoseBerechnenNew(
-			DoubleArrayList trendbereinigtezeitreihe, double [] valuesForPhi,
-			double standardabweichung, int zuberechnendeperioden,
-			int iterationen, int p, double mittelwert, boolean isfremdkapital) {
-		//JJ: konstanteC kann weggelassen werden
-		//ToDo: Dies ist eine Demowert und muss noch korrigiert werden
-		/*JJ: Wieso float?
-		* float[]	valuesForPhi = new float[p+1]; //Deklariere float Array für Phi (length = 1 + Ordnung p). Die
-		* for(int k=0; k<valuesForPhi.length;k++){//Initialisiere Phi Array mit Eingaben vom User (ggf. zu Beginn mit Festwerten)
-			//JJ: Was macht diese Operation? Sie überschreibt lediglich jede Stelle des Arrays mit 1/valuesForPhi.length
-			valuesForPhi[k] = 1/valuesForPhi.length;
+	 */
+	public double[][] prognoseBerechnenNew(DoubleArrayList trendbereinigtezeitreihe, double[] valuesForPhi, double standardabweichung, int zuberechnendeperioden, int iterationen, int p, double mittelwert, boolean isfremdkapital) {
+		// JJ: konstanteC kann weggelassen werden
+		// ToDo: Dies ist eine Demowert und muss noch korrigiert werden
+		/*
+		 * JJ: Wieso float? float[] valuesForPhi = new float[p+1]; //Deklariere
+		 * float Array für Phi (length = 1 + Ordnung p). Die for(int k=0;
+		 * k<valuesForPhi.length;k++){//Initialisiere Phi Array mit Eingaben vom
+		 * User (ggf. zu Beginn mit Festwerten) //JJ: Was macht diese Operation?
+		 * Sie überschreibt lediglich jede Stelle des Arrays mit
+		 * 1/valuesForPhi.length valuesForPhi[k] = 1/valuesForPhi.length; }
+		 */
+		// Testwerte
+		// double [] valuesForPhi = {1, 1, 0, 0, 0};
+		double[][] stochastischeErgebnisseDerCashFlows = new double[trendbereinigtezeitreihe.size() + zuberechnendeperioden][iterationen];// Deklariere
+																																			// double
+																																			// Array
+																																			// für
+																																			// ergCF
+																																			// je
+																																			// t
+																																			// (length
+																																			// =
+																																			// 1
+																																			// +
+																																			// Ordnung
+																																			// p
+																																			// +
+																																			// zu
+																																			// progn.
+																																			// Jahre)
+		int alreadyOccupiedPlaces = 0;
+		for (int i = 0; i < trendbereinigtezeitreihe.size(); i++) {// Befüllen
+																	// der
+																	// ersten
+																	// Werte mit
+																	// den
+																	// gegebenen
+																	// Werten
+			// JJ: Was machst du hier? Warum fügst du ein Array der Länge 1 ein?
+			// Du hast doch bereits ein zweidimensionales Array?
+			// stochastischeErgebnisseDerCashFlows[i] = new double[1];
+			stochastischeErgebnisseDerCashFlows[i][0] = trendbereinigtezeitreihe.get(i);
+			alreadyOccupiedPlaces = i + 1;
 		}
-		*/
-		//Testwerte
-		//double [] valuesForPhi = {1, 1, 0, 0, 0};
-		double[][] stochastischeErgebnisseDerCashFlows = new double[trendbereinigtezeitreihe.size()+zuberechnendeperioden][iterationen];//Deklariere double Array für ergCF je t (length = 1 + Ordnung p + zu progn. Jahre)
-		int alreadyOccupiedPlaces=0;
-		for(int i=0;i<trendbereinigtezeitreihe.size();i++){//Befüllen der ersten Werte mit den gegebenen Werten
-			//JJ: Was machst du hier? Warum fügst du ein Array der Länge 1 ein? Du hast doch bereits ein zweidimensionales Array?
-			//stochastischeErgebnisseDerCashFlows[i] = new double[1];
-			stochastischeErgebnisseDerCashFlows[i][0]=trendbereinigtezeitreihe.get(i);
-			alreadyOccupiedPlaces = i+1;
-		}
-		
-		//Beginn des AR Teils
-		//replaced with White Noise function: Random r = new Random();
-		for(int h =0;h<iterationen;h++){//Durchführen der Durchläufe
-			double[] cashFlowsJeT = new double[p+1];//Deklariere double Array für CF je t (length = 1 + Ordnung p). Dieses Array wird sich später verschieben.
-			//Dies muss jedes mal neu gemacht werden, da ansosten die Werte des vorherigen Durchlaufes verwendet werden
-			if(trendbereinigtezeitreihe.size()<cashFlowsJeT.length){//Vermeiden dass eine Exception entsteht, da nicht genügend Werte zur Verfügung stehen
+
+		// Beginn des AR Teils
+		// replaced with White Noise function: Random r = new Random();
+		for (int h = 0; h < iterationen; h++) {// Durchführen der Durchläufe
+			double[] cashFlowsJeT = new double[p + 1];// Deklariere double Array
+														// für CF je t (length =
+														// 1 + Ordnung p).
+														// Dieses Array wird
+														// sich später
+														// verschieben.
+			// Dies muss jedes mal neu gemacht werden, da ansosten die Werte des
+			// vorherigen Durchlaufes verwendet werden
+			if (trendbereinigtezeitreihe.size() < cashFlowsJeT.length) {// Vermeiden
+																		// dass
+																		// eine
+																		// Exception
+																		// entsteht,
+																		// da
+																		// nicht
+																		// genügend
+																		// Werte
+																		// zur
+																		// Verfügung
+																		// stehen
 				throw new IllegalArgumentException("Wählen Sie ein kleineres p oder stellen sie eine längere Zeitreihe zur Verfügung");
 			}
-			for(int l =0;l<cashFlowsJeT.length;l++){ //Initialisiere CF je t Array aus Input
-				cashFlowsJeT[l]=trendbereinigtezeitreihe.get(l); 
+			for (int l = 0; l < cashFlowsJeT.length; l++) { // Initialisiere CF
+															// je t Array aus
+															// Input
+				cashFlowsJeT[l] = trendbereinigtezeitreihe.get(l);
 			}
-			for(int m = 0;m<zuberechnendeperioden;m++ ){//Anzahl der Perioden die in die Zukunft geschaut werden soll
-				//Wert berechnen für eine Periode
-				double value=0;
-				for(int n=0;n<p;n++){ //einzubeziehende perioden (p)
-					value+=valuesForPhi[n] * cashFlowsJeT[n];
+			for (int m = 0; m < zuberechnendeperioden; m++) {// Anzahl der
+																// Perioden die
+																// in die
+																// Zukunft
+																// geschaut
+																// werden soll
+				// Wert berechnen für eine Periode
+				double value = 0;
+				for (int n = 0; n < p; n++) { // einzubeziehende perioden (p)
+					value += valuesForPhi[n] * cashFlowsJeT[n];
 				}
-				//LOGGER.debug("value: " + value);
-				//double epsilonWhiteNoise = r.nextGaussian() *standardabweichung; //ToDo Den WhiteNoise Wert berechnen
+				// LOGGER.debug("value: " + value);
+				// double epsilonWhiteNoise = r.nextGaussian()
+				// *standardabweichung; //ToDo Den WhiteNoise Wert berechnen
 				value = value + getWhiteNoiseValue(standardabweichung, mittelwert);
-				double[] tmp = stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces+m];
-				try{
-					tmp[h]=value; //Wert zum array hinzufügen, iBackup+m => Verschiebung um die bereits vorhanden Werte h: Durchlauf der Iteration
-				}catch(Exception e){
+				double[] tmp = stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces + m];
+				try {
+					tmp[h] = value; // Wert zum array hinzufügen, iBackup+m =>
+									// Verschiebung um die bereits vorhanden
+									// Werte h: Durchlauf der Iteration
+				} catch (Exception e) {
 					System.out.println(e.getMessage() + ", Cause: " + e.getCause());
-					System.out.println(""+tmp.length);
-					System.out.println(""+h+".");
-					System.out.println(""+stochastischeErgebnisseDerCashFlows.length);
-					System.out.println(""+zuberechnendeperioden);
-					System.out.println(""+alreadyOccupiedPlaces);
-					System.out.println(""+m);
+					System.out.println("" + tmp.length);
+					System.out.println("" + h + ".");
+					System.out.println("" + stochastischeErgebnisseDerCashFlows.length);
+					System.out.println("" + zuberechnendeperioden);
+					System.out.println("" + alreadyOccupiedPlaces);
+					System.out.println("" + m);
 					System.exit(0);
 				}
-				stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces+m]=tmp;
-				//Vordersten Wert von cashFlowsJeT freimachen
-				for(int n= cashFlowsJeT.length-1;n>0;n--){
-					 cashFlowsJeT[n]= cashFlowsJeT[n-1];
+				stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces + m] = tmp;
+				// Vordersten Wert von cashFlowsJeT freimachen
+				for (int n = cashFlowsJeT.length - 1; n > 0; n--) {
+					cashFlowsJeT[n] = cashFlowsJeT[n - 1];
 				}
-				cashFlowsJeT[0]=value; //wert am anfang des CFFloat Array setzen
-				
+				cashFlowsJeT[0] = value; // wert am anfang des CFFloat Array
+											// setzen
+
 			}
-		}	
+		}
 		return stochastischeErgebnisseDerCashFlows;
 	}
+
 	/**
-	 * Methode zur Berechnung des White Noise Wertes (weißes Rauschen).
-	 *  Das Weiße rauschen bildet eine gaussche Normalverteilung ab,
-	 *   welche sich um den Mittelwert bildet und deren Verteilung durch die Standardabweichung
-	 *   bestimmt wird.
+	 * Methode zur Berechnung des White Noise Wertes (weißes Rauschen). Das
+	 * Weiße rauschen bildet eine gaussche Normalverteilung ab, welche sich um
+	 * den Mittelwert bildet und deren Verteilung durch die Standardabweichung
+	 * bestimmt wird.
+	 * 
 	 * @author Philipp Nagel, Jonathan Janke
 	 * @param standardabweichung
 	 * @param mittelwert
 	 * @return Weißes Rauschen : 1 Wert für White Noise Fehlerterm
 	 */
-	
-	public static double getWhiteNoiseValue(double standardabweichung, double mittelwert){
+
+	public static double getWhiteNoiseValue(double standardabweichung, double mittelwert) {
 		double whiteNoise = 0;
 		Random r = new Random();
 		// Berechnung des WhiteNoise Stoerterms über Std.Abweichung
-		whiteNoise = r.nextGaussian()*standardabweichung + mittelwert;
+		whiteNoise = r.nextGaussian() * standardabweichung + mittelwert;
 		return whiteNoise;
 	}
-	  /**
-        * Methode zum Erstellen einer Verteilung. Diese Methode teilt die Prognosewerte in verschiedene Werteklassen (Wertebereiche) ein und ordnet die Prognosewerte in diese Werteklassen ein. So wird ein grobes Bild der Verteilung geschaffen.
-        * 
-        * @author Jonathan Janke
-        * 
-        * @param prognosis
-        * 		aus der Methode prognoseWertBerechnen
-        * @param numberOfValueClasses
-        * 		gibt an, wie viele Werteklassen erzeugt werden. Wenn die Prognosewerte von 1 bis 100 gehen und 10 Werteklassen existieren, dann würden immer 10 Werte in eine Klasse gefasst werden.
-        * @return verteilung der Werte
-        */		
-        public Distribution createStochasticPrognosis (double [][] prognosis, int numberOfValueClasses, double [] interestBearingDebtCapital, Szenario scenario) {
-                //Wert 2 zur Erzeugung von double value Paaren
-                //evtl. Lösung durch Klasse
-        		APV apvCalc = new APV();
-        		double [] apvPrognosis = new double [prognosis[0].length];
-        		double [] tempPrognosis = new double [prognosis.length];
-        		for (int i=0; i<prognosis[0].length; i++) {
-        			//invertieren der Werte, um periodische Werte auszulesen
-        			for (int j=0; j<prognosis.length; j++) {
-        				tempPrognosis[j] = prognosis [j][i];
-        			}
-        			apvPrognosis[i] = apvCalc.calculateValues(tempPrognosis, interestBearingDebtCapital, scenario);
-        		}
-        		
-                Distribution distribution = new Distribution (numberOfValueClasses, apvPrognosis);
-                return distribution;
-        }
 
+	/**
+	 * Methode zum Erstellen einer Verteilung. Diese Methode teilt die
+	 * Prognosewerte in verschiedene Werteklassen (Wertebereiche) ein und ordnet
+	 * die Prognosewerte in diese Werteklassen ein. So wird ein grobes Bild der
+	 * Verteilung geschaffen.
+	 * 
+	 * @author Jonathan Janke
+	 * 
+	 * @param prognosis
+	 *            aus der Methode prognoseWertBerechnen
+	 * @param numberOfValueClasses
+	 *            gibt an, wie viele Werteklassen erzeugt werden. Wenn die
+	 *            Prognosewerte von 1 bis 100 gehen und 10 Werteklassen
+	 *            existieren, dann würden immer 10 Werte in eine Klasse gefasst
+	 *            werden.
+	 * @return verteilung der Werte
+	 */
+	public Distribution createStochasticPrognosis(double[][] prognosis, int numberOfValueClasses, double[] interestBearingDebtCapital, Szenario scenario) {
+		// Wert 2 zur Erzeugung von double value Paaren
+		// evtl. Lösung durch Klasse
+		APV apvCalc = new APV();
+		double[] apvPrognosis = new double[prognosis[0].length];
+		double[] tempPrognosis = new double[prognosis.length];
+		for (int i = 0; i < prognosis[0].length; i++) {
+			// invertieren der Werte, um periodische Werte auszulesen
+			for (int j = 0; j < prognosis.length; j++) {
+				tempPrognosis[j] = prognosis[j][i];
+			}
+			apvPrognosis[i] = apvCalc.calculateValues(tempPrognosis, interestBearingDebtCapital, scenario);
+		}
 
-        
-
-        
+		Distribution distribution = new Distribution(numberOfValueClasses, apvPrognosis);
+		return distribution;
+	}
 
 	/**
 	 * Methode zur Prognose zukünftiger Werte einer gegebenen Zeitreihe und
@@ -475,32 +533,25 @@ public class AnalysisTimeseries {
 	 *            durchlaufen soll
 	 * @param mittelwert
 	 *            der ermittelte Mittelwert der Zeitreihe
-	 * @param isfremdkapital 
+	 * @param isfremdkapital
 	 * @return Alle prognostizierten Werte in einem Array.
-	 */	
-	public double[][] prognoseBerechnen(
-			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
-			double standardabweichung, int zuberechnendeperioden,
-			int durchlaeufe, int p, double mittelwert, boolean isfremdkapital) {
+	 */
+	public double[][] prognoseBerechnen(DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi, double standardabweichung, int zuberechnendeperioden, int durchlaeufe, int p, double mittelwert, boolean isfremdkapital) {
 
 		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
 		vergangeneUndZukuenftigeWerte = trendbereinigtezeitreihe.copy();
 		double[][] prognosewertSammlung = new double[durchlaeufe][zuberechnendeperioden];
 		double prognosewert = 0;
 		double zNull = 0;
-		Random zufall = new Random(); //stattdessen hier white noise einbauen
+		Random zufall = new Random(); // stattdessen hier white noise einbauen
 
 		// Erwartete Cashflows ausrechnen
-		this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi,
-				zuberechnendeperioden, p, mittelwert, isfremdkapital);
-		
+		this.erwarteteWerteBerechnen(trendbereinigtezeitreihe, matrixPhi, zuberechnendeperioden, p, mittelwert, isfremdkapital);
+
 		/*
-		 * Modellgenauigkeit validieren
-		if(this.tide != null){
-			this.validierung( trendbereinigtezeitreihe,
-				 matrixPhi,  p);
-		}
-		*/
+		 * Modellgenauigkeit validieren if(this.tide != null){ this.validierung(
+		 * trendbereinigtezeitreihe, matrixPhi, p); }
+		 */
 		// Ein Durchlauf der Schleife entpricht einer Prognose für j
 		// Zukunftswerte
 		for (int i = 0; i < durchlaeufe; i++) {
@@ -510,17 +561,14 @@ public class AnalysisTimeseries {
 				// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
 				// passenden Vergangenheitswert.
 				for (int t = 0; t < p; t++) {
-					prognosewert = prognosewert
-							+ matrixPhi.get(t, 0)
-							* vergangeneUndZukuenftigeWerte
-									.get(vergangeneUndZukuenftigeWerte.size()
-											- (t + 1));
+					prognosewert = prognosewert + matrixPhi.get(t, 0) * vergangeneUndZukuenftigeWerte.get(vergangeneUndZukuenftigeWerte.size() - (t + 1));
 				}
 
 				zNull = zufall.nextGaussian() * standardabweichung;
 				prognosewert = prognosewert + zNull;
 				vergangeneUndZukuenftigeWerte.add(prognosewert);
-				prognosewert = prognosewert + mittelwert; 			//mathematisch korrekt?
+				prognosewert = prognosewert + mittelwert; // mathematisch
+															// korrekt?
 				prognosewertSammlung[i][j] = prognosewert;
 				prognosewert = 0;
 			}
@@ -529,15 +577,29 @@ public class AnalysisTimeseries {
 
 		return prognosewertSammlung;
 	}
-	
-	public double [][] createMatrix(double [] zeitreihe) {
-		double [][] resultMatrix = new double [zeitreihe.length][zeitreihe.length];
-		
-		double[] autocorrelations = this.calculateAutocorrelations(new DoubleArrayList(zeitreihe));
-		
-		
-		
-		return resultMatrix;
+
+	/**
+	 * @param timeseries
+	 *            urspruengliche Zeitreihe
+	 * @return Matrix ausgehend von den autokorrelationen der urspruenglichen
+	 *         Zeitreihe
+	 * @author Jonathan Janke, Anh Nguyen, Peter Kaisinger
+	 */
+	public Matrix createMatrix(double[] timeseries) {
+		double[][] resultMatrix = new double[timeseries.length][timeseries.length];
+
+		double[] autocorrelations = this.calculateAutocorrelations(new DoubleArrayList(timeseries));
+
+		// map autocorrelations to matrix
+		for (int i = 0; i < resultMatrix.length; i++) {
+			for (int j = 0; j < resultMatrix.length; j++) {
+				int index = Math.abs(i - j);
+				resultMatrix[i][j] = autocorrelations[index];
+			}
+		}
+
+		return new Matrix(resultMatrix);
+
 	}
 
 	/**
@@ -562,10 +624,7 @@ public class AnalysisTimeseries {
 	 */
 
 	// @Override
-	public double[][] calculate(double[] zeitreihe, int p,
-			int zuberechnendePerioden, int durchlaeufe,
-			CallbackInterface callback, boolean isfremdkapital) throws InterruptedException,
-			StochasticMethodException {
+	public double[][] calculate(double[] zeitreihe, int p, int zuberechnendePerioden, int durchlaeufe, CallbackInterface callback, boolean isfremdkapital) throws InterruptedException, StochasticMethodException {
 
 		// vorbereitende Initialisierung
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
@@ -582,9 +641,9 @@ public class AnalysisTimeseries {
 		 */
 
 		this.bereinigteZeitreihe = new DoubleArrayList();
-		
+
 		for (int i = 0; i < zeitreihe.length; i++) {
-			this.bereinigteZeitreihe.add(zeitreihe[i]-trend.getValue(i));
+			this.bereinigteZeitreihe.add(zeitreihe[i] - trend.getValue(i));
 		}
 
 		LOGGER.debug("Bereinigte Zeitreihe:");
@@ -592,29 +651,33 @@ public class AnalysisTimeseries {
 
 		// Start der zur Prognose benoetigten Berechnungen
 		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
-		//this.autokovarianzen = new DoubleArrayList(calculateAutocovariances(bereinigteZeitreihe));
+		// this.autokovarianzen = new
+		// DoubleArrayList(calculateAutocovariances(bereinigteZeitreihe));
 		this.autocorrelation = calculateAutocorrelations(bereinigteZeitreihe);
-		//TODO: berechne Modellparameter anpassen an:
+		// TODO: berechne Modellparameter anpassen an:
 		// - Autokorrelation
 		// - eigene Matrixmethode
-		//this.modellparameter = berechneModellparameter(autocorrelation, p);
-		this.modellparameter = calculateModelParameters();
+		// this.modellparameter = berechneModellparameter(autocorrelation, p);
+//		 this.modellparameter = calculateModelParameters(new Matrix(this.bereinigteZeitreihe), autocorrelations) //FIXME
+		// add parameters
 		this.standardabweichung = this.berechneStandardabweichung(bereinigteZeitreihe);
 		LOGGER.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
 
 		// Start der Prognose
 		prognosewerte = prognoseBerechnenNew(bereinigteZeitreihe, modellparameter, standardabweichung, zuberechnendePerioden, durchlaeufe, p, mittelwert, isfremdkapital);
-		//prognosewerte = prognoseBerechnen(bereinigteZeitreihe, modellparameter, standardabweichung, zuberechnendePerioden, durchlaeufe, p,mittelwert, isfremdkapital);
+		// prognosewerte = prognoseBerechnen(bereinigteZeitreihe,
+		// modellparameter, standardabweichung, zuberechnendePerioden,
+		// durchlaeufe, p,mittelwert, isfremdkapital);
 		LOGGER.debug("Berechnung der Prognosewerte abgeschlossen.");
 		// Trendbereinigung wieder draufschlagen
 		// Perioden durchlaufen
 		for (int i = 0; i < prognosewerte[0].length; i++) {
 			// den Trend pro Periode ermitteln
 			double newtide = trend.getValue(i + p + 1);
-			
-			if(isfremdkapital){
+
+			if (isfremdkapital) {
 				this.erwartetesFremdkapital[i] = this.erwartetesFremdkapital[i] + newtide;
-			}else{
+			} else {
 				this.erwarteteCashFlows[i] = this.erwarteteCashFlows[i] + newtide;
 			}
 			// alle Iterationen durchlaufen
@@ -623,7 +686,7 @@ public class AnalysisTimeseries {
 				// den Trend wieder aufaddieren
 				prognosewerte[j][i] += newtide;
 			}
-			
+
 		}
 
 		LOGGER.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
@@ -631,11 +694,17 @@ public class AnalysisTimeseries {
 		return prognosewerte;
 	}
 
-	private double [] calculateModelParameters() {
-		
-		return null;
-	}
+	public Matrix calculateModelParameters(Matrix matrix, double[] autocorrelations) {
+		Matrix inverseMatrix = matrix.inverse();
 
+		Matrix autocorrelationMatrix = new Matrix(autocorrelations, autocorrelations.length);
+
+		Matrix parameterMatrix = inverseMatrix.times(autocorrelationMatrix);
+
+		return parameterMatrix;
+	}
+	
+	
 	/*
 	 * Diese Methode berechnet eine Prognose für die mitgegebene Zeitreihe und
 	 * dem gegebenen Modell. Da Z0=seinem Erwartungswert= 0 gesetzt wird,
@@ -646,9 +715,7 @@ public class AnalysisTimeseries {
 	 * 
 	 * @author Nina Brauch
 	 */
-	public void erwarteteWerteBerechnen(
-			DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi,
-			int zuberechnendeperioden, int p, double mittelwert, boolean isfremdkapital) {
+	public void erwarteteWerteBerechnen(DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi, int zuberechnendeperioden, int p, double mittelwert, boolean isfremdkapital) {
 		double[] erwarteteWerte = new double[zuberechnendeperioden];
 		double prognosewert = 0;
 		DoubleArrayList vergangeneUndZukuenftigeWerte = new DoubleArrayList();
@@ -660,11 +727,9 @@ public class AnalysisTimeseries {
 			// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu
 			// passenden Vergangenheitswert.
 			for (int t = 0; t < p; t++) {
-				prognosewert = prognosewert
-						+ matrixPhi.get(t, 0)
-						* vergangeneUndZukuenftigeWerte
-								.get(vergangeneUndZukuenftigeWerte.size() //Weißes Rauschen?
-										- (t + 1));
+				prognosewert = prognosewert + matrixPhi.get(t, 0) * vergangeneUndZukuenftigeWerte.get(vergangeneUndZukuenftigeWerte.size() // Weißes
+																																			// Rauschen?
+						- (t + 1));
 			}
 			vergangeneUndZukuenftigeWerte.add(prognosewert);
 			prognosewert = prognosewert + mittelwert;
@@ -672,13 +737,13 @@ public class AnalysisTimeseries {
 
 			prognosewert = 0;
 		}
-		
-		if(isfremdkapital){
+
+		if (isfremdkapital) {
 			this.erwartetesFremdkapital = erwarteteWerte;
-		}else{
+		} else {
 			this.erwarteteCashFlows = erwarteteWerte;
 		}
-		
+
 	}
 
 	public double[] getErwarteteCashFlows() {
@@ -694,29 +759,25 @@ public class AnalysisTimeseries {
 	 * 
 	 * @author: Nina Brauch
 	 * 
-	 * TODO: trendgerade Validierung mit realistischem Wert anstatt "new double [1]"
+	 * TODO: trendgerade Validierung mit realistischem Wert anstatt
+	 * "new double [1]"
 	 */
 
-	public void validierung(DoubleArrayList trendbereinigtezeitreihe,
-			DoubleMatrix2D matrixPhi, int p) {		
-		
+	public void validierung(DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi, int p) {
+
 		double prognosewert = 0;
-		double realisierungsWert = trendbereinigtezeitreihe
-				.get(trendbereinigtezeitreihe.size() - 1);
+		double realisierungsWert = trendbereinigtezeitreihe.get(trendbereinigtezeitreihe.size() - 1);
 		Trendgerade trend = new Trendgerade();
-		realisierungsWert = realisierungsWert + trend.getTrendgerade(new double [1]).getValue(p);
+		realisierungsWert = realisierungsWert + trend.getTrendgerade(new double[1]).getValue(p);
 		LOGGER.debug("Realisierungswert: " + realisierungsWert);
-		
+
 		// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu passenden
 		// Vergangenheitswert.
 		// Hier wird der Prognosewert für den Zeitpunkt 0 berechnet
 		for (int t = 0; t < p; t++) {
-			prognosewert = prognosewert
-					+ (matrixPhi.get(t, 0)
-					* trendbereinigtezeitreihe.get(trendbereinigtezeitreihe
-							.size() - (t + 2)));			
+			prognosewert = prognosewert + (matrixPhi.get(t, 0) * trendbereinigtezeitreihe.get(trendbereinigtezeitreihe.size() - (t + 2)));
 		}
-		prognosewert = prognosewert + trend.getTrendgerade(new double [1]).getValue(p);
+		prognosewert = prognosewert + trend.getTrendgerade(new double[1]).getValue(p);
 		// Berechnung der prozentualen Abweichung
 		double h = prognosewert / (realisierungsWert / 100);
 		// Die Variable abweichung enthält die Abweichung in %, abweichung =1
