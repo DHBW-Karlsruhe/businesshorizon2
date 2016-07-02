@@ -191,7 +191,8 @@ public class AnalysisTimeseries {
 
 		DoubleArrayList lokalezeitreihe = new DoubleArrayList(zeitreihe.size());
 
-		for (int i = lag; i < zeitreihe.size(); i++) {
+		//duplizierte Zeitreihenarray um Parameter lag verschoben
+		for (int i = lag; i < zeitreihe.size()-lag; i++) {
 			lokalezeitreihe.add(zeitreihe.get(i));
 		}
 
