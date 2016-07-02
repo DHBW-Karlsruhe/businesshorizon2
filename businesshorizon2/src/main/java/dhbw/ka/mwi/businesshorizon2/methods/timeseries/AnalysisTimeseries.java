@@ -136,7 +136,17 @@ public class AnalysisTimeseries {
 
 		return standardabweichung;
 	}
+	
 
+	/**
+	 * Methode zur Berechnung der Autokorrelation einer Zeitreihe;
+	 * Ausgangswert ist die Berechnung der Autokovarianz
+	 * 
+	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
+	 * @param zeitreihe: Arraylist der Zeitreihe mit den einzelnen Messwerten
+	 * @param lag: gibt den Wert der Verschiebung der Zeitreihe an
+	 * @return Autokorrelation: berechnet aus Autokovarianz/Varianz
+	 */	
 	public double[] calculateAutocorrelations(DoubleArrayList zeitreihe) {
 
 		double[] results = new double[zeitreihe.size()];
