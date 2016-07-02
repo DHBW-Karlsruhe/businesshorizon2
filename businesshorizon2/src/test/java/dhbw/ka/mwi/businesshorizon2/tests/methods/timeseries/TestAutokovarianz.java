@@ -41,7 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
  * 
  */
 
-@Ignore //FIXME seazzle
+ //FIXME seazzle
 public class TestAutokovarianz extends TestCase {
 	
 	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
@@ -67,7 +67,7 @@ public class TestAutokovarianz extends TestCase {
 		autokovarianzVorgabe.add (0.032407407407407274);
 		
 		
-		autokovarianz = at.berechneAutokovarianz(cashflows);
+		autokovarianz = new DoubleArrayList(at.calculateAutocovariances(cashflows));
 		logger.debug(autokovarianzVorgabe);
 		logger.debug(autokovarianz);
 		

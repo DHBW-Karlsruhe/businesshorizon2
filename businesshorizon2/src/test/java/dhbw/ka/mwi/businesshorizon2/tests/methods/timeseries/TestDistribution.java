@@ -56,15 +56,16 @@ public class TestDistribution extends TestCase {
 
 	public void testDistribution() {
 		//logged results might have to be ignored with high test number
-		testingPart(0);
-		testingPart(1);
-		testingPart(10);
-		testingPart(10000);
-		testingPart(100000);
-		testingPart (100);
+		testingPart(0, false);
+		testingPart(1, false);
+		testingPart(10, true);
+		testingPart(10000, false);
+		testingPart(100000, false);
+		testingPart (100, false);
 	}
 	
-	public void testingPart(int numberOfValueClasses) {
+	//boolean log determines if log files are written
+	public void testingPart(int numberOfValueClasses, boolean log) {
 	int iterations = 10000;
 	
 	double minValue = 0;
@@ -94,13 +95,15 @@ public class TestDistribution extends TestCase {
 	assertEquals(intervalLength, distDeterministic.getIntervalLength());
 	assertEquals(minValue, distDeterministic.getMinValue());
 	assertEquals(maxValue, distDeterministic.getMaxValue());
-	logger.debug("Die folgenden Werte sollten genau gleichverteilt sein:");
-	for (int i=0; i<distDeterministic.getValues().length; i++) {
-		logger.debug("Wertebereich: " + distDeterministic.getIntervalStartValues()[i] + " - " +(distDeterministic.getIntervalStartValues()[i]+distDeterministic.getIntervalLength()) + ": " +  distDeterministic.getValues()[i]);
-	}
-	logger.debug("\nIn den folgenden Werten muss geguckt werden, ob diese in etwa einer Normalverteilung ähneln:");
-	for (int i=0; i<distStochastic.getValues().length; i++) {
-		logger.debug("Wertebereich: " + distStochastic.getIntervalStartValues()[i] + " - " +(distStochastic.getIntervalStartValues()[i]+distStochastic.getIntervalLength()) + ": " +  distStochastic.getValues()[i]);
+	if (log) {
+		logger.debug("Die folgenden Werte sollten genau gleichverteilt sein:");
+		for (int i=0; i<distDeterministic.getValues().length; i++) {
+			logger.debug("Wertebereich: " + distDeterministic.getValueRange(i) + ": " +  distDeterministic.getValues()[i]);
+		}
+		logger.debug("\nIn den folgenden Werten muss geguckt werden, ob diese in etwa einer Normalverteilung ähneln:");
+		for (int i=0; i<distStochastic.getValues().length; i++) {
+			logger.debug("Wertebereich: " + distStochastic.getValueRange(i) + ": " +  distStochastic.getValues()[i]);
+		}
 	}
 }
 

@@ -135,6 +135,26 @@ public class AnalysisTimeseries {
 		
 		return standardabweichung;
 	}
+	
+	public double [] calculateAutocorrelations(DoubleArrayList zeitreihe) {
+		
+		double [] results = new double [zeitreihe.size()];
+		
+		for (int i=0; i<zeitreihe.size(); i++) {
+			results[i] = this.calculateAutocorrelation(zeitreihe, i);
+		}
+		return results;
+	}
+	
+public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
+		
+		double [] results = new double [zeitreihe.size()];
+		
+		for (int i=0; i<zeitreihe.size(); i++) {
+			results[i] = this.calculateAutocovariance(zeitreihe, i);
+		}
+		return results;
+	}
 
 	/**
 	 * Methode zur Berechnung der Autokovarianzen einer Zeitreihe. Die
@@ -151,24 +171,28 @@ public class AnalysisTimeseries {
 	 *            Durch den Benutzer gegebene Zeitreihe vergangener Werte.
 	 * @return Autokovarianzen der Zeitreihe
 	 */
-	public DoubleArrayList berechneAutokovarianz(DoubleArrayList zeitreihe) {
+	public double calculateAutocovariance(DoubleArrayList zeitreihe, int lag) {
+		
+		double expectedValue = this.berechneMittelwert(zeitreihe);
 
-		DoubleArrayList autokovarianz = new DoubleArrayList();
-
-		// DoubleArrayList zu einer List casten, die von der
-		// autoCovariance-Methode verwendet werden kann
-		List<Double> lokalereihe = new ArrayList<Double>();
-		Double t = new Double(0);
-		for (int i = 0; i < zeitreihe.size(); i++) {
-			t = zeitreihe.get(i);
-			lokalereihe.add(t);
+		double autocovariance=0;
+		
+		DoubleArrayList lokalezeitreihe = new DoubleArrayList(zeitreihe.size());
+		
+		for (int i=lag; i<zeitreihe.size(); i++) {
+			lokalezeitreihe.add(zeitreihe.get(i));
 		}
 
 		// berechnet die Autokovarianzen der Zeitreihe in Abhängigkeit von j
-		for (int j = 0; j < zeitreihe.size(); j++) {//FIXME update reference
-//			autokovarianz.add(AutoCovariance.autoCovariance(lokalereihe, j));
+		for (int j = 0; j < lokalezeitreihe.size(); j++) {
+			autocovariance += (lokalezeitreihe.get(j)-expectedValue)*(zeitreihe.get(j)-expectedValue);
 		}
-		return autokovarianz;
+		autocovariance = autocovariance/lokalezeitreihe.size();
+		return autocovariance;
+	}
+	
+	public double calculateAutocorrelation (DoubleArrayList zeitreihe, int lag) {
+		return this.calculateAutocovariance(zeitreihe, lag)/this.berechneVarianz(zeitreihe);
 	}
 
 	/**
@@ -518,9 +542,9 @@ public class AnalysisTimeseries {
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
 		Trendgerade trend = new Trendgerade();
 		trend.getTrendgerade(zeitreihe);
-		LOGGER.debug("Trendgerade lt. Philipp");
-		LOGGER.debug("M: " + trend.getM());
-		LOGGER.debug("B: " + trend.getB());
+		LOGGER.info("Trendgerade:");
+		LOGGER.info("M: " + trend.getM());
+		LOGGER.info("B: " + trend.getB());
 		/**
 		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
 		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
@@ -536,7 +560,7 @@ public class AnalysisTimeseries {
 
 		// Start der zur Prognose benoetigten Berechnungen
 		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
-		this.autokovarianzen = berechneAutokovarianz(bereinigteZeitreihe);
+		this.autokovarianzen = new DoubleArrayList(calculateAutocovariances(bereinigteZeitreihe));
 		this.modellparameter = berechneModellparameter(autokovarianzen, p);
 		this.standardabweichung = berechneStandardabweichung(autokovarianzen,
 				modellparameter);

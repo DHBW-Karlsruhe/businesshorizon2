@@ -89,5 +89,9 @@ public class Distribution {
 	public double getDifference() {
 		return this.getMaxValue()-this.getMinValue();
 	}
+	
+	public String getValueRange (int i) {
+		return this.getIntervalStartValues()[i] + " - " + (this.getIntervalStartValues()[i] + this.getIntervalLength());
+	}
 
 }

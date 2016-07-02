@@ -27,6 +27,8 @@ package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
 import junit.framework.TestCase;
 
+import java.util.Random;
+
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -54,31 +56,52 @@ public class TestStochasticPrognosis extends TestCase {
 	@Test
 
 	public void testStochasticPrognosis() {
-		int periods = 5;
-		int numberOfValueClasses = 10;
-		int iterations = 10000;
-		double intervalLength = 9999;
-		double minValue = 0;
-		double maxValue = 99990;
+
+		//double intervalLength = 9999;
+		//double minValue = 0;
+		//double maxValue = 99990;
+		
+		//testPrognosis (5, 10000, 10, false);
+		//testPrognosis (10, 10000, 10, false);
+		//testPrognosis (5, 10, 10, false);
+		testPrognosis (5, 100000, 10, true, 150000, 5000);
+	}
+		
+	private void testPrognosis(int i, int j, int k, boolean b) {
+		if (!b) testPrognosis(i,j,k,b,0,0);
+		else logger.debug("ERROR: Can only test stochastic method with deviation != 0)");;
+	}
+
+	public void testPrognosis (int periods, int iterations, int numberOfValueClasses, boolean stochastic, double avg, double deviation) {
 		double [][] prognosis = new double [periods][iterations];
 		double testValue;
+		Random gaussian = new Random();
 		
-		//wird unten mit dummy Werten gefüllt (1 an jeder Stelle)
+		//interestbearingdebtcapital wird unten mit dummy Werten gefüllt (1 an jeder Stelle)
 		double [] interestBearingDebtCapital = new double [periods];
-		Szenario scenario = new Szenario();
-		
+		Szenario scenario = new Szenario(10, 20, 30, 40, false);
+			
 		for (int h=0; h<periods; h++) {
-			testValue =0;
+			testValue= 0;
+			
 			interestBearingDebtCapital [h] = 1;
 			for (int i=0; i<iterations; i++) {
+				if (stochastic) {
+					testValue = avg + gaussian.nextGaussian()*deviation;
+				} else {
+					testValue=testValue+10;
+				}
 				prognosis [h][i]= testValue;
-				testValue=testValue+10;
 			}
 		}
 		
 		AnalysisTimeseries at = new AnalysisTimeseries();
-		at.createStochasticPrognosis(prognosis, numberOfValueClasses, interestBearingDebtCapital, scenario);
+		Distribution dist = at.createStochasticPrognosis(prognosis, numberOfValueClasses, interestBearingDebtCapital, scenario);
 		
+		logger.debug("distlaenge: " + dist.getValues().length);
+		for (int i=0; i<dist.getValues().length; i++) {
+			logger.info("values between " + dist.getValueRange(i) + ": " + dist.getValues()[i]);
+		}
 		/*assertEquals(intervalLength, dist.getIntervalLength());
 		assertEquals(minValue, dist.getMinValue());
 		assertEquals(maxValue, dist.getMaxValue());
@@ -86,6 +109,6 @@ public class TestStochasticPrognosis extends TestCase {
 			logger.debug("Wertebereich: " + dist.getIntervalStartValues()[i] + " - " +(dist.getIntervalStartValues()[i]+dist.getIntervalLength()) + ": " +  dist.getValues()[0][i]);
 		}
 		*/
-	}
+		}
 
 }
