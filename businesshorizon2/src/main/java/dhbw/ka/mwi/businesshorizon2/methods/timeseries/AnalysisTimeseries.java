@@ -80,7 +80,8 @@ public class AnalysisTimeseries {
 	 * 
 	 * 
 	 * 
-	 * Speichern wir die Werte ebenfalls in ein Array ? Falls ja kann die Methode übernommen werden
+	 *         Speichern wir die Werte ebenfalls in ein Array ? Falls ja kann
+	 *         die Methode übernommen werden
 	 */
 
 	public double berechneMittelwert(DoubleArrayList zeitreihe) {
@@ -101,8 +102,8 @@ public class AnalysisTimeseries {
 	}
 
 	/**
-	 * Methode zur Berechnung der Varianz * 
-	 * 	 
+	 * Methode zur Berechnung der Varianz *
+	 * 
 	 * Berechnung der Varianz über den zuvor errechneten Mittelwert
 	 */
 
@@ -110,48 +111,58 @@ public class AnalysisTimeseries {
 		double mittelwert = berechneMittelwert(zeitreihe);
 		double varianz = 0;
 		double s2 = 0;
-		
-			for (int i = 0; i < zeitreihe.size(); i++) {
-				s2 = zeitreihe.get(i) - mittelwert;
-				s2 = s2 * s2;
-				varianz = varianz +  s2;
-			}
-			 
+
+		for (int i = 0; i < zeitreihe.size(); i++) {
+			s2 = zeitreihe.get(i) - mittelwert;
+			s2 = s2 * s2;
+			varianz = varianz + s2;
+		}
+
 		varianz = varianz / zeitreihe.size();
 		return varianz;
 	}
 
 	/**
-	 * Methode zur Berechnung der Standardabweichung * 
-	 * 	 
+	 * Methode zur Berechnung der Standardabweichung *
+	 * 
 	 * Berechnung der Standardabweichung über den zuvor errechneten Varianz
 	 */
 
-	public double berechneStandardabweichung(DoubleArrayList zeitreihe){
-		
+	public double berechneStandardabweichung(DoubleArrayList zeitreihe) {
+
 		double standardabweichung = 0;
 		double varianz = berechneVarianz(zeitreihe);
-		
+
 		standardabweichung = Math.sqrt(varianz);
-		
+
 		return standardabweichung;
 	}
 	
-	public double [] calculateAutocorrelations(DoubleArrayList zeitreihe) {
-		
-		double [] results = new double [zeitreihe.size()];
-		
-		for (int i=0; i<zeitreihe.size(); i++) {
+
+	/**
+	 * Methode zur Berechnung der Autokorrelation einer Zeitreihe;
+	 * Ausgangswert ist die Berechnung der Autokovarianz
+	 * 
+	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
+	 * @param zeitreihe: Arraylist der Zeitreihe mit den einzelnen Messwerten
+	 * @param lag: gibt den Wert der Verschiebung der Zeitreihe an
+	 * @return Autokorrelation: berechnet aus Autokovarianz/Varianz
+	 */	
+	public double[] calculateAutocorrelations(DoubleArrayList zeitreihe) {
+
+		double[] results = new double[zeitreihe.size()];
+
+		for (int i = 0; i < zeitreihe.size(); i++) {
 			results[i] = this.calculateAutocorrelation(zeitreihe, i);
 		}
 		return results;
 	}
-	
-public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
-		
-		double [] results = new double [zeitreihe.size()];
-		
-		for (int i=0; i<zeitreihe.size(); i++) {
+
+	public double[] calculateAutocovariances(DoubleArrayList zeitreihe) {
+
+		double[] results = new double[zeitreihe.size()];
+
+		for (int i = 0; i < zeitreihe.size(); i++) {
 			results[i] = this.calculateAutocovariance(zeitreihe, i);
 		}
 		return results;
@@ -173,27 +184,27 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 	 * @return Autokovarianzen der Zeitreihe
 	 */
 	public double calculateAutocovariance(DoubleArrayList zeitreihe, int lag) {
-		
+
 		double expectedValue = this.berechneMittelwert(zeitreihe);
 
-		double autocovariance=0;
-		
+		double autocovariance = 0;
+
 		DoubleArrayList lokalezeitreihe = new DoubleArrayList(zeitreihe.size());
-		
-		for (int i=lag; i<zeitreihe.size(); i++) {
+
+		for (int i = lag; i < zeitreihe.size(); i++) {
 			lokalezeitreihe.add(zeitreihe.get(i));
 		}
 
 		// berechnet die Autokovarianzen der Zeitreihe in Abhängigkeit von j
 		for (int j = 0; j < lokalezeitreihe.size(); j++) {
-			autocovariance += (lokalezeitreihe.get(j)-expectedValue)*(zeitreihe.get(j)-expectedValue);
+			autocovariance += (lokalezeitreihe.get(j) - expectedValue) * (zeitreihe.get(j) - expectedValue);
 		}
-		autocovariance = autocovariance/lokalezeitreihe.size();
+		autocovariance = autocovariance / lokalezeitreihe.size();
 		return autocovariance;
 	}
-	
-	public double calculateAutocorrelation (DoubleArrayList zeitreihe, int lag) {
-		return this.calculateAutocovariance(zeitreihe, lag)/this.berechneVarianz(zeitreihe);
+
+	public double calculateAutocorrelation(DoubleArrayList zeitreihe, int lag) {
+		return this.calculateAutocovariance(zeitreihe, lag) / this.berechneVarianz(zeitreihe);
 	}
 
 	/**
@@ -209,9 +220,7 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 	 *         Vergangenheitswerte) zurück.
 	 * @throws StochasticMethodException
 	 */
-	public DoubleMatrix2D berechneModellparameter(
-			double [] autocorellation, int p)
-			throws StochasticMethodException {
+	public DoubleMatrix2D berechneModellparameter(double[] autocorellation, int p) throws StochasticMethodException {
 
 		// linke Seite des Gleichungssystems
 		DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(p, p);
@@ -220,8 +229,7 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 			for (int j = 0; j < p; j++) { // Aktuelle
 											// Spalte
 
-				matrixValuations.set(i, j,
-						autokovarianzen.get(Math.abs((int) (i - j))));
+				matrixValuations.set(i, j, autokovarianzen.get(Math.abs((int) (i - j))));
 
 			}
 		}
@@ -262,11 +270,11 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 	 *            Vektor der Phi-Werte ( =Modellparameter)
 	 * @return Gibt die Standardabweichung zurück.
 	 * 
-	 * Warum ist dise Methode notwendig? Es gibt oben eine Methode zur Berechnung der Standardabweichung
+	 *         Warum ist dise Methode notwendig? Es gibt oben eine Methode zur
+	 *         Berechnung der Standardabweichung
 	 */
-	
-	public double berechneStandardabweichung(DoubleArrayList autokovarianzen,
-			DoubleMatrix2D matrixPhi) {
+
+	public double berechneStandardabweichung(DoubleArrayList autokovarianzen, DoubleMatrix2D matrixPhi) {
 		double standardabweichung = 0;
 		double s2 = autokovarianzen.get(0);
 
@@ -291,9 +299,11 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 	 * @author Philipp Nagel, Thuy Anh Nguyen, Jonathan Janke
 	 * 
 	 * @param trendbereinigtezeitreihe
-	 *            , die bereits trendbereinigte Zeitreihe. Die vordersten Werte sind die aktuellsten.
+	 *            , die bereits trendbereinigte Zeitreihe. Die vordersten Werte
+	 *            sind die aktuellsten.
 	 * @param matrixPhi
-	 *            die ermittelte Matrix Phi. Die vordersten Werte sind die aktuellsten.
+	 *            die ermittelte Matrix Phi. Die vordersten Werte sind die
+	 *            aktuellsten.
 	 * @param standardabweichung
 	 *            die ermittelte Standardabweichung der Zeitreihe
 	 * @param Ordnung
@@ -305,10 +315,11 @@ public double [] calculateAutocovariances(DoubleArrayList zeitreihe) {
 	 *            durchlaufen soll
 	 * @param mittelwert
 	 *            der ermittelte Mittelwert der Zeitreihe
-	 * @param isfremdkapital 
-	 * @param double konstanteC
-	 * 				Wert der Konstante c die in der AR Methode addiert wird. Momentan wird dieser Konstante ein
-	 * 				Demowert von 5 in dieser Funktion zugewiesen.
+	 * @param isfremdkapital
+	 * @param double
+	 *            konstanteC Wert der Konstante c die in der AR Methode addiert
+	 *            wird. Momentan wird dieser Konstante ein Demowert von 5 in
+	 *            dieser Funktion zugewiesen.
 	 * @return Alle prognostizierten Werte in einem Array.
 	 */		
 	public double[][] prognoseBerechnenNew(
