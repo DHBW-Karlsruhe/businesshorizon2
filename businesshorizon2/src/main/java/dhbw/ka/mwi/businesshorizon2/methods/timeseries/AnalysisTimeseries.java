@@ -137,16 +137,15 @@ public class AnalysisTimeseries {
 		return standardabweichung;
 	}
 	
-
 	/**
-	 * Methode zur Berechnung der Autokorrelation einer Zeitreihe;
-	 * Ausgangswert ist die Berechnung der Autokovarianz
+	 * Berechnung der Autokovarianzen einer Zeitreihe für verschiedene lags(Verschiebung)
+	 * lag geht von 0 bis p-1
 	 * 
 	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
-	 * @param zeitreihe: Arraylist der Zeitreihe mit den einzelnen Messwerten
-	 * @param lag: gibt den Wert der Verschiebung der Zeitreihe an
-	 * @return Autokorrelation: berechnet aus Autokovarianz/Varianz
-	 */	
+	 * @param zeitreihe: Arraylist der Messwerte für die Zeitreihe von Zeitpunkt 0 bis zur Ordnung p
+	 * 
+	 * @return results: beinhaltet alle Autokovarianzen der Zeitreihe für jedes lag
+	 */
 	public double[] calculateAutocorrelations(DoubleArrayList zeitreihe) {
 
 		double[] results = new double[zeitreihe.size()];
@@ -156,7 +155,16 @@ public class AnalysisTimeseries {
 		}
 		return results;
 	}
-
+	
+	/**
+	 * Berechnung der Autokokorrelationen einer Zeitreihe für verschiedene lags(Verschiebung)
+	 * lag geht von 0 bis p-1
+	 * 
+	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
+	 * @param zeitreihe: Arraylist der Messwerte für die Zeitreihe von Zeitpunkt 0 bis zur Ordnung p
+	 * 
+	 * @return results: beinhaltet alle Autokokorrelationen der Zeitreihe für jedes lag
+	 */
 	public double[] calculateAutocovariances(DoubleArrayList zeitreihe) {
 
 		double[] results = new double[zeitreihe.size()];
@@ -168,19 +176,12 @@ public class AnalysisTimeseries {
 	}
 
 	/**
-	 * Methode zur Berechnung der Autokovarianzen einer Zeitreihe. Die
-	 * eigentliche Berechnung der Autokovarianzen wird durch eine Methode
-	 * durchgeführt, die aus der Java-Bibliothek "james ii" importiert wird.
-	 * Hierfür muss jedoch zunächst die eingegebene Zeitreihe zu einer von
-	 * Number erbenden Liste gecastet werden.
+	 * Berechnung der Autokovarianzen einer Zeitreihe zum gegebenen lag
 	 * 
-	 * TODO: james ii - Bibliothek ersetzen
-	 * 
-	 * @author Marcel Rosenberger, Nina Brauch, Mirko Göpfrich
-	 * 
-	 * @param zeitreihe
-	 *            Durch den Benutzer gegebene Zeitreihe vergangener Werte.
-	 * @return Autokovarianzen der Zeitreihe
+	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
+	 * @param zeitreihe: Arraylist der Messwerte für die Zeitreihe von Zeitpunkt 0 bis zur Ordnung p
+	 * @param lag: gibt die Verschiebung der Zeitreihen an
+	 * @return autocovariance: autorvarianz der Zeitreihe zum gegebenen lag
 	 */
 	public double calculateAutocovariance(DoubleArrayList zeitreihe, int lag) {
 
@@ -202,6 +203,15 @@ public class AnalysisTimeseries {
 		return autocovariance;
 	}
 
+	/**
+	 * Methode zur Berechnung der Autokorrelation einer Zeitreihe;
+	 * Ausgangswert ist die Berechnung der Autokovarianz
+	 * 
+	 * @author Jonathan Janke, Peter Kaisinger, Thuy Anh Nguyen
+	 * @param zeitreihe: Arraylist der Zeitreihe mit den einzelnen Messwerten
+	 * @param lag: gibt den Wert der Verschiebung der Zeitreihe an
+	 * @return Autokorrelation: berechnet aus Autokovarianz/Varianz
+	 */	
 	public double calculateAutocorrelation(DoubleArrayList zeitreihe, int lag) {
 		return this.calculateAutocovariance(zeitreihe, lag) / this.berechneVarianz(zeitreihe);
 	}
