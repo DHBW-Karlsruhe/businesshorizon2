@@ -118,16 +118,23 @@
 			<version>1.2.0</version>
 		</dependency>
 
-		<!--<dependency>
-			<groupId>org.jamesii</groupId>
-			<artifactId>core</artifactId>
-			<version>0.9.4</version>
-		</dependency>-->
+		<!-- https://mvnrepository.com/artifact/gov.nist.math/jama -->
+		<dependency>
+			<groupId>gov.nist.math</groupId>
+			<artifactId>jama</artifactId>
+			<version>1.0.3</version>
+		</dependency>
+
+		<!--<dependency> <groupId>org.jamesii</groupId> <artifactId>core</artifactId> 
+			<version>0.9.4</version> </dependency> -->
 		<!-- ... -->
 	</dependencies>
 
 	<build>
 		<plugins>
+			<!-- <plugin> <groupId>org.apache.tomcat.maven</groupId> <artifactId>tomcat7-maven-plugin</artifactId> 
+				<version>2.2</version> </plugin> <plugin> <groupId>org.cloudfoundry</groupId> 
+				<artifactId>cf-maven-plugin</artifactId> <version>1.1.2</version> </plugin> -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
@@ -160,26 +167,38 @@
 					</archive>
 				</configuration>
 			</plugin>
-			
-			 <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>cobertura-maven-plugin</artifactId>
-                <version>2.5.1</version>
-                <configuration>
-                    <formats>
-                        <format>xml</format>
-                    </formats>
-                </configuration>
-                <executions>
-                    <execution>
-                        <phase>package</phase>
-                        <goals>
-                            <goal>cobertura</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
-			
+			<plugin>
+				<groupId>net.sf.alchim</groupId>
+				<artifactId>winstone-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>embed</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>cobertura-maven-plugin</artifactId>
+				<version>2.5.1</version>
+				<configuration>
+					<formats>
+						<format>xml</format>
+					</formats>
+				</configuration>
+				<executions>
+					<execution>
+						<phase>package</phase>
+						<goals>
+							<goal>cobertura</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
 			<plugin>
 				<groupId>com.googlecode.addjars-maven-plugin</groupId>
 				<artifactId>addjars-maven-plugin</artifactId>
@@ -256,7 +275,7 @@
 				<artifactId>vaadin-maven-plugin</artifactId>
 				<version>1.0.2</version>
 				<executions>
-				 	<execution>
+					<execution>
 						<configuration>
 						</configuration>
 						<goals>
