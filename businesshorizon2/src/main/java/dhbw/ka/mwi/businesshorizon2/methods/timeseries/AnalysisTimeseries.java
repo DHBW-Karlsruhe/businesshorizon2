@@ -53,8 +53,8 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 public class AnalysisTimeseries {
 
 	private static final Logger LOGGER = Logger.getLogger("AnalysisTimeseries.class");
-	private DoubleArrayList autokovarianzen;
-	private DoubleArrayList bereinigteZeitreihe;
+	private double [][] autokovarianzen;
+	private double [] bereinigteZeitreihe;
 	private double[] modellparameter;
 	private double standardabweichung;
 	private double mittelwert;
@@ -78,13 +78,13 @@ public class AnalysisTimeseries {
 	 *         die Methode übernommen werden
 	 */
 
-	public double berechneMittelwert(DoubleArrayList zeitreihe) {
+	public double berechneMittelwert(double [] zeitreihe) {
 		double mittelwert = 0;
 		double summe = 0;
 		int zaehler = 0;
 
-		for (int i = 0; i < zeitreihe.size(); i++) {
-			summe = summe + zeitreihe.get(i);
+		for (int i = 0; i < zeitreihe.length; i++) {
+			summe = summe + zeitreihe[i];
 			zaehler = zaehler + 1;
 		}
 
@@ -101,18 +101,18 @@ public class AnalysisTimeseries {
 	 * Berechnung der Varianz über den zuvor errechneten Mittelwert
 	 */
 
-	public double berechneVarianz(DoubleArrayList zeitreihe) {
+	public double berechneVarianz(double [] zeitreihe) {
 		double mittelwert = berechneMittelwert(zeitreihe);
 		double varianz = 0;
 		double s2 = 0;
 
-		for (int i = 0; i < zeitreihe.size(); i++) {
-			s2 = zeitreihe.get(i) - mittelwert;
+		for (int i = 0; i < zeitreihe.length; i++) {
+			s2 = zeitreihe[i] - mittelwert;
 			s2 = s2 * s2;
 			varianz = varianz + s2;
 		}
 
-		varianz = varianz / zeitreihe.size();
+		varianz = varianz / zeitreihe.length;
 		return varianz;
 	}
 
@@ -122,7 +122,7 @@ public class AnalysisTimeseries {
 	 * Berechnung der Standardabweichung über den zuvor errechneten Varianz
 	 */
 
-	public double berechneStandardabweichung(DoubleArrayList zeitreihe) {
+	public double berechneStandardabweichung(double [] zeitreihe) {
 
 		double standardabweichung = 0;
 		double varianz = berechneVarianz(zeitreihe);
@@ -144,11 +144,11 @@ public class AnalysisTimeseries {
 	 * @return results: beinhaltet alle Autokovarianzen der Zeitreihe für jedes
 	 *         lag
 	 */
-	public double[] calculateAutocorrelations(DoubleArrayList zeitreihe) {
+	public double[] calculateAutocorrelations(double [] zeitreihe) {
 
-		double[] results = new double[zeitreihe.size()];
+		double[] results = new double[zeitreihe.length];
 
-		for (int i = 0; i < zeitreihe.size(); i++) {
+		for (int i = 0; i < zeitreihe.length; i++) {
 			results[i] = this.calculateAutocorrelation(zeitreihe, i);
 		}
 		return results;
@@ -166,11 +166,11 @@ public class AnalysisTimeseries {
 	 * @return results: beinhaltet alle Autokokorrelationen der Zeitreihe für
 	 *         jedes lag
 	 */
-	public double[] calculateAutocovariances(DoubleArrayList zeitreihe) {
+	public double[] calculateAutocovariances(double [] zeitreihe) {
 
-		double[] results = new double[zeitreihe.size()];
+		double[] results = new double[zeitreihe.length];
 
-		for (int i = 0; i < zeitreihe.size(); i++) {
+		for (int i = 0; i < zeitreihe.length; i++) {
 			results[i] = this.calculateAutocovariance(zeitreihe, i);
 		}
 		return results;
@@ -187,24 +187,24 @@ public class AnalysisTimeseries {
 	 *            gibt die Verschiebung der Zeitreihen an
 	 * @return autocovariance: autorvarianz der Zeitreihe zum gegebenen lag
 	 */
-	public double calculateAutocovariance(DoubleArrayList zeitreihe, int lag) {
+	public double calculateAutocovariance(double [] zeitreihe, int lag) {
 
 		double expectedValue = this.berechneMittelwert(zeitreihe);
 
 		double autocovariance = 0;
 
-		DoubleArrayList lokalezeitreihe = new DoubleArrayList(zeitreihe.size());
+		double [] lokalezeitreihe = new double [zeitreihe.length-lag];
 
 		// duplizierte Zeitreihenarray um Parameter lag verschoben
-		for (int i = lag; i < zeitreihe.size() - lag; i++) {
-			lokalezeitreihe.add(zeitreihe.get(i));
+		for (int i = 0; i < zeitreihe.length - lag; i++) {
+			lokalezeitreihe[i]=zeitreihe[i+lag];
 		}
 
 		// berechnet die Autokovarianzen der Zeitreihe in Abhängigkeit von j
-		for (int j = 0; j < lokalezeitreihe.size(); j++) {
-			autocovariance += (lokalezeitreihe.get(j) - expectedValue) * (zeitreihe.get(j) - expectedValue);
+		for (int j = 0; j < lokalezeitreihe.length; j++) {
+			autocovariance += (lokalezeitreihe[j] - expectedValue) * (zeitreihe[j] - expectedValue);
 		}
-		autocovariance = autocovariance / lokalezeitreihe.size();
+		autocovariance = autocovariance / lokalezeitreihe.length;
 		return autocovariance;
 	}
 
@@ -219,59 +219,8 @@ public class AnalysisTimeseries {
 	 *            gibt den Wert der Verschiebung der Zeitreihe an
 	 * @return Autokorrelation: berechnet aus Autokovarianz/Varianz
 	 */
-	public double calculateAutocorrelation(DoubleArrayList zeitreihe, int lag) {
+	public double calculateAutocorrelation(double [] zeitreihe, int lag) {
 		return this.calculateAutocovariance(zeitreihe, lag) / this.berechneVarianz(zeitreihe);
-	}
-
-	/**
-	 * Stellt ein Gleichungssystem auf und berechnet daraus die Modellparameter
-	 * (Yule-Walker-Schätzer)
-	 * 
-	 * @author Marcel Rosenberger, Nina Brauch, Mirko Göpfrich
-	 * @param Autokovarianzen
-	 *            die zuvor in einer eigenen Methode berechnet wurden
-	 * @param p
-	 *            die Anzahl der mit einbezogenen, vergangenen Perioden
-	 * @return Gibt den Vektor der Phi-Werte (Gewichtungen der
-	 *         Vergangenheitswerte) zurück.
-	 * @throws StochasticMethodException
-	 */
-	public DoubleMatrix2D berechneModellparameter(double[] autocorellation, int p) throws StochasticMethodException {
-
-		// linke Seite des Gleichungssystems
-		DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(p, p);
-		for (int i = 0; i < p; i++) { // Aktuelle
-										// Zeile
-			for (int j = 0; j < p; j++) { // Aktuelle
-											// Spalte
-
-				matrixValuations.set(i, j, autokovarianzen.get(Math.abs((int) (i - j))));
-
-			}
-		}
-
-		// rechte Seite des Gleichungssystems
-		DoubleMatrix2D matrixERG = DoubleFactory2D.dense.make((int) (p), 1);
-		for (int i = 1; i <= p; i++) {
-			matrixERG.set((i - 1), 0, autokovarianzen.get(i));
-		}
-
-		LUDecomposition lUDecomp = new LUDecomposition(matrixValuations);
-
-		// Matrix mit Modellparametern (Phi)
-		DoubleMatrix2D matrixPhi = null;
-
-		try {
-			matrixPhi = lUDecomp.solve(matrixERG);
-			LOGGER.debug("C-Values of Yule-Walker-Equitation calculated.");
-		} catch (IllegalArgumentException exception) {
-
-			LOGGER.debug("Calculation of C-Values failed!");
-			throw new StochasticMethodException(exception.getMessage());
-
-		}
-
-		return matrixPhi;
 	}
 
 	/**
@@ -338,7 +287,7 @@ public class AnalysisTimeseries {
 	 *            dieser Funktion zugewiesen.
 	 * @return Alle prognostizierten Werte in einem Array.
 	 */
-	public double[][] prognoseBerechnenNew(DoubleArrayList trendbereinigtezeitreihe, double[] valuesForPhi, double standardabweichung, int zuberechnendeperioden, int iterationen, int p, double mittelwert, boolean isfremdkapital) {
+	public double[][] prognoseBerechnenNew(double [] trendbereinigtezeitreihe, double[] valuesForPhi, double standardabweichung, int zuberechnendeperioden, int iterationen, int p, double mittelwert, boolean isfremdkapital) {
 		// JJ: konstanteC kann weggelassen werden
 		// ToDo: Dies ist eine Demowert und muss noch korrigiert werden
 		/*
@@ -351,7 +300,7 @@ public class AnalysisTimeseries {
 		 */
 		// Testwerte
 		// double [] valuesForPhi = {1, 1, 0, 0, 0};
-		double[][] stochastischeErgebnisseDerCashFlows = new double[trendbereinigtezeitreihe.size() + zuberechnendeperioden][iterationen];// Deklariere
+		double[][] stochastischeErgebnisseDerCashFlows = new double[trendbereinigtezeitreihe.length + zuberechnendeperioden][iterationen];// Deklariere
 																																			// double
 																																			// Array
 																																			// für
@@ -369,7 +318,7 @@ public class AnalysisTimeseries {
 																																			// progn.
 																																			// Jahre)
 		int alreadyOccupiedPlaces = 0;
-		for (int i = 0; i < trendbereinigtezeitreihe.size(); i++) {// Befüllen
+		for (int i = 0; i < trendbereinigtezeitreihe.length; i++) {// Befüllen
 																	// der
 																	// ersten
 																	// Werte mit
@@ -379,7 +328,7 @@ public class AnalysisTimeseries {
 			// JJ: Was machst du hier? Warum fügst du ein Array der Länge 1 ein?
 			// Du hast doch bereits ein zweidimensionales Array?
 			// stochastischeErgebnisseDerCashFlows[i] = new double[1];
-			stochastischeErgebnisseDerCashFlows[i][0] = trendbereinigtezeitreihe.get(i);
+			stochastischeErgebnisseDerCashFlows[i][0] = trendbereinigtezeitreihe[i];
 			alreadyOccupiedPlaces = i + 1;
 		}
 
@@ -394,7 +343,7 @@ public class AnalysisTimeseries {
 														// verschieben.
 			// Dies muss jedes mal neu gemacht werden, da ansosten die Werte des
 			// vorherigen Durchlaufes verwendet werden
-			if (trendbereinigtezeitreihe.size() < cashFlowsJeT.length) {// Vermeiden
+			if (trendbereinigtezeitreihe.length < cashFlowsJeT.length) {// Vermeiden
 																		// dass
 																		// eine
 																		// Exception
@@ -411,7 +360,7 @@ public class AnalysisTimeseries {
 			for (int l = 0; l < cashFlowsJeT.length; l++) { // Initialisiere CF
 															// je t Array aus
 															// Input
-				cashFlowsJeT[l] = trendbereinigtezeitreihe.get(l);
+				cashFlowsJeT[l] = trendbereinigtezeitreihe[l];
 			}
 			for (int m = 0; m < zuberechnendeperioden; m++) {// Anzahl der
 																// Perioden die
@@ -588,7 +537,7 @@ public class AnalysisTimeseries {
 	public Matrix createMatrix(double[] timeseries) {
 		double[][] resultMatrix = new double[timeseries.length][timeseries.length];
 
-		double[] autocorrelations = this.calculateAutocorrelations(new DoubleArrayList(timeseries));
+		double[] autocorrelations = this.calculateAutocorrelations(timeseries);
 
 		// map autocorrelations to matrix
 		for (int i = 0; i < resultMatrix.length; i++) {
@@ -601,6 +550,98 @@ public class AnalysisTimeseries {
 		return new Matrix(resultMatrix);
 
 	}
+	
+	/**
+	 * Methode für die Durchführung einer Zeitreihenanalyse und Prognostizierung
+	 * zukünftiger Werte.
+	 * 
+	 * @author Marcel Rosenberger, Mirko Göpfrich, Nina Brauch, Raffaele
+	 *         Cipolla, Maurizio di Nunzio
+	 * @param zeitreihe
+	 *            auf deren Basis die Prognose erfolgt
+	 * @param p
+	 *            die Anzahl der mit einbezogenen, vergangenen Perioden
+	 * @param zuberechnendeperioden
+	 *            die Anzahl der zu prognostizierenden, zukünftigen Perioden
+	 * @param durchlaeufe
+	 *            die Anzahl der Iterationen, die die Zeitreihenanalyse
+	 *            durchlaufen soll
+	 * @param callback
+	 *            das Callback-Objekt, über das die Kommunikation über Threads
+	 *            hinweg gesteuert wird
+	 * @return Alle prognostizierten Werte in einem Array.
+	 */
+
+	// @Override
+	public Distribution calculateAsDistribution (double[] zeitreihe, int p, int zuberechnendePerioden, int durchlaeufe, CallbackInterface callback, boolean isfremdkapital) throws InterruptedException, StochasticMethodException {
+
+		// vorbereitende Initialisierung
+		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
+
+		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
+		Trendgerade trend = new Trendgerade();
+		trend.getTrendgerade(zeitreihe);
+		LOGGER.info("Trendgerade:");
+		LOGGER.info("M: " + trend.getM());
+		LOGGER.info("B: " + trend.getB());
+
+		this.bereinigteZeitreihe = new double [zuberechnendePerioden];
+
+		for (int i = 0; i < zeitreihe.length; i++) {
+			this.bereinigteZeitreihe[i] = zeitreihe[i] - trend.getValue(i);
+		}
+
+		LOGGER.debug("Bereinigte Zeitreihe:");
+		LOGGER.debug(bereinigteZeitreihe);
+
+		// Start der zur Prognose benoetigten Berechnungen
+		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
+		// this.autokovarianzen = new
+		// DoubleArrayList(calculateAutocovariances(bereinigteZeitreihe));
+		this.autocorrelation = calculateAutocorrelations(bereinigteZeitreihe);
+		// TODO: berechne Modellparameter anpassen an:
+		// - Autokorrelation
+		// - eigene Matrixmethode
+		// this.modellparameter = berechneModellparameter(autocorrelation, p);
+//		 this.modellparameter = calculateModelParameters(new Matrix(this.bereinigteZeitreihe), autocorrelations) //FIXME
+		// add parameters
+		this.standardabweichung = this.berechneStandardabweichung(bereinigteZeitreihe);
+		LOGGER.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
+
+		// Start der Prognose
+		prognosewerte = prognoseBerechnenNew(bereinigteZeitreihe, modellparameter, standardabweichung, zuberechnendePerioden, durchlaeufe, p, mittelwert, isfremdkapital);
+		// prognosewerte = prognoseBerechnen(bereinigteZeitreihe,
+		// modellparameter, standardabweichung, zuberechnendePerioden,
+		// durchlaeufe, p,mittelwert, isfremdkapital);
+		LOGGER.debug("Berechnung der Prognosewerte abgeschlossen.");
+		// Trendbereinigung wieder draufschlagen
+		// Perioden durchlaufen
+		for (int i = 0; i < prognosewerte[0].length; i++) {
+			// den Trend pro Periode ermitteln
+			double newtide = trend.getValue(i + p + 1);
+
+			if (isfremdkapital) {
+				this.erwartetesFremdkapital[i] = this.erwartetesFremdkapital[i] + newtide;
+			} else {
+				this.erwarteteCashFlows[i] = this.erwarteteCashFlows[i] + newtide;
+			}
+			// alle Iterationen durchlaufen
+			for (int j = 0; j < prognosewerte.length; j++) {
+				// auf jeden Wert (Prognosewerte und die erwarteten Cashflows)
+				// den Trend wieder aufaddieren
+				prognosewerte[j][i] += newtide;
+			}
+
+		}
+
+		LOGGER.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
+		//TODO: Variablen interestBearingDebtCapital, scenario auffüllen
+		double [] interestBearingDebtCapital = new double [prognosewerte.length];
+		Szenario scenario = new Szenario(1.0, 1.0, 1.0, 1.0, false);
+		
+		return this.createStochasticPrognosis(prognosewerte, 20, interestBearingDebtCapital, scenario);
+	}
+
 
 	/**
 	 * Methode für die Durchführung einer Zeitreihenanalyse und Prognostizierung
@@ -635,15 +676,11 @@ public class AnalysisTimeseries {
 		LOGGER.info("Trendgerade:");
 		LOGGER.info("M: " + trend.getM());
 		LOGGER.info("B: " + trend.getB());
-		/**
-		 * Uebertragung der Werte der Zeitreihe in eine DoubleArrayList. Diese
-		 * wird von der COLT Bibliothek verwendet zur Loesung der Matrix.
-		 */
 
-		this.bereinigteZeitreihe = new DoubleArrayList();
+		this.bereinigteZeitreihe = new double [zuberechnendePerioden];
 
 		for (int i = 0; i < zeitreihe.length; i++) {
-			this.bereinigteZeitreihe.add(zeitreihe[i] - trend.getValue(i));
+			this.bereinigteZeitreihe[i] = zeitreihe[i] - trend.getValue(i);
 		}
 
 		LOGGER.debug("Bereinigte Zeitreihe:");
