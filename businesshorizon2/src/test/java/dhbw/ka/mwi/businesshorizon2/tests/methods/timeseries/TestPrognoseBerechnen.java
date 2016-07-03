@@ -55,11 +55,10 @@ public class TestPrognoseBerechnen extends TestCase {
 		int p = 5;
 		int i = 1;
 		//DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(p, i);
-		DoubleArrayList cashflows = new DoubleArrayList ();
+		
 		double standardabweichung = 1.8551461075783124; 
 		int zuberechnendeperioden = 5;
 		int durchlaeufe = 10000;
-		int konstante = 0;
 		//double mittelwert = 8.166666666666666;
 		double mittelwert = 0;
 		boolean isfremdkapital = true;
@@ -67,12 +66,7 @@ public class TestPrognoseBerechnen extends TestCase {
 		double[][] compareValues = new double[zuberechnendeperioden][durchlaeufe];
 		
 		double [] phiValues = {7/16, 9/16, 0, 0, 0};
-		cashflows.add (7);
-		cashflows.add (9);
-		cashflows.add (5);
-		cashflows.add (14);
-		cashflows.add (6);
-		cashflows.add (8);
+		double [] cashflows = {7, 9, 5, 14, 6, 8};
 		
 		//matrixValuations.set(0,0,-1.09253751);
 		//matrixValuations.set(1,0,-0.790322469);
@@ -81,40 +75,34 @@ public class TestPrognoseBerechnen extends TestCase {
 		//matrixValuations.set(4,0,-0.215330237);
 	
 		AnalysisTimeseries at = new AnalysisTimeseries();
-		DoubleArrayList autokovarianzVorgabe = new DoubleArrayList();
-		autokovarianzVorgabe.add (8.472222222222223);
-		autokovarianzVorgabe.add (-5.726851851851852);
-		autokovarianzVorgabe.add (2.407407407407408);
-		autokovarianzVorgabe.add (-1.3472222222222223);
-		autokovarianzVorgabe.add (0.3981481481481479);
-		autokovarianzVorgabe.add (0.032407407407407274);
+		double [] autokovarianzVorgabe = {8.472222222222223, -5.726851851851852, 2.407407407407408, -1.3472222222222223, 0.3981481481481479, 0.032407407407407274};
 		
 		
 		//prognosewerte = at.prognoseBerechnen(cashflows, matrixValuations, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
-		prognosewerte = at.prognoseBerechnenNew(cashflows, phiValues, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital, konstante)  ;
-		compareValues = at.prognoseBerechnenNew(cashflows, phiValues, 0, zuberechnendeperioden, durchlaeufe, p, 0, isfremdkapital, konstante)  ;
+		prognosewerte = at.prognoseBerechnenNew(cashflows, phiValues, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
+		compareValues = at.prognoseBerechnenNew(cashflows, phiValues, 0, zuberechnendeperioden, durchlaeufe, p, 0, isfremdkapital)  ;
 		//array zum Überprüfen, ob Mittelwerte der Perioden ungefähr beeinander liegen
 		double averagePerPeriod[] = new double [zuberechnendeperioden];
 		double averagePerPeriodCompare[] = new double [zuberechnendeperioden];
-		for (int k=cashflows.size(); k<prognosewerte.length; k++) {
+		for (int k=cashflows.length; k<prognosewerte.length; k++) {
 			for (int j=0; j<prognosewerte[k].length; j++) {
 				//logger.debug("prognosewerte["+ k + "][" + j + "] " + prognosewerte[k][j]);
-				averagePerPeriod[k-cashflows.size()]+=prognosewerte[k][j];
-				averagePerPeriodCompare[k-cashflows.size()]+=compareValues[k][j];
+				averagePerPeriod[k-cashflows.length]+=prognosewerte[k][j];
+				averagePerPeriodCompare[k-cashflows.length]+=compareValues[k][j];
 			}
-			averagePerPeriod[k-cashflows.size()]=averagePerPeriod[k-cashflows.size()]/durchlaeufe;
-			averagePerPeriodCompare[k-cashflows.size()]=averagePerPeriodCompare[k-cashflows.size()]/durchlaeufe;
+			averagePerPeriod[k-cashflows.length]=averagePerPeriod[k-cashflows.length]/durchlaeufe;
+			averagePerPeriodCompare[k-cashflows.length]=averagePerPeriodCompare[k-cashflows.length]/durchlaeufe;
 
-			logger.debug("Periode: " + (k-cashflows.size()));
-			logger.debug("Prognose: " + averagePerPeriod[k-cashflows.size()]);
-			logger.debug("Vergleichswert: " + averagePerPeriodCompare[k-cashflows.size()]);
-			assertEquals((double)Math.round(averagePerPeriod[k-cashflows.size()]),averagePerPeriodCompare[k-cashflows.size()]);
+			logger.debug("Periode: " + (k-cashflows.length));
+			logger.debug("Prognose: " + averagePerPeriod[k-cashflows.length]);
+			logger.debug("Vergleichswert: " + averagePerPeriodCompare[k-cashflows.length]);
+			assertEquals((double)Math.round(averagePerPeriod[k-cashflows.length]),averagePerPeriodCompare[k-cashflows.length]);
 		}
 		
 		
 		
 		//prüfen, ob Prognosearray rightige Länge besitzt (Dimension 1); richtige Länge, wenn bisherige Cashflows + zuberechnendePerioden enthalten sind
-		assertEquals(prognosewerte.length, cashflows.size()+zuberechnendeperioden);
+		assertEquals(prognosewerte.length, cashflows.length+zuberechnendeperioden);
 		//prüfen, ob Prognosearray rightige Länge besitzt (Dimension 2); richtige Länge, wenn durchlaeufe in Dimension 2 sind
 		assertEquals(prognosewerte[0].length, durchlaeufe);
 		assertNotNull(prognosewerte);

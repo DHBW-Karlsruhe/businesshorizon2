@@ -27,6 +27,8 @@ package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
 import junit.framework.TestCase;
 
+import java.util.Arrays;
+
 import org.apache.log4j.Logger;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -35,9 +37,9 @@ import cern.colt.list.DoubleArrayList;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
 
 /**
- * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in der Klasse AnalysisTime dar.
+ * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in der Klasse AnalysisTimeseries dar.
  * 
- * @author Volker Maier
+ * @author Volker Maier, Jonathan Janke
  * 
  */
 
@@ -50,27 +52,17 @@ public class TestAutokovarianz extends TestCase {
 	@Test
 	public void testAutokovarianz() {
 		AnalysisTimeseries at = new AnalysisTimeseries();
-		DoubleArrayList cashflows = new DoubleArrayList ();
-		DoubleArrayList autokovarianz = new DoubleArrayList();
-		DoubleArrayList autokovarianzVorgabe = new DoubleArrayList();
-		cashflows.add (7);
-		cashflows.add (9);
-		cashflows.add (5);
-		cashflows.add (14);
-		cashflows.add (6);
-		cashflows.add (8);
-		autokovarianzVorgabe.add (8.472222222222223);
-		autokovarianzVorgabe.add (-5.726851851851852);
-		autokovarianzVorgabe.add (2.407407407407408);
-		autokovarianzVorgabe.add (-1.3472222222222223);
-		autokovarianzVorgabe.add (0.3981481481481479);
-		autokovarianzVorgabe.add (0.032407407407407274);
+		double [] cashflows = {7,9,5,14,6,8};
+		double [] autokovarianzVorgabe = {8.472222222222223,-5.726851851851852,2.407407407407408,-1.3472222222222223,0.3981481481481479,0.032407407407407274};
+		double [] autokovarianz = new double [autokovarianzVorgabe.length];
 		
+		autokovarianz = at.calculateAutocovariances(cashflows);
+		logger.debug(Arrays.toString(autokovarianzVorgabe));
+		logger.debug(Arrays.toString(autokovarianz));
 		
-		autokovarianz = new DoubleArrayList(at.calculateAutocovariances(cashflows));
-		logger.debug(autokovarianzVorgabe);
-		logger.debug(autokovarianz);
-		
+			//prüft, ob Kovarianz mit Lag 0 der Varianz entspricht
+			assertEquals(at.calculateAutocovariance(cashflows, 0), at.berechneVarianz(cashflows));
+			//überprüft ob Kovarianzen mit Vorgaben übereinstimmen
 			assertEquals(autokovarianzVorgabe, autokovarianz);
 		}
 

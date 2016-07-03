@@ -18,20 +18,20 @@ public class TestStationaritaetTrendgerade extends TestCase{
 	
 	@Test public void testTrendGerade(){
 		double[] zeitreihe = {1,2,3,4,5,6};
-		Trendgerade gerade = Trendgerade.getTrendgerade(zeitreihe);
+		Trendgerade gerade = new Trendgerade(zeitreihe);
 		assertEquals(1.0, gerade.getM());
 		assertEquals(0.0, gerade.getB());
 		
 		
 		zeitreihe = new double[]{3,5,7};
-		gerade = Trendgerade.getTrendgerade(zeitreihe);
+		gerade = new Trendgerade(zeitreihe);
 		assertEquals(2.0, gerade.getM());
 		assertEquals(1.0, gerade.getB());
 		
 		zeitreihe = new double [] {3,3,3,3,3,3,3,3,3,4,5};
-		gerade = Trendgerade.getTrendgerade(zeitreihe);
-	//	logger.debug("m: " + gerade.getM());
-	//	logger.debug("b: " + gerade.getB());
+		gerade=new Trendgerade(zeitreihe);
+		logger.info ("m: " + gerade.getM());
+		logger.info ("b: " + gerade.getB());
 		
 		
 	}

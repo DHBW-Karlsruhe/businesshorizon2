@@ -579,8 +579,7 @@ public class AnalysisTimeseries {
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
 
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
-		Trendgerade trend = new Trendgerade();
-		trend.getTrendgerade(zeitreihe);
+		Trendgerade trend = new Trendgerade(zeitreihe);
 		LOGGER.info("Trendgerade:");
 		LOGGER.info("M: " + trend.getM());
 		LOGGER.info("B: " + trend.getB());
@@ -671,8 +670,7 @@ public class AnalysisTimeseries {
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
 
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
-		Trendgerade trend = new Trendgerade();
-		trend.getTrendgerade(zeitreihe);
+		Trendgerade trend = new Trendgerade(zeitreihe);
 		LOGGER.info("Trendgerade:");
 		LOGGER.info("M: " + trend.getM());
 		LOGGER.info("B: " + trend.getB());
@@ -796,16 +794,15 @@ public class AnalysisTimeseries {
 	 * 
 	 * @author: Nina Brauch
 	 * 
-	 * TODO: trendgerade Validierung mit realistischem Wert anstatt
-	 * "new double [1]"
+	 * TODO: trendgerade Validierung mit realistischem Wert anstatt "new double [1]"
 	 */
 
 	public void validierung(DoubleArrayList trendbereinigtezeitreihe, DoubleMatrix2D matrixPhi, int p) {
 
 		double prognosewert = 0;
 		double realisierungsWert = trendbereinigtezeitreihe.get(trendbereinigtezeitreihe.size() - 1);
-		Trendgerade trend = new Trendgerade();
-		realisierungsWert = realisierungsWert + trend.getTrendgerade(new double[1]).getValue(p);
+		Trendgerade trend = new Trendgerade(new double[1]);
+		realisierungsWert = realisierungsWert + trend.getValue(p);
 		LOGGER.debug("Realisierungswert: " + realisierungsWert);
 
 		// Ein Durchlauf findet den Gewichtungsfaktor Phi und den dazu passenden
@@ -814,7 +811,7 @@ public class AnalysisTimeseries {
 		for (int t = 0; t < p; t++) {
 			prognosewert = prognosewert + (matrixPhi.get(t, 0) * trendbereinigtezeitreihe.get(trendbereinigtezeitreihe.size() - (t + 2)));
 		}
-		prognosewert = prognosewert + trend.getTrendgerade(new double[1]).getValue(p);
+		prognosewert = prognosewert + trend.getValue(p);
 		// Berechnung der prozentualen Abweichung
 		double h = prognosewert / (realisierungsWert / 100);
 		// Die Variable abweichung enthält die Abweichung in %, abweichung =1

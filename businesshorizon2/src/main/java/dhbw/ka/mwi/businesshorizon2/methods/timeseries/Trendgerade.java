@@ -14,105 +14,86 @@ public class Trendgerade {
 		return this.getM()*x + this.getB();
 	}
 	
-	public Trendgerade getTrendgerade(double[] zeitreihe) {
-		boolean improvement = true;
+	public Trendgerade (double[] zeitreihe) {
 		//trendgerade erzeugen
-		Trendgerade tG = new Trendgerade();
 		//m und b mit Startwerten belegen
-		tG.m = zeitreihe[1] - zeitreihe[0];
-		tG.b = zeitreihe[0] - tG.m;
+		this.m = zeitreihe[1] - zeitreihe[0];
+		this.b = zeitreihe[0] - this.m;
 
 		double autokovarianz;
 		
-		double stepsize= tG.b/10;
+		double stepsize= this.b/10;
 		
 		//Schleife wird solange iteriert, bis sie über den Befehl "break;" abgebrochen wird s.u.
-		while(true){
-			autokovarianz = getAutoKoVarianz(tG.m, tG.b, zeitreihe);
+		while(stepsize > 0.01){
+			autokovarianz = getAutoKoVarianz(this.m, this.b, zeitreihe);
 			//m+stepsize und b gleich
-			double autokovarianzNew = getAutoKoVarianz((tG.m + stepsize), tG.b, zeitreihe);
+			double autokovarianzNew = getAutoKoVarianz((this.m + stepsize), this.b, zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.m += stepsize;
-				continue;
+				this.m += stepsize;
 			}
 			//m+stepsize und b-stepsize
-			autokovarianzNew = getAutoKoVarianz((tG.m + stepsize), (tG.b - stepsize), zeitreihe);
+			autokovarianzNew = getAutoKoVarianz((this.m + stepsize), (this.b - stepsize), zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.m += stepsize;
-				tG.b -= stepsize;
-				continue;
+				this.m += stepsize;
+				this.b -= stepsize;
 			}
 			//m+stepsize und b+stepsize
-			autokovarianzNew = getAutoKoVarianz((tG.m + stepsize), (tG.b + stepsize), zeitreihe);
+			autokovarianzNew = getAutoKoVarianz((this.m + stepsize), (this.b + stepsize), zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.m += stepsize;
-				tG.b += stepsize;
-				continue;
+				this.m += stepsize;
+				this.b += stepsize;
 			}
 			//m-stepsize und b gleich
-			autokovarianzNew = getAutoKoVarianz((tG.m - stepsize), (tG.b), zeitreihe);
+			autokovarianzNew = getAutoKoVarianz((this.m - stepsize), (this.b), zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.m -= stepsize;
-				continue;
+				this.m -= stepsize;
 			}
 			//m-stepsize und b+stepsize
-			autokovarianzNew = getAutoKoVarianz((tG.m - stepsize), (tG.b + stepsize), zeitreihe);
+			autokovarianzNew = getAutoKoVarianz((this.m - stepsize), (this.b + stepsize), zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.m -= stepsize;
-				tG.b += stepsize;
-				continue;
+				this.m -= stepsize;
+				this.b += stepsize;
 			}
 			//m-stepsize und b-stepsize
-			autokovarianzNew = getAutoKoVarianz((tG.m - stepsize), (tG.b - stepsize), zeitreihe);
+			autokovarianzNew = getAutoKoVarianz((this.m - stepsize), (this.b - stepsize), zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.m -= stepsize;
-				tG.b -= stepsize;
-				continue;
+				this.m -= stepsize;
+				this.b -= stepsize;
 			}
 			//m gleich und b-stepsize
-			autokovarianzNew = getAutoKoVarianz((tG.m), (tG.b - stepsize), zeitreihe);
+			autokovarianzNew = getAutoKoVarianz((this.m), (this.b - stepsize), zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.b -= stepsize;
-				continue;
+				this.b -= stepsize;
 			}
 			//m gleich und b+stepsize
-			autokovarianzNew = getAutoKoVarianz((tG.m ), (tG.b + stepsize), zeitreihe);
+			autokovarianzNew = getAutoKoVarianz((this.m ), (this.b + stepsize), zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.b += stepsize;
-				continue;
+				this.b += stepsize;
 			}
 			//mit m runden berechnen 
-			double mRounded = Math.round(tG.m);
-			double bRounded = Math.round(tG.b);
+			double mRounded = Math.round(this.m);
+			double bRounded = Math.round(this.b);
 			autokovarianzNew = getAutoKoVarianz(mRounded, bRounded, zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.m = mRounded;
-				tG.b = bRounded;
-				continue;
+				this.m = mRounded;
+				this.b = bRounded;
 			}
 			//mit b runden berechnen
-			bRounded = Math.round(tG.b);
+			bRounded = Math.round(this.b);
 			autokovarianzNew = getAutoKoVarianz(mRounded, bRounded, zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.b = bRounded;
-				continue;
+				this.b = bRounded;
 			}
 			//mit m runden berechnen
-			mRounded = Math.round(tG.m);
+			mRounded = Math.round(this.m);
 			autokovarianzNew = getAutoKoVarianz(mRounded, bRounded, zeitreihe);
 			if(autokovarianzNew<autokovarianz){
-				tG.m = mRounded;
-				continue;
+				this.m = mRounded;
 			}
 			
-			if(stepsize <=0.01){
-				break;
-			}else{
-				stepsize = stepsize/2;
-			}
+			stepsize = stepsize/2;
 		}
-		
-		return tG;
 	}
 /**
  * Methode um die Autokovarianz in Abhängigkeit von m und b in der Funktion f(x) = m*x+b zu berechnen
