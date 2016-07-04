@@ -25,6 +25,7 @@
 
 package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 
+import java.util.Arrays;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
