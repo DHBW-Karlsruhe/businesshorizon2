@@ -35,12 +35,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-
-
-
-
-
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.PostConstruct;
 
@@ -48,7 +44,6 @@ import org.apache.log4j.Logger;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.User;
-
 
 /**
  * 
@@ -81,7 +76,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 
 	private static final Logger logger = Logger.getLogger("PersistenceService.class");
 
-	private ArrayList<Project> allProjects;
+	private List<Project> allProjects;
 
 	/**
 	 * 
@@ -214,7 +209,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 	public synchronized void addProject(User user, Project project)
 			throws ProjectAlreadyExistsException {
 		//Nutzerprojekte in temporärer Liste abspeichern
-		ArrayList<Project> userProjects;
+		List<Project> userProjects;
 		userProjects = user.getProjects();
 
 		if (allProjects == null) {
@@ -278,7 +273,7 @@ public class PersistenceService implements PersistenceServiceInterface {
 	 */
 	public synchronized void removeProject(User user, Project project){
 		//Nutzerprojekte in temporärer Liste abspeichern
-		ArrayList<Project> userProjects;
+		List<Project> userProjects;
 		userProjects = user.getProjects();
 		//Projekt aus der temporären Liste löschen
 		userProjects.remove(project);
@@ -484,5 +479,12 @@ public class PersistenceService implements PersistenceServiceInterface {
 		
 		return exportFileName;
 	}
-
+	
+	public List<Project> getAllProjects() {
+		return allProjects;
+	}
+	
+	public void setAllProjects(List<Project> allProjects) {
+		this.allProjects = allProjects;
+	}
 }
