@@ -202,6 +202,7 @@ public class AnalysisTimeseries {
 
 		// berechnet die Autokovarianzen der Zeitreihe in Abhängigkeit von j
 		for (int j = 0; j < lokalezeitreihe.length; j++) {
+			LOGGER.debug("Lag " + lag + ": " + ((lokalezeitreihe[j] - expectedValue) * (zeitreihe[j] - expectedValue)));
 			autocovariance += (lokalezeitreihe[j] - expectedValue) * (zeitreihe[j] - expectedValue);
 		}
 		autocovariance = autocovariance / lokalezeitreihe.length;
@@ -573,18 +574,26 @@ public class AnalysisTimeseries {
 	 */
 
 	// @Override
-	public Distribution calculateAsDistribution (double[] zeitreihe, int p, int zuberechnendePerioden, int durchlaeufe, CallbackInterface callback, boolean isfremdkapital) throws InterruptedException, StochasticMethodException {
+	
 
-		// vorbereitende Initialisierung
-		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
+	/**
+	 * Reduziert die aktuelle Zeitreihe um deren Trend.
+	 * 
+	 * @author Jonathan Janke
+	 * @param zeitreihe []
+	 *       		die differenziert wird
 
+	 * @return differenziertes Array
+	 */
+	
+	public double [] reduceTide(double [] zeitreihe) {
 		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
 		Trendgerade trend = new Trendgerade(zeitreihe);
 		LOGGER.info("Trendgerade:");
 		LOGGER.info("M: " + trend.getM());
 		LOGGER.info("B: " + trend.getB());
 
-		this.bereinigteZeitreihe = new double [zuberechnendePerioden];
+		this.bereinigteZeitreihe = new double [zeitreihe.length];
 
 		for (int i = 0; i < zeitreihe.length; i++) {
 			this.bereinigteZeitreihe[i] = zeitreihe[i] - trend.getValue(i);
@@ -592,56 +601,46 @@ public class AnalysisTimeseries {
 
 		LOGGER.debug("Bereinigte Zeitreihe:");
 		LOGGER.debug(bereinigteZeitreihe);
+		
+		return bereinigteZeitreihe;
+	}
+	
+	/**
+	 * Addiert den aktuellen Trend auf die Zeitreihe
+	 * 
+	 * @author Jonathan Janke
+	 * @param zeitreihe []
+	 *       		die differenziert wurde
 
-		// Start der zur Prognose benoetigten Berechnungen
-		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
-		// this.autokovarianzen = new
-		// DoubleArrayList(calculateAutocovariances(bereinigteZeitreihe));
-		this.autocorrelation = calculateAutocorrelations(bereinigteZeitreihe);
-		// TODO: berechne Modellparameter anpassen an:
-		// - Autokorrelation
-		// - eigene Matrixmethode
-		// this.modellparameter = berechneModellparameter(autocorrelation, p);
-//		 this.modellparameter = calculateModelParameters(new Matrix(this.bereinigteZeitreihe), autocorrelations) //FIXME
-		// add parameters
-		this.standardabweichung = this.berechneStandardabweichung(bereinigteZeitreihe);
-		LOGGER.debug("Zur Prognose benötigten Berechnungen abgeschlossen");
-
-		// Start der Prognose
-		prognosewerte = prognoseBerechnenNew(bereinigteZeitreihe, modellparameter, standardabweichung, zuberechnendePerioden, durchlaeufe, p, mittelwert, isfremdkapital);
-		// prognosewerte = prognoseBerechnen(bereinigteZeitreihe,
-		// modellparameter, standardabweichung, zuberechnendePerioden,
-		// durchlaeufe, p,mittelwert, isfremdkapital);
-		LOGGER.debug("Berechnung der Prognosewerte abgeschlossen.");
+	 * @return differenziertes Array
+	 */
+	//TODO: Differenzierung zwischen Fremdkapital und Cashflows wichtig?
+	public double [][] addTide(double [] timeseries , double [][] values, boolean isfremdkapital) {
 		// Trendbereinigung wieder draufschlagen
-		// Perioden durchlaufen
-		for (int i = 0; i < prognosewerte[0].length; i++) {
+				// Perioden durchlaufen
+		Trendgerade trend = new Trendgerade(timeseries);
+		for (int i = 0; i < values.length; i++) {
 			// den Trend pro Periode ermitteln
-			double newtide = trend.getValue(i + p + 1);
+			double newtide = trend.getValue(i);
 
-			if (isfremdkapital) {
+			/*if (isfremdkapital) {
 				this.erwartetesFremdkapital[i] = this.erwartetesFremdkapital[i] + newtide;
 			} else {
 				this.erwarteteCashFlows[i] = this.erwarteteCashFlows[i] + newtide;
-			}
+			}*/
 			// alle Iterationen durchlaufen
-			for (int j = 0; j < prognosewerte.length; j++) {
+			for (int j = 0; j < values[i].length; j++) {
 				// auf jeden Wert (Prognosewerte und die erwarteten Cashflows)
 				// den Trend wieder aufaddieren
-				prognosewerte[j][i] += newtide;
+				values[i][j] += newtide;
 			}
-
 		}
 
 		LOGGER.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
-		//TODO: Variablen interestBearingDebtCapital, scenario auffüllen
-		double [] interestBearingDebtCapital = new double [prognosewerte.length];
-		Szenario scenario = new Szenario(1.0, 1.0, 1.0, 1.0, false);
-		
-		return this.createStochasticPrognosis(prognosewerte, 20, interestBearingDebtCapital, scenario);
+		return values;
 	}
-
-
+	
+	
 	/**
 	 * Methode für die Durchführung einer Zeitreihenanalyse und Prognostizierung
 	 * zukünftiger Werte.
@@ -664,25 +663,13 @@ public class AnalysisTimeseries {
 	 */
 
 	// @Override
+	
 	public double[][] calculate(double[] zeitreihe, int p, int zuberechnendePerioden, int durchlaeufe, CallbackInterface callback, boolean isfremdkapital) throws InterruptedException, StochasticMethodException {
 
 		// vorbereitende Initialisierung
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
 
-		// Trendbereinigung der Zeitreihe wenn diese nicht stationaer ist
-		Trendgerade trend = new Trendgerade(zeitreihe);
-		LOGGER.info("Trendgerade:");
-		LOGGER.info("M: " + trend.getM());
-		LOGGER.info("B: " + trend.getB());
-
-		this.bereinigteZeitreihe = new double [zuberechnendePerioden];
-
-		for (int i = 0; i < zeitreihe.length; i++) {
-			this.bereinigteZeitreihe[i] = zeitreihe[i] - trend.getValue(i);
-		}
-
-		LOGGER.debug("Bereinigte Zeitreihe:");
-		LOGGER.debug(bereinigteZeitreihe);
+		this.bereinigteZeitreihe= this.reduceTide(zeitreihe);
 
 		// Start der zur Prognose benoetigten Berechnungen
 		this.mittelwert = berechneMittelwert(bereinigteZeitreihe);
@@ -704,29 +691,27 @@ public class AnalysisTimeseries {
 		// modellparameter, standardabweichung, zuberechnendePerioden,
 		// durchlaeufe, p,mittelwert, isfremdkapital);
 		LOGGER.debug("Berechnung der Prognosewerte abgeschlossen.");
-		// Trendbereinigung wieder draufschlagen
-		// Perioden durchlaufen
-		for (int i = 0; i < prognosewerte[0].length; i++) {
-			// den Trend pro Periode ermitteln
-			double newtide = trend.getValue(i + p + 1);
-
-			if (isfremdkapital) {
-				this.erwartetesFremdkapital[i] = this.erwartetesFremdkapital[i] + newtide;
-			} else {
-				this.erwarteteCashFlows[i] = this.erwarteteCashFlows[i] + newtide;
-			}
-			// alle Iterationen durchlaufen
-			for (int j = 0; j < prognosewerte.length; j++) {
-				// auf jeden Wert (Prognosewerte und die erwarteten Cashflows)
-				// den Trend wieder aufaddieren
-				prognosewerte[j][i] += newtide;
-			}
-
-		}
-
-		LOGGER.debug("Trendwerte wieder auf die Prognosewerte aufgeschlagen.");
-
+		prognosewerte = this.addTide(zeitreihe, prognosewerte, isfremdkapital);
 		return prognosewerte;
+	}
+	
+	public Distribution calculateAsDistribution (double[] zeitreihe, double [] initialInterestBearingDebtCapital, int p, int zuberechnendePerioden, int durchlaeufe, CallbackInterface callback) throws InterruptedException, StochasticMethodException {
+
+		double [][] timeseriesprognosis = this.calculate(zeitreihe, p, zuberechnendePerioden, durchlaeufe, callback, false);
+		double [][] interestBearingDebtCapitaPrognosis = this.calculate(initialInterestBearingDebtCapital, p, zuberechnendePerioden, durchlaeufe, callback, true);
+		//TODO: Variablen interestBearingDebtCapital, scenario auffüllen
+		Szenario scenario = new Szenario(1.0, 1.0, 1.0, 1.0, false);
+		
+		double [] interestBearingDebtCapital = new double [interestBearingDebtCapitaPrognosis.length];
+		for (int i=0; i<interestBearingDebtCapitaPrognosis.length; i++) {
+			interestBearingDebtCapital[i]=0;
+			for (double iteration : interestBearingDebtCapitaPrognosis[i]) {
+				interestBearingDebtCapital[i]+=iteration;
+			}
+			interestBearingDebtCapital[i]/=interestBearingDebtCapitaPrognosis[i].length;
+		}
+		
+		return this.createStochasticPrognosis(timeseriesprognosis, 20, interestBearingDebtCapital, scenario);
 	}
 
 	public Matrix calculateModelParameters(Matrix matrix, double[] autocorrelations) {

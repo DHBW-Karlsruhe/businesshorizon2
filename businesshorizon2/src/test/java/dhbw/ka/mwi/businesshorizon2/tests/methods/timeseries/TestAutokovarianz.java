@@ -54,9 +54,15 @@ public class TestAutokovarianz extends TestCase {
 		AnalysisTimeseries at = new AnalysisTimeseries();
 		double [] cashflows = {7,9,5,14,6,8};
 		double [] autokovarianzVorgabe = {8.472222222222223,-5.726851851851852,2.407407407407408,-1.3472222222222223,0.3981481481481479,0.032407407407407274};
+		double [] autokovarianzReducedVorgabe = {8.472222222222223,-5.726851851851852,2.407407407407408,-1.3472222222222223,0.3981481481481479,0.032407407407407274};
 		double [] autokovarianz = new double [autokovarianzVorgabe.length];
-		
-		autokovarianz = at.calculateAutocovariances(cashflows);
+		double [] autokovarianzreduced = new double [autokovarianzVorgabe.length];
+
+		double [] reducedCashflows=at.reduceTide(cashflows);
+		//logger.debug(Arrays.toString(reducedCashflows));
+		autokovarianz = at.calculateAutocovariances(reducedCashflows);
+		autokovarianzreduced = at.calculateAutocovariances(cashflows);
+
 		logger.debug(Arrays.toString(autokovarianzVorgabe));
 		logger.debug(Arrays.toString(autokovarianz));
 		
@@ -64,6 +70,7 @@ public class TestAutokovarianz extends TestCase {
 			assertEquals(at.calculateAutocovariance(cashflows, 0), at.berechneVarianz(cashflows));
 			//überprüft ob Kovarianzen mit Vorgaben übereinstimmen
 			assertEquals(autokovarianzVorgabe, autokovarianz);
+			assertEquals(autokovarianzReducedVorgabe, autokovarianzreduced);
 		}
 
 	}
