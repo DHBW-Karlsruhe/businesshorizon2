@@ -713,7 +713,7 @@ public class AnalysisTimeseries {
 		double[][] timeseriesprognosis = this.calculate(zeitreihe, p, zuberechnendePerioden, durchlaeufe, callback, false);
 		double[][] interestBearingDebtCapitaPrognosis = this.calculate(initialInterestBearingDebtCapital, p, zuberechnendePerioden, durchlaeufe, callback, true);
 		// TODO: Variablen interestBearingDebtCapital, scenario auffüllen
-		scenario = new Szenario(1.0, 1.0, 1.0, 1.0, false);
+		scenario = new Szenario(1.0, 1.0, 1.0, 1.0, 1.0, false);
 
 		double[] interestBearingDebtCapital = new double[interestBearingDebtCapitaPrognosis.length];
 		for (int i = 0; i < interestBearingDebtCapitaPrognosis.length; i++) {

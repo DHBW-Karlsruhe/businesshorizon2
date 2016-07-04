@@ -56,7 +56,7 @@ public class TestAPV extends TestCase {
 		double[] cashflow = new double[5];
 		double[] interestBearingDebtCapital = new double[5];
 		Szenario szenario = new Szenario(EQUITY_COSTS_WITHOUT_TAXES, BORROWING_COSTS_WITHOUT_TAXES, TRADE_TAX,
-				CORPORATE_AND_SOLITARY_TAX, INCLUDE_IN_CALCULATION);
+				CORPORATE_AND_SOLITARY_TAX, PERSONAL_TAX_RATE, INCLUDE_IN_CALCULATION);
 		double expectedResult = 1075.24;
 		double result;
 

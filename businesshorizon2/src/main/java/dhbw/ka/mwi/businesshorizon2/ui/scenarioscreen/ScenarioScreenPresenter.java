@@ -136,7 +136,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 * @author Julius Hacker, Tobias Lindner
 	 */
 	public void addScenario() {
-		Szenario scenario = new Szenario(0.0, 0.0, 0.0, 0.0, true);
+		Szenario scenario = new Szenario(0.0, 0.0, 0.0, 0.0, 0.0, true);
 		this.projectProxy.getSelectedProject().addScenario(scenario);
 		getView().addScenario(Double.toString(scenario.getRateReturnEquity()),
 				Double.toString(scenario.getRateReturnCapitalStock()),
@@ -184,7 +184,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			List<Szenario> scenarios = this.projectProxy.getSelectedProject()
 					.getScenarios();
 			if (scenarios.size() < 1) {
-				scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, true));
+				scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, 26.375, true));
 			}
 	
 			getView().clear();

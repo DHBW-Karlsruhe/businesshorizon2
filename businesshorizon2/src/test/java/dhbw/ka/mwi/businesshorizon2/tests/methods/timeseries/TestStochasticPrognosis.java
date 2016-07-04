@@ -79,7 +79,7 @@ public class TestStochasticPrognosis extends TestCase {
 		
 		//interestbearingdebtcapital wird unten mit dummy Werten gefüllt (1 an jeder Stelle)
 		double [] interestBearingDebtCapital = new double [periods];
-		Szenario scenario = new Szenario(10, 20, 30, 40, false);
+		Szenario scenario = new Szenario(10, 20, 30, 40, 26.375, false);
 			
 		for (int h=0; h<periods; h++) {
 			testValue= 0;

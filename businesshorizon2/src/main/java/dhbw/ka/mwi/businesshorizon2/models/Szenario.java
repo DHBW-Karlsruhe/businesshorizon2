@@ -29,7 +29,7 @@ import java.io.Serializable;
 
 public class Szenario implements Serializable {
 	/**
-	 * 
+	 * @author Thomas Zapf, Markus Baader
 	 */
 	private static final long serialVersionUID = -9003657837833197321L;
 
@@ -41,15 +41,19 @@ public class Szenario implements Serializable {
 	
 	private double corporateAndSolitaryTax;
 	
+	private double personalTaxRate;
+	
 	private boolean includeInCalculation;
 
 	public Szenario(double rateReturnEquity, double rateReturnCapitalStock,
-			double businessTax, double corporateAndSolitaryTax, boolean includeInCalculation) {
+			double businessTax, double corporateAndSolitaryTax, 
+			double personalTaxRate, boolean includeInCalculation) {
 		super();
 		this.rateReturnEquity = rateReturnEquity;
 		this.rateReturnCapitalStock = rateReturnCapitalStock;
 		this.businessTax = businessTax;
 		this.corporateAndSolitaryTax = corporateAndSolitaryTax;
+		this.personalTaxRate = personalTaxRate;
 		this.includeInCalculation = includeInCalculation;
 	}
 	
@@ -88,6 +92,14 @@ public class Szenario implements Serializable {
 	public void setCorporateAndSolitaryTax(double corporateAndSolitaryTax) {
 		this.corporateAndSolitaryTax = corporateAndSolitaryTax;
 	}
+	
+	public double getPersonalTaxRate() {
+        return personalTaxRate;
+    }
+
+    public void setPersonalTaxRate(double personalTaxRate) {
+        this.personalTaxRate = personalTaxRate;
+    }
 
 	public boolean isIncludeInCalculation() {
 		return includeInCalculation;
