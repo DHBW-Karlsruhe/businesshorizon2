@@ -31,6 +31,7 @@ import org.apache.log4j.Logger;
 //import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
 
 import Jama.Matrix;
+import cern.colt.Arrays;
 import cern.colt.list.DoubleArrayList;
 import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
@@ -471,6 +472,7 @@ public class AnalysisTimeseries {
 				tempPrognosis[j] = prognosis[j][i];
 			}
 			apvPrognosis[i] = apvCalc.calculateValues(tempPrognosis, interestBearingDebtCapital, scenario);
+			LOGGER.debug(Arrays.toString(tempPrognosis));
 		}
 
 		Distribution distribution = new Distribution(numberOfValueClasses, apvPrognosis);
@@ -710,12 +712,12 @@ public class AnalysisTimeseries {
 		return prognosewerte;
 	}
 
-	public Distribution calculateAsDistribution(double[] zeitreihe, double[] initialInterestBearingDebtCapital, int p, int zuberechnendePerioden, int durchlaeufe, CallbackInterface callback) throws InterruptedException, StochasticMethodException {
+	public Distribution calculateAsDistribution(double[] zeitreihe, double[] initialInterestBearingDebtCapital, int p, int zuberechnendePerioden, int durchlaeufe, Szenario scenario, CallbackInterface callback) throws InterruptedException, StochasticMethodException {
 
 		double[][] timeseriesprognosis = this.calculate(zeitreihe, p, zuberechnendePerioden, durchlaeufe, callback, false);
 		double[][] interestBearingDebtCapitaPrognosis = this.calculate(initialInterestBearingDebtCapital, p, zuberechnendePerioden, durchlaeufe, callback, true);
 		// TODO: Variablen interestBearingDebtCapital, scenario auffüllen
-		Szenario scenario = new Szenario(1.0, 1.0, 1.0, 1.0, false);
+		scenario = new Szenario(1.0, 1.0, 1.0, 1.0, false);
 
 		double[] interestBearingDebtCapital = new double[interestBearingDebtCapitaPrognosis.length];
 		for (int i = 0; i < interestBearingDebtCapitaPrognosis.length; i++) {
@@ -725,8 +727,10 @@ public class AnalysisTimeseries {
 			}
 			interestBearingDebtCapital[i] /= interestBearingDebtCapitaPrognosis[i].length;
 		}
+		
+		int numberIntervals=20;
 
-		return this.createStochasticPrognosis(timeseriesprognosis, 20, interestBearingDebtCapital, scenario);
+		return this.createStochasticPrognosis(timeseriesprognosis, numberIntervals, interestBearingDebtCapital, scenario);
 	}
 
 	public double[] calculateModelParameters(Matrix matrix, double[] autocorrelations) {
