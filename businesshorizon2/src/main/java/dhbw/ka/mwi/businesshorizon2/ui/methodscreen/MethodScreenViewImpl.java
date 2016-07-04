@@ -169,11 +169,11 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		});
 
 		berechnungGroup.addItem("apv");
-		berechnungGroup.addItem("fte");
-		berechnungGroup.addItem("wac");
+		//berechnungGroup.addItem("fte");
+		//berechnungGroup.addItem("wac");
 		berechnungGroup.setItemCaption("apv", "APV (Adjusted Present Value)");
-		berechnungGroup.setItemCaption("fte", "FTE (Flow to Equity)");
-		berechnungGroup.setItemCaption("wac", "WACC (Weighted Average Cost of Capital)");
+		//berechnungGroup.setItemCaption("fte", "FTE (Flow to Equity)");
+		//berechnungGroup.setItemCaption("wac", "WACC (Weighted Average Cost of Capital)");
 //		berechnungGroup.setValue("apv");
 		berechnungGroup.setImmediate(true);
 		berechnungGroup.addListener(new Property.ValueChangeListener() {
