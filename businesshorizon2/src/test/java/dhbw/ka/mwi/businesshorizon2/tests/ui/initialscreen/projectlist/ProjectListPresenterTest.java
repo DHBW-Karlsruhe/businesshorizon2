@@ -25,24 +25,15 @@
 
 package dhbw.ka.mwi.businesshorizon2.tests.ui.initialscreen.projectlist;
 
-import java.util.Date;
-import java.util.List;
-
-import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.models.User;
-import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
 import dhbw.ka.mwi.businesshorizon2.tests.ui.AbstractPresenterTestCase;
 import dhbw.ka.mwi.businesshorizon2.tests.ui.initialscreen.projectlist.assets.ProjectListViewMock;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectAddEvent;
 import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectListPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ProjectRemoveEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.ShowProjectListEvent;
-@Ignore //FIXME seazzle
+import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
+
 public class ProjectListPresenterTest extends AbstractPresenterTestCase {
 
 	@Autowired
@@ -62,7 +53,7 @@ public class ProjectListPresenterTest extends AbstractPresenterTestCase {
 		Project project = new Project("testProject", "testDescription");
 		presenter.projectSelected(project);
 
-		assertEventFired(ShowProjectEvent.class);
+		assertEventFired(SelectProjectEvent.class);
 		
 		
 		/*

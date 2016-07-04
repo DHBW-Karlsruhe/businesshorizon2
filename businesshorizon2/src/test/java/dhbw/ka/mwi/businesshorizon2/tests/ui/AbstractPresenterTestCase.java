@@ -58,9 +58,9 @@ abstract public class AbstractPresenterTestCase extends AbstractSpringBeanTestCa
 		eventsFired.add(event);
 	}
 	
-	protected void assertEventFired(Class<? extends Event> eventClass) {
+	protected void assertEventFired(Class <? extends Event> eventClass) {
 		assertTrue(eventsFired.size() == 1);
-		assertTrue(eventsFired.get(0).getClass() == eventClass);
+		assertTrue(eventsFired.get(0).getClass()==eventClass);
 	}
 	
 	@SuppressWarnings("unchecked")
