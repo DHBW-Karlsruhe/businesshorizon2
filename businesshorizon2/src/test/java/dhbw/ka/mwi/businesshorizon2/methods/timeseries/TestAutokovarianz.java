@@ -19,8 +19,6 @@ public class TestAutokovarianz {
 //			System.out.println("Zeitreihe["+i+"]: " + testZeitreihe[i]);
 //		}
 				
-		int i_TestLag = 0;
-		
 //		Debug Output
 //		System.out.println("Lag: " + i_TestLag);
 		
