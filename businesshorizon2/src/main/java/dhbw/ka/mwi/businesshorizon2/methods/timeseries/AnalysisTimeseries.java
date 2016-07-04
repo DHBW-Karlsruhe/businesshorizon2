@@ -187,26 +187,41 @@ public class AnalysisTimeseries {
 	 *            gibt die Verschiebung der Zeitreihen an
 	 * @return autocovariance: autorvarianz der Zeitreihe zum gegebenen lag
 	 */
-	public double calculateAutocovariance(double[] zeitreihe, int lag) {
+	public double calculateAutocovariance(double[] timeseries, int lag) {
 
-		double expectedValue = this.berechneMittelwert(zeitreihe);
+		//Länge der Zeitreihe auf -lag angepasst
+			double [] timeseries_shortened = new double [(timeseries.length-lag)];
+			
+			for (int k = 0; k < (timeseries.length-lag); k++) {
+				timeseries_shortened[k]= timeseries[k];
+			}
+			
+			//Mittelwert der originalen verkürzten Zeitreihe ermitteln
+			double expectedValue_timeseries = this.berechneMittelwert(timeseries_shortened);
+			LOGGER.debug("Mittelwert der Lokalreihe: " + expectedValue_timeseries);
+			
+			double autocovariance = 0;
 
-		double autocovariance = 0;
+			//duplizierte Zeitreihenarray um Parameter lag verschoben
+			double[] localtimeseries = new double[(timeseries.length-lag)];
 
-		double[] lokalezeitreihe = new double[zeitreihe.length - lag];
-
-		// duplizierte Zeitreihenarray um Parameter lag verschoben
-		for (int i = 0; i < zeitreihe.length - lag; i++) {
-			lokalezeitreihe[i] = zeitreihe[i + lag];
-		}
-
-		// berechnet die Autokovarianzen der Zeitreihe in Abhängigkeit von j
-		for (int j = 0; j < lokalezeitreihe.length; j++) {
-			LOGGER.debug("Lag " + lag + ": " + ((lokalezeitreihe[j] - expectedValue) * (zeitreihe[j] - expectedValue)));
-			autocovariance += (lokalezeitreihe[j] - expectedValue) * (zeitreihe[j] - expectedValue);
-		}
-		autocovariance = autocovariance / lokalezeitreihe.length;
-		return autocovariance;
+			for (int i = lag; i < timeseries.length; i++) {
+				localtimeseries[i-1]= timeseries[i];
+			}
+			
+			//Mittelwert der lokalen Zeitreihe ermitteln
+			double expectedValue_localtimeseries = this.berechneMittelwert(localtimeseries);
+			LOGGER.debug("Mittelwert der Lokalreihe: " + expectedValue_localtimeseries);
+			
+			// berechnet die Autokovarianzen der Zeitreihe in Abhängigkeit von j
+			for (int j = 0; j < localtimeseries.length; j++) {
+				LOGGER.debug("Lag " + lag + ": " + ((timeseries_shortened[j] - expectedValue_timeseries) * (localtimeseries[j] - expectedValue_localtimeseries)));
+				autocovariance += (timeseries_shortened[j] - expectedValue_timeseries)*(localtimeseries[j] - expectedValue_localtimeseries);
+			}
+			
+			autocovariance = autocovariance / localtimeseries.length ;
+			
+			return autocovariance;
 	}
 
 	/**
