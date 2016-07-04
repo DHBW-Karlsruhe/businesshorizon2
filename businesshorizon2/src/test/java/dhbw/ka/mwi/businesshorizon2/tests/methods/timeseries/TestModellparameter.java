@@ -25,20 +25,12 @@
 
 package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
-import junit.framework.TestCase;
-
 import org.apache.log4j.Logger;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
-import Jama.Matrix;
-import cern.colt.list.DoubleArrayList;
-import cern.colt.matrix.DoubleFactory2D;
-import cern.colt.matrix.DoubleMatrix2D;
-
-import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
+import junit.framework.TestCase;
 
 
 /**
@@ -50,13 +42,10 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
 
 public class TestModellparameter extends TestCase {
 	
-	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
-	
-		
 	@Test
 	public void testModellparameter() {
 		
-		double [] cashflows = {1,5,10,20,30};
+		double [] cashflows = {1002323,33256673,44,55,66};
 		
 		double[] expectedParmas = {-1.09253751,-0.790322469, -0.651577395, -0.488155996, -0.215330237};
 		
