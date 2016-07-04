@@ -216,15 +216,15 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		gl.addComponent(fcfHeadline, 1, 0);
 		gl.addComponent(fcfText, 1, 1);
 		
-		gl.addComponent(iconUKV, 0, 2);
-		gl.setComponentAlignment(iconUKV, Alignment.MIDDLE_CENTER);
-		gl.addComponent(ukvHeadline, 1, 2);
-		gl.addComponent(ukvText, 1, 3);
-		
-		gl.addComponent(iconGKV, 0 , 4);
-		gl.setComponentAlignment(iconGKV, Alignment.MIDDLE_CENTER);
-		gl.addComponent(gkvHeadline, 1, 4);
-		gl.addComponent(gkvText, 1, 5);
+//		gl.addComponent(iconUKV, 0, 2);
+//		gl.setComponentAlignment(iconUKV, Alignment.MIDDLE_CENTER);
+//		gl.addComponent(ukvHeadline, 1, 2);
+//		gl.addComponent(ukvText, 1, 3);
+//		
+//		gl.addComponent(iconGKV, 0 , 4);
+//		gl.setComponentAlignment(iconGKV, Alignment.MIDDLE_CENTER);
+//		gl.addComponent(gkvHeadline, 1, 4);
+//		gl.addComponent(gkvText, 1, 5);
 		
 		vl.addComponent(headline0);
 		vl.addComponent(headline1);
@@ -249,15 +249,15 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		gl.addComponent(apvHeadline, 1, 0);
 		gl.addComponent(apvText, 1, 1);
 		
-		gl.addComponent(iconFTE, 0, 2);
-		gl.setComponentAlignment(iconFTE, Alignment.MIDDLE_CENTER);
-		gl.addComponent(fteHeadline, 1, 2);
-		gl.addComponent(fteText, 1, 3);
-		
-		gl.addComponent(iconWACC, 0 , 4);
-		gl.setComponentAlignment(iconWACC, Alignment.MIDDLE_CENTER);
-		gl.addComponent(waccHeadline, 1, 4);
-		gl.addComponent(waccText, 1, 5);
+//		gl.addComponent(iconFTE, 0, 2);
+//		gl.setComponentAlignment(iconFTE, Alignment.MIDDLE_CENTER);
+//		gl.addComponent(fteHeadline, 1, 2);
+//		gl.addComponent(fteText, 1, 3);
+//		
+//		gl.addComponent(iconWACC, 0 , 4);
+//		gl.setComponentAlignment(iconWACC, Alignment.MIDDLE_CENTER);
+//		gl.addComponent(waccHeadline, 1, 4);
+//		gl.addComponent(waccText, 1, 5);
 		
 		vl.addComponent(headline0);
 		vl.addComponent(headline1);
@@ -353,11 +353,12 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 		});
 
 		//UKV Beschreibung
-		ukvHeadline = new Label ("<h3>UKV</h3>");
+		ukvHeadline = new Label ("");//<h3>UKV</h3>");
 		ukvHeadline.setContentMode (Label.CONTENT_XHTML);
 		ukvHeadline.addStyleName ("descriptionHeadline");
-		ukvText = new Label ("Beim Umsatz-Kosten-Verfahren wird der Cashflow aus Werten aus GuV und Bilanz berechnet. Die dafür notwendigen Posten sind: "
-				+ "Umsatzerlöse, Herstellkosten des Umsatzes, Kosten F&E, Verwaltungskosten, Sonstiger Aufwand, Ertrag, Erträge aus Wertpapieren, Zinsen und ähnliche Aufwendungen, Außerordentliche Erträge & Aufwendungen, Abschreibungen, Pensionsrückstellungen");
+		ukvText = new Label ("");
+				//"Beim Umsatz-Kosten-Verfahren wird der Cashflow aus Werten aus GuV und Bilanz berechnet. Die dafür notwendigen Posten sind: "
+				//+ "Umsatzerlöse, Herstellkosten des Umsatzes, Kosten F&E, Verwaltungskosten, Sonstiger Aufwand, Ertrag, Erträge aus Wertpapieren, Zinsen und ähnliche Aufwendungen, Außerordentliche Erträge & Aufwendungen, Abschreibungen, Pensionsrückstellungen");
 		ukvText.addStyleName ("wrap");
 		ukvText.addStyleName ("descriptionText");
 		iconUKV = new Embedded (null, new ThemeResource("./images/icons/newIcons/1421209133_circle_next_arrow_disclosure-128_rotated.png"));
