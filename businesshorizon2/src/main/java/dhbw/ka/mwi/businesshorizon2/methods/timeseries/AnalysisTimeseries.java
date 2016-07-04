@@ -205,8 +205,8 @@ public class AnalysisTimeseries {
 			//duplizierte Zeitreihenarray um Parameter lag verschoben
 			double[] localtimeseries = new double[(timeseries.length-lag)];
 
-			for (int i = lag; i < timeseries.length; i++) {
-				localtimeseries[i-1]= timeseries[i];
+			for (int i = 0; i < localtimeseries.length; i++) {
+				localtimeseries[i]= timeseries[i+lag];
 			}
 			
 			//Mittelwert der lokalen Zeitreihe ermitteln
@@ -236,6 +236,7 @@ public class AnalysisTimeseries {
 	 * @return Autokorrelation: berechnet aus Autokovarianz/Varianz
 	 */
 	public double calculateAutocorrelation(double[] zeitreihe, int lag) {
+		if (this.berechneVarianz(zeitreihe)==calculateAutocovariance(zeitreihe, lag)) return 1;
 		return this.calculateAutocovariance(zeitreihe, lag) / this.berechneVarianz(zeitreihe);
 	}
 
