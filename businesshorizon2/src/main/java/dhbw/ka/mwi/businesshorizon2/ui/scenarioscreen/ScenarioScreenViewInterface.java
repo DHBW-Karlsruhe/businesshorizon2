@@ -1,4 +1,5 @@
 /*******************************************************************************
+ /*******************************************************************************
  * BusinessHorizon2
  *
  * Copyright (C) 
@@ -27,6 +28,11 @@ package dhbw.ka.mwi.businesshorizon2.ui.scenarioscreen;
 
 import dhbw.ka.mwi.businesshorizon2.ui.process.contentcontainer.ContentView;
 
+/**
+ * @author Markus Baader, Thomas Zapf
+ * 
+ */
+
 public interface ScenarioScreenViewInterface extends ContentView {
 
 	/**
@@ -49,7 +55,7 @@ public interface ScenarioScreenViewInterface extends ContentView {
 	 */
 	public void addScenario(String rateReturnEquity,
 			String rateReturnCapitalStock, String corporateAndSolitaryTax,
-			String businessTax, boolean isIncludeInCalculation, int numberOfScenario);
+			String businessTax, String personalTaxRate, boolean isIncludeInCalculation, int numberOfScenario);
 	public void removeScenario(int number);
 	
 	public void updateLabels();
@@ -63,6 +69,7 @@ public interface ScenarioScreenViewInterface extends ContentView {
 	public void setRateReturnCapitalStock(int scenarioNumber, String newValue);
 	public void setBusinessTax(int scenarioNumber, String newValue);
 	public void setCorporateAndSolitaryTax(int scenarioNumber, String newValue);
+	public void setPersonalTaxRate(int scenarioNumber, String newValue);
 	
 	/**
 	 * Diese Methode setzt das betreffende Eingabefeld auf den Status ungueltig.

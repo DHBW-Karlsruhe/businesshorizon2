@@ -57,7 +57,7 @@ import com.vaadin.ui.VerticalLayout;
 /**
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Szenario" in Vaadin.
  * 
- * @author Julius Hacker, Tobias Lindner
+ * @author Julius Hacker, Tobias Lindner, Markus Baader, Thomas Zapf
  *
  */
 public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioScreenViewInterface {
@@ -155,10 +155,11 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	 * @param businessTax Standardwert fuer die Gewerbesteuer
 	 * @param corporateAndSolitaryTax Standardwert fuer die Koerperschaftssteuer mit Solidaritaetszuschlag.
 	 */
+	
 	@Override
 	public void addScenario(String rateReturnEquity,
 			String rateReturnCapitalStock, String corporateAndSolitaryTax,
-			String businessTax, boolean isIncludeInCalculation, final int number) {
+			String businessTax, String personalTaxRate, boolean isIncludeInCalculation, final int number) {
 		HashMap<String, AbstractComponent> scenarioComponents = new HashMap<String, AbstractComponent>();
 		
 		Property.ValueChangeListener changeListener = new Property.ValueChangeListener() {
@@ -173,7 +174,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 			}
 		};
 		
-		final GridLayout gl = new GridLayout(3, 6);
+		final GridLayout gl = new GridLayout(3, 7);
 		gl.addStyleName("gridLayoutScenarios");
 		gl.setSizeFull();
 		gl.setColumnExpandRatio(0, 2);
@@ -186,7 +187,8 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 		logger.debug("SzenarioName: " + scenarioName);
 		gl.addComponent(scenarioName, 0, 0);
-				
+		
+                //EK Rendite
 		final Label textEigenkapital = new Label ("Renditeforderung Eigenkapital: ");
 		textEigenkapital.setSizeFull();
 		
@@ -204,7 +206,8 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		gl.addComponent(tfEigenkapital, 1, 1);
 		
 		scenarioComponents.put("rateReturnEquity", tfEigenkapital);
-		
+                
+                // Fremdkapital		
 		final Label textFremdkapitel = new Label ("Renditeforderung FK: ");
 		
 		final TextField tfFremdkapital = new TextField();
@@ -222,6 +225,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 		scenarioComponents.put("rateReturnCapitalStock", tfFremdkapital);
 		
+                //Gewerbesteuer
 		final Label textGewerbesteuer = new Label ("Gewerbesteuer:");
 		final TextField tfGewerbesteuer = new TextField();
 		
@@ -238,6 +242,7 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		
 		scenarioComponents.put("businessTax", tfGewerbesteuer);
 		
+                //Körperschaftssteuer
 		final Label textKoerperschaftssteuer = new Label ("Körperschaftssteuer mit Solidaritätszuschlag: ");
 		
 		final TextField tfKoerperschaftssteuer = new TextField();
@@ -253,7 +258,24 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 		gl.addComponent(textKoerperschaftssteuer, 0, 4);
 		gl.addComponent(tfKoerperschaftssteuer, 1, 4);
 		
-		scenarioComponents.put("corporateAndSolitaryTax", tfKoerperschaftssteuer);
+                scenarioComponents.put("corporateAndSolitaryTax", tfKoerperschaftssteuer);
+                
+                // Persönlicher Steuersatz
+		final Label textPersonalTaxRate = new Label ("pers\u00F6nlicher Steuersatz: ");
+		final TextField tfPersonalTaxRate = new TextField();
+		if(!"0.0".equals(personalTaxRate)) {
+			tfPersonalTaxRate.setValue(personalTaxRate);
+		}
+		tfPersonalTaxRate.setImmediate(true);
+		tfPersonalTaxRate.addStyleName("scenario");
+		tfPersonalTaxRate.addListener(changeListener);
+		
+		gl.addComponent(textPersonalTaxRate, 0, 5);
+		gl.addComponent(tfPersonalTaxRate, 1, 5);
+		
+		scenarioComponents.put("personalTaxRate", tfPersonalTaxRate);
+                
+                
 				
 		deleteIcon = new Embedded (null, new ThemeResource ("./images/icons/newIcons/1418766003_editor_trash_delete_recycle_bin_-128.png"));
 		deleteIcon.setHeight(60, UNITS_PIXELS);
@@ -269,13 +291,13 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 			
 		});
 		
-		gl.addComponent(deleteIcon, 2, 0, 2, 5);
+		gl.addComponent(deleteIcon, 2, 0, 2, 6);
 		gl.setComponentAlignment(deleteIcon, Alignment.MIDDLE_CENTER);
 		
 		final Label gap = new Label();
 		gap.setHeight(20, UNITS_PIXELS);
 		
-		gl.addComponent(gap, 0, 5);
+		gl.addComponent(gap, 0, 6);
 				
 		scenarioComponents.put("scenario", gl);
 		
@@ -335,6 +357,10 @@ public class ScenarioScreenViewImpl extends VerticalLayout implements ScenarioSc
 	
 	public void setCorporateAndSolitaryTax(int scenarioNumber, String newValue) {
 		((Button) this.scenarios.get(scenarioNumber-1).get("corporateAndSolitaryTax")).setValue(newValue);
+	}
+	
+	public void setPersonalTaxRate(int scenarioNumber, String newValue) {
+		((Button) this.scenarios.get(scenarioNumber-1).get("personalTaxRate")).setValue(newValue);
 	}
 	
 	/**

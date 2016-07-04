@@ -89,7 +89,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 * und somit korrekt sind. Er nutzt hierbei die Validierungsmethoden zur
 	 * Ueberpruefung der einzelnen Dateneingabefelder.
 	 * 
-	 * @author Julius Hacker, Tobias Lindner
+	 * @author Julius Hacker, Tobias Lindner, Thomas Zapf, Markus Baader
 	 * @return true: Die Eingabewerte der Maske sind insgesamt korrekt false:
 	 *         Die Eingabewerte der Maske sind an mindestens einer Stelle nicht
 	 *         korrekt.
@@ -107,6 +107,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 				if (!isValidCorporateAndSolitaryTax(scenarioNumber)
 						|| !isValidBusinessTax(scenarioNumber)
 						|| !isValidRateReturnCapitalStock(scenarioNumber)
+                                                || !isValidPersonalTaxRate(scenarioNumber)
 						|| !isValidRateReturnEquity(scenarioNumber)) {
 					isValid = false;
 				}
@@ -140,9 +141,8 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		this.projectProxy.getSelectedProject().addScenario(scenario);
 		getView().addScenario(Double.toString(scenario.getRateReturnEquity()),
 				Double.toString(scenario.getRateReturnCapitalStock()),
-				Double.toString(scenario.getCorporateAndSolitaryTax()),
-				Double.toString(scenario.getBusinessTax()),
-				scenario.isIncludeInCalculation(),
+				Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()),
+				Double.toString(scenario.getPersonalTaxRate()), scenario.isIncludeInCalculation(),
 				this.projectProxy.getSelectedProject().getScenarios().size());
 		
 		//Szenarioseite aktualisieren
@@ -191,14 +191,13 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	
 			int numberOfScenario = 1;
 			for (Szenario scenario : scenarios) {
-				getView().addScenario(
-						Double.toString(scenario.getRateReturnEquity()),
+				getView().addScenario(Double.toString(scenario.getRateReturnEquity()),
 						Double.toString(scenario.getRateReturnCapitalStock()),
 						Double.toString(scenario.getCorporateAndSolitaryTax()),
-						Double.toString(scenario.getBusinessTax()),
+						Double.toString(scenario.getBusinessTax()), Double.toString(scenario.getPersonalTaxRate()),
 						scenario.isIncludeInCalculation(), numberOfScenario);
 				numberOfScenario++;
-			}	
+			}
 		}
 	}
 	
@@ -348,6 +347,38 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 
 		return isValid;
 	}
+        
+        /**
+	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur
+	 * perönlichen Steuer korrekt ist.
+	 * 
+	 * @author Thomas Zapf, Markus Baader
+	 * @return true: Eingabe ist korrekt und gueltig. 
+         *         false: Eingabe ist nicht korrekt.
+	 */
+        public boolean isValidPersonalTaxRate (int scenarioNumber) {
+		boolean isValid = true;
+
+		try {
+			Double personalTaxRate = Double.parseDouble(getView()
+					.getValue(scenarioNumber, "personalTaxRate"));
+
+			if (personalTaxRate < 0 || personalTaxRate > 100) {
+				throw new IllegalValueException(
+						"personalTaxRate nicht zwischen 0 und 100");
+			}
+
+			getView().setValid(scenarioNumber, "personalTaxRate");
+		} catch (Exception exception) {
+			if (showErrors) {
+				getView().setInvalid(scenarioNumber, "personalTaxRate");
+			}
+			isValid = false;
+		}
+
+		return isValid;
+	}
+        
 
 	/**
 	 * Diese Methode holt sich die in den Eingabefeldern der View eingetragenen
@@ -355,7 +386,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 * Methode wird insbesondere durch die EventHandler der View genutzt, die
 	 * auf entsprechende Textaenderungen reagieren.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Markus Baader, Thomas Zapf
 	 * @param scenarioNumber
 	 *            Nummer des Szenarios, dessen Werte geaendert wurden.
 	 */
@@ -404,9 +435,22 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 					+ getView().getValue(scenarioNumber,
 							"corporateAndSolitaryTax") + ")");
 		}
-
+                
+                if (isValidPersonalTaxRate(scenarioNumber)) {
+                    scenario.setPersonalTaxRate(Double.parseDouble(getView()
+					.getValue(scenarioNumber, "personalTaxRate")));
+                    logger.debug("Persönlicher Steuersatz Szenario "
+					+ scenarioNumber
+					+ " auf "
+					+ scenario.getPersonalTaxRate()
+					+ " ("
+					+ getView().getValue(scenarioNumber,
+							"personalTaxRate") + ")");
+                }
+                
 		scenario.setIncludeInCalculation(getView().getIncludeInCalculation(
 				scenarioNumber));
+             
 	}
 
 	@Override
