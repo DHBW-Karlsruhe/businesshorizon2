@@ -146,12 +146,14 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 				}
 			}
 		});
+		
+		//TA:Eingabemethode nur Free Cash Flow; die anderen Werte ausblenden
 		eingabeGroup.addItem(InputType.DIRECT);
-		eingabeGroup.addItem(InputType.UMSATZKOSTENVERFAHREN);
-		eingabeGroup.addItem(InputType.GESAMTKOSTENVERFAHREN);
+		//eingabeGroup.addItem(InputType.UMSATZKOSTENVERFAHREN);
+		//eingabeGroup.addItem(InputType.GESAMTKOSTENVERFAHREN);
 		eingabeGroup.setItemCaption(InputType.DIRECT, "FCF (Free Cash Flow)");
-		eingabeGroup.setItemCaption(InputType.UMSATZKOSTENVERFAHREN, "UKV (Umsatzkostenverfahren)");
-		eingabeGroup.setItemCaption(InputType.GESAMTKOSTENVERFAHREN, "GKV (Gesamtkostenverfahren)");
+		//eingabeGroup.setItemCaption(InputType.UMSATZKOSTENVERFAHREN, "UKV (Umsatzkostenverfahren)");
+		//eingabeGroup.setItemCaption(InputType.GESAMTKOSTENVERFAHREN, "GKV (Gesamtkostenverfahren)");
 //		eingabeGroup.setValue(InputType.DIRECT);
 		eingabeGroup.setImmediate(true);
 		eingabeGroup.addListener(new Property.ValueChangeListener() {

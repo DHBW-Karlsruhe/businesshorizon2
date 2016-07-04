@@ -38,6 +38,8 @@ import org.apache.log4j.Logger;
  * @author Christian Scherer
  * 
  */
+//TA: veraltet; wird nicht genutzt --> ausblenden
+@Deprecated
 public class WhiteNoise {
 
 	private static final long serialVersionUID = 1L;
