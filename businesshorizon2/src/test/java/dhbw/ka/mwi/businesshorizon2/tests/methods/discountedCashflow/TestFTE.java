@@ -1,9 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.tests.methods.discountedCashflow;
 
-import junit.framework.TestCase;
-
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
@@ -14,8 +12,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
  *
  * @author Tobias Blasy
  */
-@Ignore //FIXME seazzle
-public class TestFTE extends TestCase{
+public class TestFTE {
 	
 	private static final Logger logger = Logger.getLogger("TestFTE.class");
 
@@ -48,9 +45,6 @@ public class TestFTE extends TestCase{
 		ergebnis = fte.calculateValues(cashflow, fremdkapital, szenario);
 		ergebnis = ((double)Math.round(ergebnis * 100)) / 100;
 
-		logger.debug(ergebnisVorgabe);
-		logger.debug(ergebnis);
-
-		assertEquals(ergebnisVorgabe,ergebnis);
+		Assert.assertEquals(ergebnisVorgabe,ergebnis,0.1);
 	}	
 }
