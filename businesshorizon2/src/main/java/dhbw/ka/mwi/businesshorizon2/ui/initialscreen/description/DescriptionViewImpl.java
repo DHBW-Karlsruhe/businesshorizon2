@@ -254,10 +254,10 @@ public class DescriptionViewImpl extends VerticalLayout implements DescriptionVi
 //		gl.addComponent(fteHeadline, 1, 2);
 //		gl.addComponent(fteText, 1, 3);
 //		
-		gl.addComponent(iconWACC, 0 , 4);
-		gl.setComponentAlignment(iconWACC, Alignment.MIDDLE_CENTER);
-		gl.addComponent(waccHeadline, 1, 4);
-		gl.addComponent(waccText, 1, 5);
+//		gl.addComponent(iconWACC, 0 , 4);
+//		gl.setComponentAlignment(iconWACC, Alignment.MIDDLE_CENTER);
+//		gl.addComponent(waccHeadline, 1, 4);
+//		gl.addComponent(waccText, 1, 5);
 		
 		vl.addComponent(headline0);
 		vl.addComponent(headline1);
