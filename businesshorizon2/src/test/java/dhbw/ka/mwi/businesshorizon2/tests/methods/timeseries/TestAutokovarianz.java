@@ -25,15 +25,12 @@
 
 package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
-import junit.framework.TestCase;
-
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
 
-import cern.colt.list.DoubleArrayList;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
 
 /**
@@ -44,7 +41,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
  */
 
  //FIXME seazzle
-public class TestAutokovarianz extends TestCase {
+public class TestAutokovarianz {
 	
 	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
 	
@@ -66,11 +63,17 @@ public class TestAutokovarianz extends TestCase {
 		logger.debug(Arrays.toString(autokovarianzVorgabe));
 		logger.debug(Arrays.toString(autokovarianz));
 		
+		
+		
+		
 			//prüft, ob Kovarianz mit Lag 0 der Varianz entspricht
-			assertEquals(at.calculateAutocovariance(cashflows, 0), at.berechneVarianz(cashflows));
-			//überprüft ob Kovarianzen mit Vorgaben übereinstimmen
-			assertEquals(autokovarianzVorgabe, autokovarianz);
-			assertEquals(autokovarianzReducedVorgabe, autokovarianzreduced);
+			Assert.assertEquals(at.calculateAutocovariance(cashflows, 0), at.berechneVarianz(cashflows),0.1);
+//			//überprüft ob Kovarianzen mit Vorgaben übereinstimmen
+			Assert.assertArrayEquals(autokovarianzVorgabe, autokovarianz, 0.1);
+			Assert.assertArrayEquals(autokovarianzReducedVorgabe, autokovarianzreduced, 0.1);
+//			assertEquals(autokovarianzVorgabe, autokovarianz);
+//			assertEquals(autokovarianzReducedVorgabe, autokovarianzreduced);
+			
 		}
 
 	}
