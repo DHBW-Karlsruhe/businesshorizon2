@@ -23,9 +23,8 @@
 package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
 import junit.framework.TestCase;
-import org.apache.log4j.Logger;
 
-
+import org.junit.Ignore;
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide;
@@ -36,7 +35,9 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide;
  * Bisher wurde versucht, eine Trendgerade zu legen und die Zeitreihe über den Abstand zur Trendgeraden zu differenzieren.
  * 
  * bisherige Formel: Y(t) = X(t) - T(t) mit T(t) = Trendgerade
- * jetzige Formel: X'(t) = X(t) - X(t-1)
+ * jetzige Formel: X'(t) = X(t) - X(t-1) [nicht mehr notwendig]
+ * 
+ * Dieser Test und die zugehörige Methode ist nach dem Gespräch mit H. Pohl am 20.06.2016 obsolet.
  * 
  * Für eine korrekte Versionsverwaltung sollte man langfristig eine der beiden Testmethoden löschen und die andere entsprechend umbenennen.
  * 
@@ -44,13 +45,10 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.CalculateTide;
  * 
  */
 
+@Ignore //OBSOLETE Jonathan
 
 public class CalculateTideTest_2016 extends TestCase {
-	
-	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
-	
 	@Test
-		
 	public void testReduceTide() {
 		double[] timeseries = new double[6];
 		timeseries[0] = 130594000.00;
@@ -72,8 +70,7 @@ public class CalculateTideTest_2016 extends TestCase {
 		System.out.println(timeseries[1]);
 		System.out.println(results[1]);
 		for (int i = 1; i < timeseries.length; i++) {
-			logger.debug("expected: " + results[i] + "; value: "+ timeseries [i]);
-			assertEquals(results[i], timeseries[i]);
+			assertEquals(timeseries[i], results[i]);
 		}
 
 	}

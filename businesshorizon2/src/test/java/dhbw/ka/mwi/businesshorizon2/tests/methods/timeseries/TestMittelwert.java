@@ -49,15 +49,10 @@ public class TestMittelwert extends TestCase {
 	@Test
 	public void testMittelwert() {
 		AnalysisTimeseries at = new AnalysisTimeseries();
-		DoubleArrayList cashflows = new DoubleArrayList ();
+		double [] cashflows = {7,9,5,14,6,8};
 		double mittelwert;
 		double mittelwertVorgabe= 8.166666666666666;
-		cashflows.add (7);
-		cashflows.add (9);
-		cashflows.add (5);
-		cashflows.add (14);
-		cashflows.add (6);
-		cashflows.add (8);
+
 		mittelwert = at.berechneMittelwert(cashflows);
 		logger.debug(mittelwertVorgabe);
 		logger.debug(mittelwert);
