@@ -184,7 +184,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			List<Szenario> scenarios = this.projectProxy.getSelectedProject()
 					.getScenarios();
 			if (scenarios.size() < 1) {
-				scenarios.add(new Szenario(14.0, 10.0, 3.5, 15.0, 26.375, true));
+				scenarios.add(new Szenario(0.09969137, 0.08, 0.14, 0.15825, 0.26375, true));
 			}
 	
 			getView().clear();

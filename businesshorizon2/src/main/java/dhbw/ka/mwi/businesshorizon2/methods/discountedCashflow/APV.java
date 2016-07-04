@@ -92,15 +92,11 @@ public class APV extends AbstractDeterministicMethod {
 	 * @return
 	 */
 	// "APV - Phasenmodell
-	// (ohne persönliche Steuern, ohne Präferenzen, konstante Finanzpolitik?)"
-	// 4 Periode: Periode 1, 2, 3, 4ff
-	// cashflows 1,2,3,4,5..
-	// verzinsliches FK 0,1,2,3,4,5...
-	// Eingabe vor Steuern
+	// (ohne persönliche Steuern, ohne Präferenzen, konstante Finanzpolitik)"
 	public double calculateValues(double[] cashflows, double[] interestBearingDebtCapital,
 			Szenario szenario) {
 
-		double personalTaxRate = 0.26375;
+		double personalTaxRate = szenario.getPersonalTaxRate();
 		double businessTax = 0.75 * szenario.getBusinessTax() + szenario.getCorporateAndSolitaryTax();
 		double equityCostsWithoutTaxes = szenario.getRateReturnEquity();
 		double borrowingCostsWithoutTaxes = szenario.getRateReturnCapitalStock();
@@ -109,17 +105,17 @@ public class APV extends AbstractDeterministicMethod {
 		
 		double debtFreeCompany = calculateDebtFreeCompanyValue(
 				cashflows, personalTaxRate, equityCostsAfterTaxes);
-		logger.info("unv. Unternehmen: " + debtFreeCompany);
+		//logger.info("unv. Unternehmen: " + debtFreeCompany);
 		
 		double tax_shield = calculateTaxShield(interestBearingDebtCapital,
 				borrowingCostsAfterTaxes, businessTax,
 				personalTaxRate, borrowingCostsWithoutTaxes);
-		logger.info("tax Shield: " + tax_shield);
+		//logger.info("tax Shield: " + tax_shield);
 
 		double outsideCapital = interestBearingDebtCapital[0];
 
 		double companyValue = debtFreeCompany + tax_shield - outsideCapital;
-		logger.info(companyValue);
+		//logger.info(companyValue);
 		return companyValue;
 	}
 
