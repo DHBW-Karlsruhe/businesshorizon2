@@ -34,46 +34,43 @@ import org.junit.Test;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
 
 /**
- * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in der Klasse AnalysisTimeseries dar.
+ * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in
+ * der Klasse AnalysisTimeseries dar.
  * 
  * @author Volker Maier, Jonathan Janke
  * 
  */
 
- //FIXME seazzle
+// FIXME seazzle
 public class TestAutokovarianz {
-	
+
 	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
-	
-		
+
 	@Test
 	public void testAutokovarianz() {
 		AnalysisTimeseries at = new AnalysisTimeseries();
-		double [] cashflows = {7,9,5,14,6,8};
-		double [] autokovarianzVorgabe = {8.472222222222223,-5.726851851851852,2.407407407407408,-1.3472222222222223,0.3981481481481479,0.032407407407407274};
-		double [] autokovarianzReducedVorgabe = {8.472222222222223,-5.726851851851852,2.407407407407408,-1.3472222222222223,0.3981481481481479,0.032407407407407274};
-		double [] autokovarianz = new double [autokovarianzVorgabe.length];
-		double [] autokovarianzreduced = new double [autokovarianzVorgabe.length];
+		double[] cashflows = { 7, 9, 5, 14, 6, 8 };
+		double[] autokovarianzVorgabe = { 8.472222222222223, -5.726851851851852, 2.407407407407408, -1.3472222222222223, 0.3981481481481479, 0.032407407407407274 };
+		double[] autokovarianzReducedVorgabe = { 8.472222222222223, -5.726851851851852, 2.407407407407408, -1.3472222222222223, 0.3981481481481479, 0.032407407407407274 };
+		double[] autokovarianz = new double[autokovarianzVorgabe.length];
+		double[] autokovarianzreduced = new double[autokovarianzVorgabe.length];
 
-		double [] reducedCashflows=at.reduceTide(cashflows);
-		//logger.debug(Arrays.toString(reducedCashflows));
-		autokovarianz = at.calculateAutocovariances(reducedCashflows);
-		autokovarianzreduced = at.calculateAutocovariances(cashflows);
+		double[] reducedCashflows = at.reduceTide(cashflows);
+		// logger.debug(Arrays.toString(reducedCashflows));
+		autokovarianz = at.calculateAutocovariances(cashflows);
+		autokovarianzreduced = at.calculateAutocovariances(reducedCashflows);
 
 		logger.debug(Arrays.toString(autokovarianzVorgabe));
 		logger.debug(Arrays.toString(autokovarianz));
-		
-		
-		
-		
-			//prüft, ob Kovarianz mit Lag 0 der Varianz entspricht
-			Assert.assertEquals(at.calculateAutocovariance(cashflows, 0), at.berechneVarianz(cashflows),0.1);
-//			//überprüft ob Kovarianzen mit Vorgaben übereinstimmen
-			Assert.assertArrayEquals(autokovarianzVorgabe, autokovarianz, 0.1);
-			Assert.assertArrayEquals(autokovarianzReducedVorgabe, autokovarianzreduced, 0.1);
-//			assertEquals(autokovarianzVorgabe, autokovarianz);
-//			assertEquals(autokovarianzReducedVorgabe, autokovarianzreduced);
-			
-		}
+
+		// prüft, ob Kovarianz mit Lag 0 der Varianz entspricht
+		Assert.assertEquals(at.calculateAutocovariance(cashflows, 0), at.berechneVarianz(cashflows), 0.1);
+		// //überprüft ob Kovarianzen mit Vorgaben übereinstimmen
+		Assert.assertArrayEquals(autokovarianzVorgabe, autokovarianz, 0.1);
+		Assert.assertArrayEquals(autokovarianzReducedVorgabe, autokovarianzreduced, 0.1);
+		// assertEquals(autokovarianzVorgabe, autokovarianz);
+		// assertEquals(autokovarianzReducedVorgabe, autokovarianzreduced);
 
 	}
+
+}

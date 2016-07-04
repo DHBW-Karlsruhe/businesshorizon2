@@ -28,6 +28,7 @@ package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 import junit.framework.TestCase;
 
 import org.apache.log4j.Logger;
+import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
@@ -47,8 +48,6 @@ import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
  * 
  */
 
-@Ignore //FIXME
-
 public class TestModellparameter extends TestCase {
 	
 	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
@@ -56,35 +55,34 @@ public class TestModellparameter extends TestCase {
 		
 	@Test
 	public void testModellparameter() {
-		int p = 5;
-		int i = 1;
-		//DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(p, i);
-		//DoubleMatrix2D matrixErgebnis = DoubleFactory2D.dense.make(p, i);
 		
-		Matrix matrixValuations = new Matrix(p,i);
-		Matrix matrixErgebnis = new Matrix(p, i);
-		double [] cashflows = {7,9,5,14,6,8};
+		double [] cashflows = {1,5,10,20,30};
 		
-		matrixValuations.set(0,0,-1.09253751);
-		matrixValuations.set(1,0,-0.790322469);
-		matrixValuations.set(2,0,-0.651577395);
-		matrixValuations.set(3,0,-0.488155996);
-		matrixValuations.set(4,0,-0.215330237);
-	
+		double[] expectedParmas = {-1.09253751,-0.790322469, -0.651577395, -0.488155996, -0.215330237};
+		
+		
 		AnalysisTimeseries at = new AnalysisTimeseries();
-		double [] autokovarianzVorgabe = {8.472222222222223, -5.726851851851852, 2.407407407407408, -1.3472222222222223, 0.3981481481481479, 0.032407407407407274};
 		
 		//try {
 			//matrixErgebnis = at.berechneModellparameter(autokovarianzVorgabe,p)  ;
-			matrixErgebnis = at.calculateModelParameters(at.createMatrix(cashflows), at.calculateAutocorrelations(cashflows));
+			double[] parameters = at.calculateModelParameters(at.createMatrix(cashflows), at.calculateAutocorrelations(cashflows));
 		//} catch (StochasticMethodException e) {
 		//	logger.debug(e.getMessage());
 		//}
+			
+			for (double d : parameters) {
+				System.out.println("actualparams: "+d);
+			}
+			
+			for (double d : expectedParmas) {
+				System.out.println("expectedparams: "+d);
+			}
+			
+			
+			Assert.assertArrayEquals(expectedParmas, parameters, 0.1);
+			
+			
 		
-		logger.debug(matrixValuations);
-		logger.debug(matrixErgebnis);
-		
-			assertEquals(matrixValuations, matrixErgebnis);
 		}
 
 	}

@@ -33,13 +33,11 @@ public class AnalysisTimeseriesTest {
 		Matrix matrix = new Matrix(array);
 
 		double[] autocorrelations = { 1, 2, 3 };
-		Matrix parameters = timeseries.calculateModelParameters(matrix, autocorrelations);
+		double[] parameters = timeseries.calculateModelParameters(matrix, autocorrelations);
 
-		double[][] resultArry = parameters.getArray();
-
-		Assert.assertEquals(5.4, resultArry[0][0], 0.001);
-		Assert.assertEquals(-4.0, resultArry[1][0], 0.001);
-		Assert.assertEquals(1.2, resultArry[2][0], 0.001);
+		Assert.assertEquals(5.4, parameters[0], 0.001);
+		Assert.assertEquals(-4.0, parameters[1], 0.001);
+		Assert.assertEquals(1.2, parameters[2], 0.001);
 
 	}
 

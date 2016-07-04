@@ -1,18 +1,16 @@
 package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
-import static org.junit.Assert.*;
-
 import java.util.Arrays;
 
+import org.apache.log4j.Logger;
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.Distribution;
-import org.apache.log4j.Logger;
 
-public class calculateAsDistribution {
+public class TestCalculateAsDistribution {
 	
-	private static final Logger logger = Logger.getLogger(calculateAsDistribution.class);
+	private static final Logger logger = Logger.getLogger(TestCalculateAsDistribution.class);
 
 	@Test
 	public void test() {
