@@ -25,65 +25,47 @@
 
 package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
-import junit.framework.TestCase;
-
-import org.apache.log4j.Logger;
-import org.junit.Ignore;
+import org.junit.Assert;
 import org.junit.Test;
 
-
-
-
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
-import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
 
-
 /**
- * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in der Klasse AnalysisTimeseries dar.
+ * Diese Klasse stellt den jUnit-Test der im Klassenname aufgeführten Methode in
+ * der Klasse AnalysisTimeseries dar.
  * 
- * Anmerkung2016: Diese Klasse testet die Methode calculate() nicht vernünftig, sondern überprüft lediglich, dass keine leeres Array erzeugt wurde. Die Werte werden aber nicht validiert.
+ * Anmerkung2016: Diese Klasse testet die Methode calculate() nicht vernünftig,
+ * sondern überprüft lediglich, dass keine leeres Array erzeugt wurde. Die Werte
+ * werden aber nicht validiert.
  * 
  * @author Volker Maier, Jonathan Janke
  * 
  */
-@Ignore //FIXME seazzle
-public class TestCalculate extends TestCase {
-	
-	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
-	
-		
+public class TestCalculate {
+
 	@Test
-	public void testCalculate() {
+	public void testCalculate() throws Exception {
 		int p = 5;
-		double[] zeitreihe = new double [6]; 
-		int zuberechnendeperioden = 5; 
+		double[] zeitreihe = new double[6];
+		int zuberechnendeperioden = 5;
 		int durchlaeufe = 10000;
-		CallbackInterface callback = null; 
+		CallbackInterface callback = null;
 		boolean isfremdkapital = false;
 		double[][] prognosewerte = new double[zuberechnendeperioden][durchlaeufe];
-		
-		zeitreihe [0]= 7;
-		zeitreihe [1]= 9;
-		zeitreihe [2]= 5;
-		zeitreihe [3]= 14;
-		zeitreihe [4]= 6;
-		zeitreihe [5]= 8;
-		
-		
-		AnalysisTimeseries at = new AnalysisTimeseries();
-		
-		try {
-			prognosewerte = at.calculate (zeitreihe, p , zuberechnendeperioden, durchlaeufe, callback, isfremdkapital)  ;
-		} catch (StochasticMethodException | InterruptedException e) {
-			logger.debug(e.getMessage());
-		} catch (Exception e) {
-			logger.debug(e.getMessage());
-		}
-				
-		
-		
-		assertNotNull(prognosewerte);
-		}
 
+		zeitreihe[0] = 7;
+		zeitreihe[1] = 9;
+		zeitreihe[2] = 5;
+		zeitreihe[3] = 14;
+		zeitreihe[4] = 6;
+		zeitreihe[5] = 8;
+
+		AnalysisTimeseries at = new AnalysisTimeseries();
+
+		prognosewerte = at.calculate(zeitreihe, p, zuberechnendeperioden, durchlaeufe, callback, isfremdkapital);
+
+		Assert.assertNotNull(prognosewerte);
 	}
+
+}
