@@ -28,14 +28,10 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 import java.util.Random;
 
 import org.apache.log4j.Logger;
-//import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
 
 import Jama.Matrix;
-import cern.colt.Arrays;
 import cern.colt.list.DoubleArrayList;
-import cern.colt.matrix.DoubleFactory2D;
 import cern.colt.matrix.DoubleMatrix2D;
-import cern.colt.matrix.linalg.LUDecomposition;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
@@ -54,7 +50,6 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 public class AnalysisTimeseries {
 
 	private static final Logger LOGGER = Logger.getLogger("AnalysisTimeseries.class");
-	private double[][] autokovarianzen;
 	private double[] bereinigteZeitreihe;
 	private double[] modellparameter;
 	private double standardabweichung;
