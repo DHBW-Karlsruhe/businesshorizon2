@@ -1,6 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.tests.methods.discountedCashflow;
 
-import org.apache.log4j.Logger;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -14,8 +13,6 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
  */
 public class TestFTE {
 	
-	private static final Logger logger = Logger.getLogger("TestFTE.class");
-
 	@Test
 	public void testWacc() {
 		double[] cashflow = new double[5];
