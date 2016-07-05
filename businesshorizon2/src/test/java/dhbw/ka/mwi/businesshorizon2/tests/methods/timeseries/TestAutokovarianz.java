@@ -29,6 +29,7 @@ import java.util.Arrays;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
@@ -46,7 +47,7 @@ public class TestAutokovarianz {
 
 	private static final Logger logger = Logger.getLogger("AnalysisTimeseries.class");
 
-	@Test
+	@Ignore @Test
 	public void testAutokovarianz() {
 		AnalysisTimeseries at = new AnalysisTimeseries();
 		//double[] cashflows = { 7, 9, 5, 14, 6, 8 };

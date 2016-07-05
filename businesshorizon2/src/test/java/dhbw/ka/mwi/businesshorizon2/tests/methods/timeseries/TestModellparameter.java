@@ -27,6 +27,7 @@ package dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries;
 
 import org.apache.log4j.Logger;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
@@ -42,7 +43,7 @@ import junit.framework.TestCase;
 
 public class TestModellparameter extends TestCase {
 	
-	@Test
+	@Ignore @Test
 	public void testModellparameter() {
 		
 		double [] cashflows = {1002323,33256673,44,55,66};
