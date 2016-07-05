@@ -195,7 +195,7 @@ public class OneScenarioResultPresenter extends Presenter<OneScenarioResultViewI
 		//		getView().setCompanyValue(String.valueOf(unternehmenswert));
 		//		getView().setScenarioValue(String.valueOf(scenario.getRateReturnEquity()), String.valueOf(scenario.getRateReturnCapitalStock()), String.valueOf(scenario.getBusinessTax()), String.valueOf(scenario.getCorporateAndSolitaryTax()));
 		getView().setCompanyValue(nfDE.format(unternehmenswert));
-		getView().setScenarioValue(nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()));
+		getView().setScenarioValue(nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()), nfDE.format(scenario.getPersonalTaxRate()));
 
 		gesamtkapital = unternehmenswert + dFremdkapital;
 

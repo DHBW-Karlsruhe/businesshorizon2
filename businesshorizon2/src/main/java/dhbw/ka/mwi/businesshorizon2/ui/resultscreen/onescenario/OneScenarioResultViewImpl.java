@@ -78,6 +78,8 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	private Label gewerbeStLabel;
 
 	private Label koerperStLabel;
+        
+        private Label personalTaxRateLabel;
 
 	private HorizontalLayout companyValueLayout;
 
@@ -88,6 +90,8 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	private Label gewerbeSt;
 
 	private Label koerperSt;
+        
+    private Label personalTaxRate;
 
 	private Label gap;
 
@@ -132,15 +136,17 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		setSizeFull();
 		planningLayout = new HorizontalLayout();
 		planningLabel = new Label("Planungsprämissen:");
-		scenarioLayout = new GridLayout(2, 4);
+		scenarioLayout = new GridLayout(2, 5);
 		renditeEKLabel = new Label("Renditeforderung EK:");
 		renditeFKLabel = new Label("Renditeforderung FK:");
 		gewerbeStLabel = new Label("Gewerbesteuer:");
 		koerperStLabel = new Label("Körperschaftssteuer inkl. Solidaritätszuschlag:");
+                personalTaxRateLabel = new Label ("Persönlicher Steuersatz");
 		renditeEK = new Label();
 		renditeFK = new Label();
 		gewerbeSt = new Label();
 		koerperSt = new Label();
+                personalTaxRate = new Label();
 		companyValueLayout = new HorizontalLayout();
 		companyValueLabel = new Label("Unternehmenswert:");
 		companyValue = new Label();
@@ -180,10 +186,12 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		renditeFKLabel.setStyleName("font12bold");
 		gewerbeStLabel.setStyleName("font12bold");
 		koerperStLabel.setStyleName("font12bold");
+                personalTaxRateLabel.setStyleName("font12bold");
 		renditeEK.setStyleName("font12bold");
 		renditeFK.setStyleName("font12bold");
 		gewerbeSt.setStyleName("font12bold");
 		koerperSt.setStyleName("font12bold");
+                personalTaxRate.setStyleName("font12bold");
 		companyValueLabel.setStyleName("font14bold");
 		companyValue.setStyleName("font14bold");
 
@@ -201,6 +209,8 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		scenarioLayout.addComponent(gewerbeSt, 1, 2);
 		scenarioLayout.addComponent(koerperStLabel, 0, 3);
 		scenarioLayout.addComponent(koerperSt, 1, 3);
+                scenarioLayout.addComponent(personalTaxRateLabel, 0, 4);
+		scenarioLayout.addComponent(personalTaxRate, 1, 4);
 		companyValueLayout.addComponent(expandingGap2);
 		companyValueLayout.addComponent(companyValueLabel);
 		companyValueLayout.addComponent(gap);
@@ -250,11 +260,12 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		//		vl.addComponent(outputArea);
 	}
 
-	public void setScenarioValue(String renditeEK, String renditeFK, String gewerbeSt, String koerperSt){
+	public void setScenarioValue(String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String personalTax){
 		this.renditeEK.setValue(renditeEK);
 		this.renditeFK.setValue(renditeFK);
 		this.gewerbeSt.setValue(gewerbeSt);
-		this.koerperSt.setValue(koerperSt);		
+		this.koerperSt.setValue(koerperSt);
+		this.personalTaxRate.setValue(personalTax);
 		logger.debug("Planungsprämissen im UI gesetzt");
 	}
 
