@@ -141,8 +141,10 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 		this.projectProxy.getSelectedProject().addScenario(scenario);
 		getView().addScenario(Double.toString(scenario.getRateReturnEquity()),
 				Double.toString(scenario.getRateReturnCapitalStock()),
-				Double.toString(scenario.getCorporateAndSolitaryTax()), Double.toString(scenario.getBusinessTax()),
-				Double.toString(scenario.getPersonalTaxRate()), scenario.isIncludeInCalculation(),
+				Double.toString(scenario.getCorporateAndSolitaryTax()), 
+                                Double.toString(scenario.getBusinessTax()),
+				Double.toString(scenario.getPersonalTaxRate()), 
+                                scenario.isIncludeInCalculation(),
 				this.projectProxy.getSelectedProject().getScenarios().size());
 		
 		//Szenarioseite aktualisieren
@@ -194,7 +196,8 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 				getView().addScenario(Double.toString(scenario.getRateReturnEquity()),
 						Double.toString(scenario.getRateReturnCapitalStock()),
 						Double.toString(scenario.getCorporateAndSolitaryTax()),
-						Double.toString(scenario.getBusinessTax()), Double.toString(scenario.getPersonalTaxRate()),
+						Double.toString(scenario.getBusinessTax()),
+                                                Double.toString(scenario.getPersonalTaxRate()),
 						scenario.isIncludeInCalculation(), numberOfScenario);
 				numberOfScenario++;
 			}
@@ -227,9 +230,10 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur
 	 * Renditeforderung Eigenkapital korrekt ist.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker,Thomas Zapf
 	 * @return true: Eingabe ist korrekt und gueltig. false: Eingabe ist nicht
 	 *         korrekt.
+         *         Zwischen 0 = 0% und 1 = 100%.
 	 */
 	public boolean isValidRateReturnEquity(int scenarioNumber) {
 		boolean isValid = true;
@@ -238,9 +242,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			Double rateReturnEquity = Double.parseDouble(getView().getValue(
 					scenarioNumber, "rateReturnEquity"));
 
-			if (rateReturnEquity < 0 || rateReturnEquity > 100) {
+			if (rateReturnEquity < 0 || rateReturnEquity > 1) {
 				throw new IllegalValueException(
-						"corporateAndSolitaryTax nicht zwischen 0 und 100");
+						"corporateAndSolitaryTax nicht zwischen 0 und 1");
 			}
 
 			getView().setValid(scenarioNumber, "rateReturnEquity");
@@ -258,9 +262,10 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur
 	 * Renditeforderung Fremdkapital korrekt ist.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Thomad Zapf
 	 * @return true: Eingabe ist korrekt und gueltig. false: Eingabe ist nicht
 	 *         korrekt.
+         *         Zwischen 0 = 0% und 1 = 100%.
 	 */
 	public boolean isValidRateReturnCapitalStock(int scenarioNumber) {
 		boolean isValid = true;
@@ -269,9 +274,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			Double rateReturnCapitalStock = Double.parseDouble(getView()
 					.getValue(scenarioNumber, "rateReturnCapitalStock"));
 
-			if (rateReturnCapitalStock < 0 || rateReturnCapitalStock > 100) {
+			if (rateReturnCapitalStock < 0 || rateReturnCapitalStock > 1) {
 				throw new IllegalValueException(
-						"corporateAndSolitaryTax nicht zwischen 0 und 100");
+						"corporateAndSolitaryTax nicht zwischen 0 und 1");
 			}
 
 			getView().setValid(scenarioNumber, "rateReturnCapitalStock");
@@ -289,9 +294,10 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur
 	 * Gewerbesteuer korrekt ist.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Thomas Zapf
 	 * @return true: Eingabe ist korrekt und gueltig. false: Eingabe ist nicht
 	 *         korrekt.
+         *         Zwischen 0 = 0% und 1 = 100%.
 	 */
 	public boolean isValidBusinessTax(int scenarioNumber) {
 		boolean isValid = true;
@@ -300,9 +306,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			Double businessTax = Double.parseDouble(getView().getValue(
 					scenarioNumber, "businessTax"));
 
-			if (businessTax < 0 || businessTax > 100) {
+			if (businessTax < 0 || businessTax > 1) {
 				throw new IllegalValueException(
-						"corporateAndSolitaryTax nicht zwischen 0 und 100");
+						"corporateAndSolitaryTax nicht zwischen 0 und 1");
 			}
 
 			getView().setValid(scenarioNumber, "businessTax");
@@ -321,9 +327,10 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur
 	 * Koerperschaftssteuer mit Solidaritaetszuschlag korrekt ist.
 	 * 
-	 * @author Julius Hacker
+	 * @author Julius Hacker, Thomas Zapf
 	 * @return true: Eingabe ist korrekt und gueltig. false: Eingabe ist nicht
 	 *         korrekt.
+         *         Zwischen 0 = 0% und 1 = 100%.
 	 */
 	public boolean isValidCorporateAndSolitaryTax(int scenarioNumber) {
 		boolean isValid = true;
@@ -332,9 +339,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			Double corporateAndSolitaryTax = Double.parseDouble(getView()
 					.getValue(scenarioNumber, "corporateAndSolitaryTax"));
 
-			if (corporateAndSolitaryTax < 0 || corporateAndSolitaryTax > 100) {
+			if (corporateAndSolitaryTax < 0 || corporateAndSolitaryTax > 1) {
 				throw new IllegalValueException(
-						"corporateAndSolitaryTax nicht zwischen 0 und 100");
+						"corporateAndSolitaryTax nicht zwischen 0 und 1");
 			}
 
 			getView().setValid(scenarioNumber, "corporateAndSolitaryTax");
@@ -350,7 +357,7 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
         
         /**
 	 * Diese Methode ueberprueft, ob die Eingabe im Eingabefeld zur
-	 * perönlichen Steuer korrekt ist.
+	 * perönlichen Steuer korrekt ist. Zwischen 0 = 0% und 1 = 100%.
 	 * 
 	 * @author Thomas Zapf, Markus Baader
 	 * @return true: Eingabe ist korrekt und gueltig. 
@@ -363,9 +370,9 @@ public class ScenarioScreenPresenter extends ScreenPresenter<ScenarioScreenViewI
 			Double personalTaxRate = Double.parseDouble(getView()
 					.getValue(scenarioNumber, "personalTaxRate"));
 
-			if (personalTaxRate < 0 || personalTaxRate > 100) {
+			if (personalTaxRate < 0 || personalTaxRate > 1) {
 				throw new IllegalValueException(
-						"personalTaxRate nicht zwischen 0 und 100");
+						"personalTaxRate nicht zwischen 0 und 1");
 			}
 
 			getView().setValid(scenarioNumber, "personalTaxRate");
