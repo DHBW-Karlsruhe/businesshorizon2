@@ -47,6 +47,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.WACC;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.Distribution;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -80,6 +81,12 @@ import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.MoreScenarioCalculationEvent
 
 public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioResultViewInterface>
 		implements CallbackInterface {
+	@Override
+	public void onComplete(Distribution distribution) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
@@ -496,7 +503,7 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onComplete(StochasticResultContainer result,
+	public void onCompleteOld(StochasticResultContainer result,
 			AbstractStochasticMethod method) {
 
 		StochasticChartArea stochasticChartArea;

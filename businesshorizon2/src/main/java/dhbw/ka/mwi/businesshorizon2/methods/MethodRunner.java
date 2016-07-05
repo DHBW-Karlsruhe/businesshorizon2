@@ -26,19 +26,21 @@ package dhbw.ka.mwi.businesshorizon2.methods;
 
 import java.security.InvalidParameterException;
 
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.Distribution;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.DistributionCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
-import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 
 /**
  * Diese Klasse ist zur eigentlichen Ausfuehrung der Berechnungen gedacht. Dabei
  * wird fuer die Berechnung ein eigener Thread verwendet.
  * 
- * @author Christian Gahlert
+ * @author Christian Gahlert, Timo Rösch, Marius Müller, Markus Baader
  * 
  */
 public class MethodRunner extends Thread {
 
 	private AbstractStochasticMethod method;
+	DistributionCalculator distributionCalculator;
 
 	private CallbackInterface callback;
 	private Project project;
@@ -57,12 +59,12 @@ public class MethodRunner extends Thread {
 	 *            Das Callback
 	 */
 
-	public MethodRunner(AbstractStochasticMethod method, Project project, CallbackInterface callback) {
-		if (method == null || project == null || callback == null) {
+	public MethodRunner(Project project, CallbackInterface callback) {
+		if (project == null || callback == null) {
 			throw new InvalidParameterException("No null parameters are allowed here");
 		}
+		 this.distributionCalculator = new DistributionCalculator();
 
-		this.method = method;
 		this.project = project;
 		this.callback = callback;
 	}
@@ -78,12 +80,15 @@ public class MethodRunner extends Thread {
 	@Override
 	public void run(){
 		try {
-			StochasticResultContainer result = method.calculate(project, callback);
-			callback.onComplete(result, method);
+//			StochasticResultContainer result = method.calculate(project, callback);
+//			callback.onCompleteOld(result, method);
+			
+			Distribution distribution =  distributionCalculator.calculate(project, callback); 
+			callback.onComplete(distribution);
 		} catch (InterruptedException e) {
-			callback.onComplete(null, method);
+			callback.onComplete(null);
 		} catch (StochasticMethodException e) {
-			callback.onComplete(null, method);
-		}		
+			callback.onComplete(null);
+		} 		
 	}
 }

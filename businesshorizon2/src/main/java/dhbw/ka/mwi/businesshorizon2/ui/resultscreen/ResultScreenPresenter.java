@@ -24,7 +24,6 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
-import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -36,35 +35,21 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
-import com.vaadin.ui.Label;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.Distribution;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
-import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios.MoreScenarioResultViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl;
@@ -72,12 +57,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResul
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
  * 
- * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio
+ * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio, Timo Rösch, Marius Müller, Markus Baader
  * 
  */
 
 public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 		implements CallbackInterface {
+
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
@@ -348,7 +334,8 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 		getView().showOutputView();
 		project = projectProxy.getSelectedProject();
 		if(project.getProjectInputType().isStochastic()){
-			
+			methodRunner = new MethodRunner(project, this);
+			methodRunner.start();
 		}
 		if(project.getProjectInputType().isDeterministic()){
 			
@@ -429,7 +416,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onComplete(StochasticResultContainer result,
+	public void onCompleteOld(StochasticResultContainer result,
 			AbstractStochasticMethod method) {
 
 		StochasticChartArea stochasticChartArea;
@@ -522,6 +509,103 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 			getView().addStochasticChartArea(stochasticChartArea, counter);
 
 		}
+	}
+	
+	@Override
+	public void onComplete(Distribution distribution) {
+
+		System.out.println();
+		
+//		StochasticChartArea stochasticChartArea;
+//
+//		int counter = 0;
+//		for (Szenario scenario : project.getIncludedScenarios()) {
+//			CompanyValueStochastic companyValues = new CompanyValueStochastic();
+//			APV apv = new APV();
+//
+//			counter++;
+//			// Bei Verwendung der Zeitreihenanalyse sollen
+//			// zusätzlich
+//			// die Erwartungswerte der Cashflows berechnet werden
+//
+//			// Temporäre Variablen werden erzeugt, die später für die Schleife
+//			// benötigt werden
+//			Period period;
+//			double[] cashflow = null;
+//			double[] fremdkapital = null;
+//			int i;
+//			double unternehmenswert;
+//
+//			// für jeden Cashflow-Period-Container, der im
+//			// Stochastic-Result-Container enthalten ist,
+//			// wird die Schleife je einmal durchlaufen (=Anzahl der Iterationen
+//			// in der Zeitreihenanalyse)
+//			try {
+////				for (AbstractPeriodContainer abstractPeriodContainer : result
+////						.getPeriodContainers()) {
+//					// holt pro Cashflow-Period-Container die enthaltenen
+//					// Perioden
+//					// und legt sie in einem TreeSet ab
+//					TreeSet<? extends Period> periods = abstractPeriodContainer
+//							.getPeriods();
+//					// ein Iterator zum durchlaufen des TreeSet wird erstellt.
+//					Iterator<? extends Period> periodenIterator = periods
+//							.iterator();
+//					// Zähler, Cashflow- und Fremdkapital-Arrays werden
+//					// zurückgesetzt
+//					cashflow = new double[periods.size()];
+//					fremdkapital = new double[periods.size()];
+//					i = 0;
+//					// pro Periode sollen nun die Werte ausgelesen und ein
+//					// Unternehmenswert berechnet werden
+//					while (periodenIterator.hasNext()) {
+//						period = periodenIterator.next();
+//						cashflow[i] = period.getFreeCashFlow();
+//						fremdkapital[i] = period.getCapitalStock();
+//						i++;
+//					}
+//					// berechnet den Unternehmenswert des betrachteten
+//					// Cashflow-Period-Container
+//					unternehmenswert = apv.calculateValues(cashflow,
+//							fremdkapital, scenario);
+//					// fügt den Unternehmenswert der Sammelklasse aller
+//					// Unternehmenswert hinzu
+//					companyValues.addCompanyValue(unternehmenswert);
+//
+//				}
+//				logger.debug("Unternehmenswerte berechnet und in Sammelklasse einzugefügt.");
+//			} catch (NullPointerException e) {
+//				getView()
+//						.showErrorMessge(
+//								"Entweder alle Cashflows oder alle Fremdkapital-Werte sind gleich groß. In diesem Fall ist die Zeitreihenanalyse aus mathematischen Gründen nicht durchführbar.");
+//			}
+//
+//			// Erwartete Cashflows und Fremdkapitalwerte laden (sind nicht im
+//			// StochasticResultContainer)
+//
+////			StochasticResultContainer src = timeseriesCalculator
+////					.getExpectedValues();
+////
+////			expectedValues = (TreeSet<CashFlowPeriod>) src
+////					.getPeriodContainers().first().getPeriods();
+////
+////			validierung = timeseriesCalculator.getModellabweichung();
+//			logger.debug("Modellabweichung: " + validierung);
+//
+////			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
+////				stochasticChartArea = new StochasticChartArea(method.getName(),
+////						expectedValues, companyValues.getGradedCompanyValues(),
+////						validierung, scenario);
+////			} else {
+////				stochasticChartArea = new StochasticChartArea(method.getName(),
+////						null, companyValues.getGradedCompanyValues(),
+////						validierung, scenario);
+////			}
+//			getView().changeProgress(1);
+//			getView().addStochasticChartArea(stochasticChartArea, counter);
+//
+//		}
+		
 	}
 
 	@Override
