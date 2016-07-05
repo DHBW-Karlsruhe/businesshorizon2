@@ -74,7 +74,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.MoreScenarioCalculationEvent
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
  * 
- * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio
+ * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio, Thomas Zapf
  * 
  */
 
@@ -179,7 +179,7 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 		nfDE.setMaximumFractionDigits(2);
 		nfDE.setMinimumFractionDigits(1);
 		
-		getView().setScenarioValue(numScenario, nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()), nfDE.format(unternehmenswert));
+		getView().setScenarioValue(numScenario, nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()), nfDE.format(unternehmenswert), nfDE.format(scenario.getPersonalTaxRate()));
 		
 		ColumnChart cc = new ColumnChart();	
 		cc.setOption("is3D", true);	

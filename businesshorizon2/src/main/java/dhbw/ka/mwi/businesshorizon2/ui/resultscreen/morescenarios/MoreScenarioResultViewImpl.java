@@ -50,7 +50,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Ausgabe" in
  * Vaadin.
  * 
- * @author Florian Stier, Mirko Göpfrich, Tobias Lindner
+ * @author Florian Stier, Mirko Göpfrich, Tobias Lindner, Thomas Zapf
  * 
  */
 public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreScenarioResultViewInterface {
@@ -73,30 +73,36 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	private Label renditeFKLabel1;
 	private Label gewerbeStLabel1;
 	private Label koerperStLabel1;
+	private Label personalTaxRateLabel1;
 	private Label renditeEK1;
 	private Label renditeFK1;
 	private Label gewerbeSt1;
 	private Label koerperSt1;
+	private Label personalTaxRate1;
 	private Label companyValue1;
 	
 	private Label renditeEKLabel2;
 	private Label renditeFKLabel2;
 	private Label gewerbeStLabel2;
 	private Label koerperStLabel2;
+	private Label personalTaxRateLabel2;
 	private Label renditeEK2;
 	private Label renditeFK2;
 	private Label gewerbeSt2;
 	private Label koerperSt2;
+	private Label personalTaxRate2;
 	private Label companyValue2;
 	
 	private Label renditeEKLabel3;
 	private Label renditeFKLabel3;
 	private Label gewerbeStLabel3;
 	private Label koerperStLabel3;
+	private Label personalTaxRateLabel3;
 	private Label renditeEK3;
 	private Label renditeFK3;
 	private Label gewerbeSt3;
 	private Label koerperSt3;
+	private Label personalTaxRate3;
 	private Label companyValue3;
 
 	private Label companyValueLabel;
@@ -173,9 +179,9 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		row3 = planningTable.getItem(itemId3);
 		row3.getItemProperty("first").setValue("Kapitalstruktur");
 		
-		planningGridScenario1 = new GridLayout(2,4);
-		planningGridScenario2 = new GridLayout(2,4);
-		planningGridScenario3 = new GridLayout(2,4);
+		planningGridScenario1 = new GridLayout(2,5);
+		planningGridScenario2 = new GridLayout(2,5);
+		planningGridScenario3 = new GridLayout(2,5);
 		
 		companyValueLayoutScenario1 = new GridLayout();
 		companyValueLayoutScenario2 = new GridLayout();
@@ -259,10 +265,12 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		gewerbeStLabel1 = new Label("Gewerbesteuer:");
 		koerperStLabel1 = new Label("Körperschaftssteuer <br> inkl. Solidaritätszuschlag:  ");
 		koerperStLabel1.setContentMode(Label.CONTENT_XHTML);
+		personalTaxRateLabel1 = new Label("Persönlicher Steuersatz: ");
 		renditeEK1 = new Label();
 		renditeFK1 = new Label();
 		gewerbeSt1 = new Label();
 		koerperSt1 = new Label();
+		personalTaxRate1 = new Label();
 		
 		companyValue1 = new Label();
 		
@@ -274,6 +282,8 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		planningGridScenario1.addComponent(gewerbeSt1, 1, 2);
 		planningGridScenario1.addComponent(koerperStLabel1, 0, 3);
 		planningGridScenario1.addComponent(koerperSt1, 1, 3);
+		planningGridScenario1.addComponent(personalTaxRateLabel1, 0, 4);
+		planningGridScenario1.addComponent(personalTaxRate1, 1, 4);
 		planningGridScenario1.setComponentAlignment(koerperSt1, Alignment.MIDDLE_LEFT);
 		
 		companyValueLayoutScenario1.addComponent(companyValue1);
@@ -291,10 +301,12 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		gewerbeStLabel2 = new Label("Gewerbesteuer:");
 		koerperStLabel2 = new Label("Körperschaftssteuer <br> inkl. Solidaritätszuschlag:  ");
 		koerperStLabel2.setContentMode(Label.CONTENT_XHTML);
+		personalTaxRateLabel2 = new Label("Persönlicher Steuersatz: ");
 		renditeEK2 = new Label();
 		renditeFK2 = new Label();
 		gewerbeSt2 = new Label();
 		koerperSt2 = new Label();
+		personalTaxRate2 = new Label();
 		
 		companyValue2 = new Label();
 		
@@ -306,6 +318,8 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		planningGridScenario2.addComponent(gewerbeSt2, 1, 2);
 		planningGridScenario2.addComponent(koerperStLabel2, 0, 3);
 		planningGridScenario2.addComponent(koerperSt2, 1, 3);
+		planningGridScenario2.addComponent(personalTaxRateLabel2, 0, 4);
+		planningGridScenario2.addComponent(personalTaxRate2, 1, 4);
 		planningGridScenario2.setComponentAlignment(koerperSt2, Alignment.MIDDLE_LEFT);
 		
 		companyValueLayoutScenario2.addComponent(companyValue2);
@@ -323,10 +337,12 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		gewerbeStLabel3 = new Label("Gewerbesteuer:");
 		koerperStLabel3 = new Label("Körperschaftssteuer <br> inkl. Solidaritätszuschlag:  ");
 		koerperStLabel3.setContentMode(Label.CONTENT_XHTML);
+		personalTaxRateLabel3 = new Label("Persönlicher Steuersatz: ");
 		renditeEK3 = new Label();
 		renditeFK3 = new Label();
 		gewerbeSt3 = new Label();
 		koerperSt3 = new Label();
+		personalTaxRate3 = new Label();
 		
 		companyValue3 = new Label();
 		
@@ -338,6 +354,8 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 		planningGridScenario3.addComponent(gewerbeSt3, 1, 2);
 		planningGridScenario3.addComponent(koerperStLabel3, 0, 3);
 		planningGridScenario3.addComponent(koerperSt3, 1, 3);
+		planningGridScenario3.addComponent(personalTaxRateLabel3, 0, 4);
+		planningGridScenario3.addComponent(personalTaxRate3, 1, 4);
 		planningGridScenario3.setComponentAlignment(koerperSt3, Alignment.MIDDLE_LEFT);
 		
 		companyValueLayoutScenario3.addComponent(companyValue3);
@@ -379,13 +397,14 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 	 * 
 	 * @author Tobias Lindner
 	 */
-	public void setScenarioValue(int numScenario, String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String companyValue){
+	public void setScenarioValue(int numScenario, String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String companyValue, String personalTax){
 		switch (numScenario) {
 		case 0:
 			this.renditeEK1.setValue(renditeEK);
 			this.renditeFK1.setValue(renditeFK);
 			this.gewerbeSt1.setValue(gewerbeSt);
 			this.koerperSt1.setValue(koerperSt);
+			this.personalTaxRate1.setValue(personalTax);
 			this.companyValue1.setValue(companyValue);
 			logger.debug("Values von Szenario 1 gesetzt");
 			break;
@@ -395,6 +414,7 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 			this.renditeFK2.setValue(renditeFK);
 			this.gewerbeSt2.setValue(gewerbeSt);
 			this.koerperSt2.setValue(koerperSt);
+			this.personalTaxRate2.setValue(personalTax);
 			this.companyValue2.setValue(companyValue);
 			logger.debug("Values von Szenario 2 gesetzt");
 			break;
@@ -404,6 +424,7 @@ public class MoreScenarioResultViewImpl extends VerticalLayout implements MoreSc
 			this.renditeFK3.setValue(renditeFK);
 			this.gewerbeSt3.setValue(gewerbeSt);
 			this.koerperSt3.setValue(koerperSt);
+			this.personalTaxRate3.setValue(personalTax);
 			this.companyValue3.setValue(companyValue);
 			logger.debug("Values von Szenario 3 gesetzt");
 			break;			
