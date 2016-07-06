@@ -29,6 +29,7 @@ import java.util.Random;
 
 import org.apache.log4j.Logger;
 //import org.jamesii.core.math.statistics.timeseries.AutoCovariance;
+import org.junit.Test;
 
 import Jama.Matrix;
 import cern.colt.list.DoubleArrayList;
@@ -39,6 +40,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
+import dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries.der;
 
 /**
  * Diese Klasse stellt die Methoden zur Verfuegung, die benoetigt werden, um die
@@ -46,7 +48,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Szenario;
  * und implementiert das AR-Modell.
  * 
  * @author Kai Westerholz, Nina Brauch, Raffaele Cipolla, Mirko Göpfrich, Marcel
- *         Rosenberger, Jonathan Janke
+ *         Rosenberger, Jonathan Janke, Philipp Nagel
  * 
  */
 
@@ -478,6 +480,9 @@ public class AnalysisTimeseries {
 	}
 
 	/**
+	 * Diese Methode ist outdated und wird daher nicht mehr verwendet
+	 * 
+	 * 
 	 * Methode zur Prognose zukünftiger Werte einer gegebenen Zeitreihe und
 	 * einem AR-Modell. Sie berechnet die jeweiligen Prognosewerte und gibt sie
 	 * in einem zweidimensionalen Array zurück.
@@ -840,5 +845,9 @@ public class AnalysisTimeseries {
 	public double[] getErwartetesFremdkapital() {
 		return erwartetesFremdkapital;
 	}
+	
+	
 
+
+	
 }
