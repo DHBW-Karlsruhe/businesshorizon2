@@ -43,6 +43,6 @@ public class TestStationaritaetTrendgerade extends TestCase{
 		double[] zeitreihe = {1,2,3,4};
 		
 		double autoKovarianz = Trendgerade.getAutoKoVarianz(1., 0., zeitreihe);
-		assertEquals(autoKovarianz, 4);
+		assertEquals(autoKovarianz, 0.0);
 	}
 }
