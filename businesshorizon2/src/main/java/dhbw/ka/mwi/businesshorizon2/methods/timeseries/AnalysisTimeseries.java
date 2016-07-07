@@ -40,7 +40,6 @@ import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.StochasticMethodException;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
-import dhbw.ka.mwi.businesshorizon2.tests.methods.timeseries.der;
 
 /**
  * Diese Klasse stellt die Methoden zur Verfuegung, die benoetigt werden, um die
