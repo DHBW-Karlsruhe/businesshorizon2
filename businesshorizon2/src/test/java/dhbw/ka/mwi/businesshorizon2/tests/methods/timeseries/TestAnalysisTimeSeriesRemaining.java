@@ -6,7 +6,6 @@ import org.junit.Test;
 import cern.colt.list.DoubleArrayList;
 import cern.colt.matrix.DoubleMatrix2D;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.AnalysisTimeseries;
-import dhbw.ka.mwi.businesshorizon2.methods.timeseries.der;
 import junit.framework.TestCase;
 /**
  * Diese Klasse enthält die restlichen Tests der Klasse AnalysisTimeseries. Teilweise sind die Tests auf Ignore gesetzt, da sie legacy Methoden testen und dadurch ein sinnvoller Wert für die Code coverage erreicht werden soll
@@ -20,7 +19,7 @@ public class TestAnalysisTimeSeriesRemaining extends TestCase {
 		dal.add(1);
 		dal.add(2);
 		
-		DoubleMatrix2D matrixPhi;
+		DoubleMatrix2D matrixPhi = null;;
 		at.prognoseBerechnen(dal, matrixPhi, 1.5, 2, 2, 2, 1.5, true);
 		assertTrue(true);
 	}
@@ -35,7 +34,7 @@ public class TestAnalysisTimeSeriesRemaining extends TestCase {
 		dal.add(1);
 		dal.add(2);
 		
-		DoubleMatrix2D matrixPhi;
+		DoubleMatrix2D matrixPhi = null;
 		at.erwarteteWerteBerechnen(dal, matrixPhi, 2, 2, 1.5, true);
 		assertTrue(true);
 	}
@@ -62,7 +61,7 @@ public class TestAnalysisTimeSeriesRemaining extends TestCase {
 		dal.add(1);
 		dal.add(2);
 		
-		DoubleMatrix2D matrixPhi;
+		DoubleMatrix2D matrixPhi = null;
 		
 		at.validierung(dal, matrixPhi, 2);
 		assertTrue(true);
