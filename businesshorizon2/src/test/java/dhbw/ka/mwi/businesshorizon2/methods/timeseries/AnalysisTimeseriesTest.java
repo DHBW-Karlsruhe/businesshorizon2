@@ -31,7 +31,7 @@ public class AnalysisTimeseriesTest {
 		double[][] array = { { 1, 2, 3 }, { 0, 1, 5 }, { 5, 6, 0 } };
 
 		Matrix matrix = new Matrix(array);
-
+		
 		double[] autocorrelations = { 1, 2, 3 };
 		double[] parameters = timeseries.calculateModelParameters(matrix, autocorrelations);
 
