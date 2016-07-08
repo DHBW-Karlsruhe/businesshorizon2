@@ -81,14 +81,20 @@ public class APV extends AbstractDeterministicMethod {
 
     /**
      * @author Thomas Zapf, Markus Baader
+     * Berechnung des Unternehmenwerts mit Hilfe des APV - Phasenmodells unter
+     * Beachtung der pesönlichen Steuer. Dies geschieht unter der Prämisse, 
+     * dass keine Präferenzen vorliegen und eine konstante Finanzpolitik herrscht.
      * @param cashflows Cashflows der zukünftigen Perioden
-     * @param interestBearingDebtCapital Verzinzliches Fremdkapital der
-     * zukünftigen Perioden
+     *                  z.B. [t=1, t=2, t=3, ... t=n ff]
+     *                  Achtung: t=0 wird nicht benötigt!
+     * @param interestBearingDebtCapital 
+     *                  Verzinzliches Fremdkapital der zukünftigen Perioden
+     *                  z.B. [t=0, t=1, t=2, ... t=n ff]
+     *                  Achtung: t=0 wird für TaxShield-Berechnung benötigt!
      * @param szenario Gegebenes Szenario für die Berechnung
      * @return Brechneter Unternehmenswert
      */
-    // APV - Phasenmodell
-    // (ohne persönliche Steuern, ohne Präferenzen, konstante Finanzpolitik)"
+    
     public double calculateValues(double[] cashflows, double[] interestBearingDebtCapital,
             Szenario szenario) {
 
@@ -123,7 +129,7 @@ public class APV extends AbstractDeterministicMethod {
         double cashValue;
         double total = 0;
 
-        // Endlichkeitskalkül --> Perioden -1
+        // Endlichkeitskalkül --> bis zur vorletzten Periode
         double base;
         double potency;
         for (int i = 0; i < (cashflows.length - 1); i++) {
@@ -134,7 +140,7 @@ public class APV extends AbstractDeterministicMethod {
             total = total + cashValue;
         }
 
-        // Unendlichkeitskalkül
+        // Unendlichkeitskalkül --> letzte Periode
         cashflowAfterTaxes = cashflows[cashflows.length - 1]
                 * (1.0 - personalTaxRate);
         cashValue = (cashflowAfterTaxes / (equityCostsAfterTaxes * Math.pow(
@@ -156,7 +162,7 @@ public class APV extends AbstractDeterministicMethod {
         double taxShieldAfterTaxes;
         double cashValue;
 
-        // Endlichkeitkalkül
+        // Endlichkeitkalkül --> bis zur vorletzten Periode
         double base;
         double exponent;
 
@@ -170,7 +176,7 @@ public class APV extends AbstractDeterministicMethod {
             total = total + cashValue;
         }
 
-        // Unendlichkeitkalkül
+        // Unendlichkeitkalkül --> letzte Periode
         interest = interestBearingDebtCapital[interestBearingDebtCapital.length - 2]
                 * borrowingCostsWithoutTaxes;
         taxShieldWithoutTaxes = interest * businessTax;
