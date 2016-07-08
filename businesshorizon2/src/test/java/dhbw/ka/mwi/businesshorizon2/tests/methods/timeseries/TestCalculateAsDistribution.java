@@ -25,9 +25,9 @@ public class TestCalculateAsDistribution {
 	@Test
 	public void test() {
 		AnalysisTimeseries at = new AnalysisTimeseries();
-		double [] zeitreihe = {138.61, 138.61, 202.31, 174.41, 202.52};
-		double [] initialInterestBearingDebtCapital = {1260.0,1320.0,1330.0,1400.0,1400.0};
-		int p=4;
+		double [] zeitreihe = {138.61, 202.31, 174.41, 202.52};
+		double [] initialInterestBearingDebtCapital = {1260.0,1320.0,1330.0,1400.0};
+		int p=3;
 		int zuberechnendePerioden = 3;
 		int durchlaeufe = 10000;
 		Szenario scenario = new Szenario(EQUITY_COSTS_WITHOUT_TAXES, BORROWING_COSTS_WITHOUT_TAXES, TRADE_TAX,
