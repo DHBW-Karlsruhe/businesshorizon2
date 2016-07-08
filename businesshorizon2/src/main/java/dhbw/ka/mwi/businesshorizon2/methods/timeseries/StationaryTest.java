@@ -34,7 +34,7 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
  * @author Kai Westerholz
  * 
  */
-
+@Deprecated
 public class StationaryTest {	//nicht implementiert
 
 	/**
