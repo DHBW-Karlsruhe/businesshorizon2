@@ -583,17 +583,17 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 			validierung = timeseriesCalculator.getModellabweichung();
 			logger.debug("Modellabweichung: " + validierung);
 
-			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						expectedValues, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
-			} else {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						null, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
-			}
-			getView().changeProgress(1);
-			getView().addStochasticChartArea(stochasticChartArea, counter);
+//			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						expectedValues, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
+//			} else {
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						null, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
+//			}
+//			getView().changeProgress(1);
+//			getView().addStochasticChartArea(stochasticChartArea, counter);
 
 		}
 	}
