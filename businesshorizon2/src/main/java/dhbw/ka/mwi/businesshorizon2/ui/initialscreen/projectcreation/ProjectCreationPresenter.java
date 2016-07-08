@@ -100,6 +100,7 @@ public class ProjectCreationPresenter extends Presenter<ProjectCreationViewInter
 
 			@Override
 			public void buttonClick(ClickEvent event) {
+				System.out.println("say hello");
 				getView().editProject(0);
 //				eventBus.fireEvent(new ShowInitialTopButtonsEvent());
 			}
