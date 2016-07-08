@@ -79,8 +79,8 @@ public class TestPrognoseBerechnen extends TestCase {
 		
 		
 		//prognosewerte = at.prognoseBerechnen(cashflows, matrixValuations, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
-		prognosewerte = at.prognoseBerechnenNew(cashflows, phiValues, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
-		compareValues = at.prognoseBerechnenNew(cashflows, phiValues, 0, zuberechnendeperioden, durchlaeufe, p, 0, isfremdkapital)  ;
+		prognosewerte = at.prognoseBerechnen(cashflows, phiValues, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
+		compareValues = at.prognoseBerechnen(cashflows, phiValues, 0, zuberechnendeperioden, durchlaeufe, p, 0, isfremdkapital)  ;
 		//array zum Überprüfen, ob Mittelwerte der Perioden ungefähr beeinander liegen
 		double averagePerPeriod[] = new double [zuberechnendeperioden];
 		double averagePerPeriodCompare[] = new double [zuberechnendeperioden];
