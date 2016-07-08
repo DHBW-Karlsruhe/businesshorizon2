@@ -497,16 +497,16 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 			logger.debug("Modellabweichung: " + validierung);
 
 			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						expectedValues, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						expectedValues, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
 			} else {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						null, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						null, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
 			}
 			getView().changeProgress(1);
-			getView().addStochasticChartArea(stochasticChartArea, counter);
+//			getView().addStochasticChartArea(stochasticChartArea, counter);
 
 		}
 	}
@@ -516,95 +516,18 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 
 		System.out.println();
 		
-//		StochasticChartArea stochasticChartArea;
-//
-//		int counter = 0;
-//		for (Szenario scenario : project.getIncludedScenarios()) {
-//			CompanyValueStochastic companyValues = new CompanyValueStochastic();
-//			APV apv = new APV();
-//
-//			counter++;
-//			// Bei Verwendung der Zeitreihenanalyse sollen
-//			// zusätzlich
-//			// die Erwartungswerte der Cashflows berechnet werden
-//
-//			// Temporäre Variablen werden erzeugt, die später für die Schleife
-//			// benötigt werden
-//			Period period;
-//			double[] cashflow = null;
-//			double[] fremdkapital = null;
-//			int i;
-//			double unternehmenswert;
-//
-//			// für jeden Cashflow-Period-Container, der im
-//			// Stochastic-Result-Container enthalten ist,
-//			// wird die Schleife je einmal durchlaufen (=Anzahl der Iterationen
-//			// in der Zeitreihenanalyse)
-//			try {
-////				for (AbstractPeriodContainer abstractPeriodContainer : result
-////						.getPeriodContainers()) {
-//					// holt pro Cashflow-Period-Container die enthaltenen
-//					// Perioden
-//					// und legt sie in einem TreeSet ab
-//					TreeSet<? extends Period> periods = abstractPeriodContainer
-//							.getPeriods();
-//					// ein Iterator zum durchlaufen des TreeSet wird erstellt.
-//					Iterator<? extends Period> periodenIterator = periods
-//							.iterator();
-//					// Zähler, Cashflow- und Fremdkapital-Arrays werden
-//					// zurückgesetzt
-//					cashflow = new double[periods.size()];
-//					fremdkapital = new double[periods.size()];
-//					i = 0;
-//					// pro Periode sollen nun die Werte ausgelesen und ein
-//					// Unternehmenswert berechnet werden
-//					while (periodenIterator.hasNext()) {
-//						period = periodenIterator.next();
-//						cashflow[i] = period.getFreeCashFlow();
-//						fremdkapital[i] = period.getCapitalStock();
-//						i++;
-//					}
-//					// berechnet den Unternehmenswert des betrachteten
-//					// Cashflow-Period-Container
-//					unternehmenswert = apv.calculateValues(cashflow,
-//							fremdkapital, scenario);
-//					// fügt den Unternehmenswert der Sammelklasse aller
-//					// Unternehmenswert hinzu
-//					companyValues.addCompanyValue(unternehmenswert);
-//
-//				}
-//				logger.debug("Unternehmenswerte berechnet und in Sammelklasse einzugefügt.");
-//			} catch (NullPointerException e) {
-//				getView()
-//						.showErrorMessge(
-//								"Entweder alle Cashflows oder alle Fremdkapital-Werte sind gleich groß. In diesem Fall ist die Zeitreihenanalyse aus mathematischen Gründen nicht durchführbar.");
-//			}
-//
-//			// Erwartete Cashflows und Fremdkapitalwerte laden (sind nicht im
-//			// StochasticResultContainer)
-//
-////			StochasticResultContainer src = timeseriesCalculator
-////					.getExpectedValues();
-////
-////			expectedValues = (TreeSet<CashFlowPeriod>) src
-////					.getPeriodContainers().first().getPeriods();
-////
-////			validierung = timeseriesCalculator.getModellabweichung();
-//			logger.debug("Modellabweichung: " + validierung);
-//
-////			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
-////				stochasticChartArea = new StochasticChartArea(method.getName(),
-////						expectedValues, companyValues.getGradedCompanyValues(),
-////						validierung, scenario);
-////			} else {
-////				stochasticChartArea = new StochasticChartArea(method.getName(),
-////						null, companyValues.getGradedCompanyValues(),
-////						validierung, scenario);
-////			}
-//			getView().changeProgress(1);
-//			getView().addStochasticChartArea(stochasticChartArea, counter);
-//
-//		}
+		StochasticChartArea stochasticChartArea;
+		
+		distribution.getValues();
+
+    		stochasticChartArea = new StochasticChartArea("APV", project.getStochasticPeriods().getPeriods(), distribution, validierung, project.getScenarios().get(0));
+		
+//		stochasticChartArea = new StochasticChartArea("APV",
+//				expectedValues, companyValues.getGradedCompanyValues(),
+//				validierung, project.getScenarios());
+				
+		getView().changeProgress(1);
+		getView().addStochasticChartArea(stochasticChartArea, project.getScenarios().size());
 		
 	}
 
