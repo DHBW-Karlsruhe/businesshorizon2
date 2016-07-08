@@ -63,6 +63,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
  * Die einzelnen Views werden in das Layout dieser View eingefügt.
  *
  * @author Christian Scherer, Marcel Rosenberger, Mirko Göpfrich, Marco Glaser
+ * @author Anh Nguyen
  *
  */
 public class InitialScreenViewImpl extends Window implements InitialScreenViewInterface {
