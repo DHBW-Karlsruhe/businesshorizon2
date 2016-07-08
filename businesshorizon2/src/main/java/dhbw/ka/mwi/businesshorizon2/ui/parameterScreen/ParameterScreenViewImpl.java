@@ -81,7 +81,7 @@ private Embedded logo;
 private Embedded titleIcon;
 
 private Label homeButtonLabel;
-private Label accountButtonLabel;
+//private Label accountButtonLabel;
 private Label gap;
 private Label middleGap;
 private Label bottomGap;
@@ -90,11 +90,11 @@ private VerticalLayout left;
 private VerticalLayout descriptionLayout;
 private VerticalLayout leftLogolayout;
 private VerticalLayout homeButtonLayout;
-private VerticalLayout accountButtonLayout;
+//private VerticalLayout accountButtonLayout;
 private HorizontalLayout menuButtonsLayout;
 
 private Button homeButton;
-private Button accountButton;
+//private Button accountButton;
 
 private HorizontalLayout middle;
 
@@ -277,25 +277,25 @@ private void generateUi() {
 	homeButtonLayout.setComponentAlignment(homeButtonLabel, Alignment.MIDDLE_CENTER);
 	
 	menuButtonsLayout.addComponent(homeButtonLayout);
-
-	accountButtonLayout = new VerticalLayout();
-	accountButtonLayout.setSizeFull();
-	
-	accountButton = new Button();
-	accountButton.setHeight(30, UNITS_PIXELS);
-	accountButton.setWidth(30, UNITS_PIXELS);
-	accountButton.setStyleName("accountButton");
-	
-	accountButtonLabel = new Label("Mein Konto");
-	accountButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-	accountButtonLabel.setStyleName("topBarButtonLabel");
-	
-	accountButtonLayout.addComponent(accountButton);
-	accountButtonLayout.addComponent(accountButtonLabel);
-	accountButtonLayout.setComponentAlignment(accountButton, Alignment.TOP_CENTER);;
-	accountButtonLayout.setComponentAlignment(accountButtonLabel, Alignment.MIDDLE_CENTER);
-	
-	menuButtonsLayout.addComponent(accountButtonLayout);
+//
+//	accountButtonLayout = new VerticalLayout();
+//	accountButtonLayout.setSizeFull();
+//	
+//	accountButton = new Button();
+//	accountButton.setHeight(30, UNITS_PIXELS);
+//	accountButton.setWidth(30, UNITS_PIXELS);
+//	accountButton.setStyleName("accountButton");
+//	
+//	accountButtonLabel = new Label("Mein Konto");
+//	accountButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+//	accountButtonLabel.setStyleName("topBarButtonLabel");
+//	
+//	accountButtonLayout.addComponent(accountButton);
+//	accountButtonLayout.addComponent(accountButtonLabel);
+//	accountButtonLayout.setComponentAlignment(accountButton, Alignment.TOP_CENTER);;
+//	accountButtonLayout.setComponentAlignment(accountButtonLabel, Alignment.MIDDLE_CENTER);
+//	
+//	menuButtonsLayout.addComponent(accountButtonLayout);
 	
 	bottomGap = new Label();
 	bottomGap.setHeight("380px");
@@ -318,7 +318,7 @@ private void generateUi() {
 	leftLayout.setExpandRatio(leftContentLayout, 1.0f);
 	
 	
-	//Buttonleiste
+	//Buttonleiste oben
 	
 	TopBarButton button = new TopBarButton("saveButton", "Speichern");
 	addTopButton(button.getButtonComponent());
@@ -332,6 +332,7 @@ private void generateUi() {
 
 		@Override
 		public void buttonClick(ClickEvent event) {
+			System.out.println("cancel on safe");
 			presenter.abbrechen();			
 		}
 		
