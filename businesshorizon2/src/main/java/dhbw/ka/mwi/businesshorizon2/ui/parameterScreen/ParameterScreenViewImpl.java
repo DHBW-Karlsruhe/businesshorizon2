@@ -30,32 +30,23 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import dhbw.ka.mwi.businesshorizon2.models.User;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
-import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
-
 import com.mvplite.view.View;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component.Event;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
+
+import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 
 /**
 * Dies ist die Vaadin-Implementierung der InitalScreenView (dem

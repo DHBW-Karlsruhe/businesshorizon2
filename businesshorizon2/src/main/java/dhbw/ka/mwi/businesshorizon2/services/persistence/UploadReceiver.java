@@ -30,7 +30,6 @@ import java.io.FileOutputStream;
 import java.io.OutputStream;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import com.mvplite.event.EventBus;
 import com.vaadin.ui.Upload;

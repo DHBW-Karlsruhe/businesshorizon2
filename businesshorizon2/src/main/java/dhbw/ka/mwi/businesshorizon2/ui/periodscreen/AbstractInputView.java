@@ -41,14 +41,13 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.themes.Reindeer;
 
 public abstract class AbstractInputView extends VerticalLayout implements
 InputViewInterface  {
 	private static final long serialVersionUID = 1L;
 
 	
-	 protected AbstractInputPresenter presenter;
+	 protected AbstractInputPresenter<AbstractInputView> presenter;
 
 	 private DecimalFormat df = new DecimalFormat(",##0.00");
 	 
@@ -82,7 +81,6 @@ InputViewInterface  {
 			
 			@Override
 			public void valueChange(ValueChangeEvent event) {
-				// TODO Auto-generated method stub
 				TextField tf = (TextField) event.getProperty();
 				presenter.validateChange((String) tf.getValue(), panel
 						.getComponentArea(tf).getColumn1(), panel
@@ -91,7 +89,6 @@ InputViewInterface  {
 					tf.setValue(df.format(df.parse((String) tf.getValue()).doubleValue()));
 				} catch (ReadOnlyException | ConversionException
 						| ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -130,7 +127,6 @@ InputViewInterface  {
 					tf.setValue(df.format(df.parse((String) tf.getValue()).doubleValue()));
 				} catch (ReadOnlyException | ConversionException
 						| ParseException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
@@ -157,6 +153,5 @@ InputViewInterface  {
 			((TextField) panel.getComponent(textFieldColumn, Row))
 					.setComponentError(null);
 	}
-
 
 }
