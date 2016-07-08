@@ -55,7 +55,6 @@ import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.Downloader;
 import dhbw.ka.mwi.businesshorizon2.services.persistence.UploadReceiver;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
 import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 
 /**
