@@ -140,25 +140,11 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 	private HorizontalLayout faqLayout;
 
-	private VerticalLayout faqManualLayout;
 
-	private HorizontalLayout manualLayout;
 
-	private Label faqLabel;
 
-	private Label manualLabel;
 
-	private Button faqButton;
 
-	private Button manualButton;
-
-	private VerticalLayout faqLayoutVertical;
-
-	private VerticalLayout manualLayoutVertical;
-
-	private Label faqGap;
-
-	private Label manualGap;
 
 	private Label middleGap;
 
@@ -230,21 +216,11 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		accountButton = new Button();
 		logoutButton = new Button();
 		homeButtonLabel = new Label("Startseite");
-		accountButtonLabel = new Label("Mein Konto");
+		accountButtonLabel = new Label("Mein Konto"); //TA: Funktion dahinter? //ansonsten raus
 		logoutButtonLabel = new Label("Ausloggen");
 		descriptionLayout = new VerticalLayout();
 		bottomGap = new Label();
-		faqManualLayout = new VerticalLayout();
 		faqLayout = new HorizontalLayout();
-		faqLayoutVertical = new VerticalLayout();
-		manualLayout = new HorizontalLayout();
-		manualLayoutVertical = new VerticalLayout();
-		faqLabel = new Label("FAQ");
-		manualLabel = new Label("User Manual");
-		faqButton = new Button();
-		manualButton = new Button();
-		faqGap = new Label();
-		manualGap = new Label();
 		homeIcon  = new Embedded(null, new ThemeResource("./images/icons/newIcons/1418766062_house_home-128.png"));
 		middleGap = new Label();
 
@@ -269,8 +245,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 
 		gap.setHeight("10px");
 		bottomGap.setHeight("40px");
-		faqGap.setWidth("50px");
-		manualGap.setWidth("50px");
 		middleGap.setHeight("10px");
 		progressBarGap.setHeight("15px");
 		leftContainerSpacing.setSizeFull();
@@ -308,25 +282,8 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		accountButtonLabel.setStyleName("topBarButtonLabel");
 		logoutButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		logoutButtonLabel.setStyleName("topBarButtonLabel");
-		faqManualLayout.setWidth(85, UNITS_PERCENTAGE);
-		faqManualLayout.setHeight(SIZE_UNDEFINED, 0);
-		faqManualLayout.setStyleName("faqManualLayout");
-		manualLayout.setWidth(100, UNITS_PERCENTAGE);
-		manualLayout.setHeight(50, UNITS_PIXELS);
-		manualLayoutVertical.setSizeFull();
 		faqLayout.setWidth(100, UNITS_PERCENTAGE);
 		faqLayout.setHeight(50, UNITS_PIXELS);
-		faqLayoutVertical.setSizeFull();
-		faqButton.setWidth(30, UNITS_PIXELS);
-		faqButton.setHeight(30, UNITS_PIXELS);
-		faqButton.setStyleName("faqButton");
-		manualButton.setWidth(30, UNITS_PIXELS);
-		manualButton.setHeight(30, UNITS_PIXELS);
-		manualButton.setStyleName("manualButton");
-		faqLabel.setWidth(SIZE_UNDEFINED, 0);
-		faqLabel.setStyleName("faqLabel");
-		manualLabel.setWidth(SIZE_UNDEFINED, 0);
-		manualLabel.setStyleName("faqLabel");
 
 		horizontalSplitPanel = new HorizontalSplitPanel();
 		horizontalSplitPanel.setSplitPosition(30, UNITS_PERCENTAGE);
@@ -357,7 +314,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		leftContentLayout.addComponent(progressBarGap);
 		leftContentLayout.addComponent(progressBar);
 		leftContentLayout.addComponent(leftContainerSpacing);
-		leftContentLayout.addComponent(faqManualLayout);
 		leftContentLayout.addComponent(bottomGap);
 		leftContentLayout.setExpandRatio(leftContainerSpacing, 1.0f);
 		leftLayout.addComponent(leftLogoLayout);
@@ -367,7 +323,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		leftLogoLayout.setComponentAlignment(logo, Alignment.MIDDLE_CENTER);
 		leftContentLayout.setComponentAlignment(homeIcon, Alignment.TOP_CENTER);
 		leftContentLayout.setComponentAlignment(seitenLabel, Alignment.TOP_CENTER);
-		leftContentLayout.setComponentAlignment(faqManualLayout, Alignment.BOTTOM_CENTER);
 		leftContentLayout.setComponentAlignment(progressBar, Alignment.MIDDLE_CENTER);
 		//		leftContentLayout.setComponentAlignment(descriptionLabel, Alignment.TOP_CENTER);
 		menuButtonsLayout.addComponent(homeButtonLayout);
@@ -379,18 +334,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		accountButtonLayout.addComponent(accountButtonLabel);
 		logoutButtonLayout.addComponent(logoutButton);
 		logoutButtonLayout.addComponent(logoutButtonLabel);
-		faqManualLayout.addComponent(manualLayout);
-		faqManualLayout.addComponent(faqLayout);
-		manualLayout.addComponent(manualLayoutVertical);
-		manualLayout.addComponent(manualButton);
-		manualLayout.addComponent(manualGap);
-		faqLayout.addComponent(faqLayoutVertical);
-		faqLayout.addComponent(faqButton);
-		faqLayout.addComponent(faqGap);
-		manualLayoutVertical.addComponent(manualLabel);
-		faqLayoutVertical.addComponent(faqLabel);
-		faqLayout.setExpandRatio(faqLayoutVertical, 1.0f);
-		manualLayout.setExpandRatio(manualLayoutVertical, 1.0f);
 
 		homeButtonLayout.setComponentAlignment(homeButton, Alignment.TOP_CENTER);
 		homeButtonLayout.setComponentAlignment(homeButtonLabel, Alignment.MIDDLE_CENTER);
@@ -398,10 +341,6 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		accountButtonLayout.setComponentAlignment(accountButtonLabel, Alignment.MIDDLE_CENTER);
 		logoutButtonLayout.setComponentAlignment(logoutButton, Alignment.TOP_CENTER);
 		logoutButtonLayout.setComponentAlignment(logoutButtonLabel, Alignment.MIDDLE_CENTER);
-		manualLayoutVertical.setComponentAlignment(manualLabel, Alignment.MIDDLE_RIGHT);
-		manualLayout.setComponentAlignment(manualButton, Alignment.MIDDLE_CENTER);
-		faqLayoutVertical.setComponentAlignment(faqLabel, Alignment.MIDDLE_RIGHT);
-		faqLayout.setComponentAlignment(faqButton, Alignment.MIDDLE_CENTER);
 
 		leftLogoLayout.setWidth(Sizeable.SIZE_UNDEFINED, 0);
 		leftLogoLayout.setHeight(100, UNITS_PERCENTAGE);
@@ -601,7 +540,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 	/**
 	 *
 	 */
-	private void addLogoutButton() {
+	/*private void addLogoutButton() {
 		Button logoutButton = new Button("Logout");
 		logoutButton.setStyleName("default");
 		logoutButton.addListener(new Button.ClickListener() {
@@ -620,7 +559,7 @@ public class InitialScreenViewImpl extends Window implements InitialScreenViewIn
 		right.addComponent(logoutButton);
 		right.setComponentAlignment(logoutButton, Alignment.TOP_RIGHT);
 
-	}
+	}*/
 
 
 	/**
