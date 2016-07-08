@@ -374,8 +374,15 @@ public class AnalysisTimeseries {
 		//kopieren des Arrays
 		double[][] results = new double[stochastischeErgebnisseDerCashFlows.length
 				- alreadyOccupiedPlaces][iterationen];
-		for (int i = 0; i < stochastischeErgebnisseDerCashFlows.length - alreadyOccupiedPlaces; i++) {
-			results[i] = stochastischeErgebnisseDerCashFlows[i + alreadyOccupiedPlaces];
+		if (isfremdkapital) {
+			for (int i = 0; i < stochastischeErgebnisseDerCashFlows.length - alreadyOccupiedPlaces; i++) {
+				results[i] = stochastischeErgebnisseDerCashFlows[i + alreadyOccupiedPlaces-1];
+			}
+		}
+		else {
+			for (int i = 0; i < stochastischeErgebnisseDerCashFlows.length - alreadyOccupiedPlaces; i++) {
+				results[i] = stochastischeErgebnisseDerCashFlows[i + alreadyOccupiedPlaces];
+			}
 		}
 
 		return results;
@@ -609,7 +616,7 @@ public class AnalysisTimeseries {
 			int zuberechnendePerioden, int durchlaeufe, Szenario scenario, CallbackInterface callback)
 			throws InterruptedException, StochasticMethodException {
 
-		double[][] timeseriesprognosis = this.calculate(zeitreihe, p, zuberechnendePerioden, durchlaeufe, callback,
+		double[][] cashFlowPrognosis = this.calculate(zeitreihe, p, zuberechnendePerioden, durchlaeufe, callback,
 				false);
 		double[][] interestBearingDebtCapitaPrognosis = this.calculate(initialInterestBearingDebtCapital, p,
 				zuberechnendePerioden, durchlaeufe, callback, true);
@@ -626,7 +633,7 @@ public class AnalysisTimeseries {
 
 		int numberIntervals = 20;
 
-		return this.createStochasticPrognosis(timeseriesprognosis, numberIntervals, interestBearingDebtCapital,
+		return this.createStochasticPrognosis(cashFlowPrognosis, numberIntervals, interestBearingDebtCapital,
 				scenario);
 	}
 
@@ -643,7 +650,6 @@ public class AnalysisTimeseries {
 
 		for (int i = 0; i < twoDimensionArray.length; i++) {
 			oneDimeinsionArray[i] = twoDimensionArray[i][0];
-
 		}
 
 		return oneDimeinsionArray;
