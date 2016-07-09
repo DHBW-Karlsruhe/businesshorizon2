@@ -275,33 +275,21 @@ public class OneScenarioResultPresenter extends
 					"#FF8533", "#0099FF" });
 			columnChart.addXAxisLabel("Year");
 			columnChart.addColumn("Unternehmenswert");
-//			columnChart.addColumn("Fremdkapital");
 
 			NumberFormat nfUS = NumberFormat.getInstance(Locale.US);
 			nfUS.setMinimumFractionDigits(2);
 			nfUS.setMaximumFractionDigits(2);
-			// project.setCompanyValue(Double.parseDouble(nfUS.format(unternehmenswert).replace(",",
-			// "")));
 			NumberFormat nfDE = NumberFormat.getInstance(Locale.GERMANY);
 			nfDE.setMaximumFractionDigits(2);
 			nfDE.setMinimumFractionDigits(1);
 
-//			String[] test = new String[3];
-//			columnChart.addRow(new String[number]);
-			
-//			for(int i = 0; i < distribution.getValues().length; i++){
-//				columnChart.addColumn("UW: " + (i + 1));
-//			}
+
 			int count = 1;
 			for(double value : distribution.getValues()){
 				columnChart.add(String.valueOf(count), new double[] {value});
 				count++;
 			}
-//			columnChart.add(String.valueOf(periods.last().getYear()), distribution.getValues());
-			
-			
-			
-//			getView().setCompanyValue(nfDE.format(123));
+
 			getView().setScenarioValue(
 					nfDE.format(scenario.getRateReturnEquity()),
 					nfDE.format(scenario.getRateReturnCapitalStock()),
@@ -325,9 +313,6 @@ public class OneScenarioResultPresenter extends
 				lineChart.add(String.valueOf(period.getYear()),
 						new double[] { period.getFreeCashFlow() });
 			}
-			
-			columnChart.setHeight("200px");
-			columnChart.setWidth("510px");
 			
 			getView().setCapitalChart(columnChart);
 			getView().setCashFlowChart(lineChart);
