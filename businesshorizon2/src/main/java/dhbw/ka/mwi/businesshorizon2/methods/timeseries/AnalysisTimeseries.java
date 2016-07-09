@@ -612,7 +612,7 @@ public class AnalysisTimeseries {
 	}
 
 	public Distribution calculateAsDistribution(double[] zeitreihe, double[] initialInterestBearingDebtCapital, int p,
-			int zuberechnendePerioden, int durchlaeufe, Szenario scenario)
+			int zuberechnendePerioden, int durchlaeufe, Szenario scenario, CallbackInterface callback)
 			throws InterruptedException, StochasticMethodException {
 
 		double[][] cashFlowPrognosis = this.calculate(zeitreihe, p, zuberechnendePerioden, durchlaeufe,
