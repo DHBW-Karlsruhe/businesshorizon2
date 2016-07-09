@@ -268,7 +268,7 @@ public class OneScenarioResultPresenter extends
 			columnChart.setOption("is3D", true);
 			columnChart.setOption("isStacked", true);
 			columnChart.setOption("legend", "bottom");
-			columnChart.setOption("title", "Kapitalstruktur");
+			columnChart.setOption("title", "Unternehmenswert");
 			columnChart.setOption("width", 250);
 			columnChart.setOption("height", 240);
 			columnChart.setColors(new String[] { "#92D050", "#D9D9D9",
