@@ -8,12 +8,17 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
 public class Trendgerade {
 	private double m;
 	private double b;
-	
+	/**
+	 * @author Philipp Nagel
+	 */
 	//method to get value from f(x) = m*x+b;
 	public double getValue(int x) {
 		return this.getM()*x + this.getB();
 	}
 	
+	/**
+	 * @author Philipp Nagel
+	 */
 	public Trendgerade (double[] zeitreihe) {
 		//trendgerade erzeugen
 		//m und b mit Startwerten belegen
