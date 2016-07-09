@@ -144,9 +144,14 @@ public class AnalysisTimeseries {
 	public double[] calculateAutocorrelations(double[] zeitreihe) {
 
 		double[] results = new double[zeitreihe.length];
+		double [] tempzeitreihe = new double [zeitreihe.length];
+		
+		for (int i=0; i<tempzeitreihe.length; i++) {
+			tempzeitreihe[i] = zeitreihe[tempzeitreihe.length-i-1];
+		}
 
 		for (int i = 0; i < zeitreihe.length; i++) {
-			results[i] = this.calculateAutocorrelation(zeitreihe, i);
+			results[i] = this.calculateAutocorrelation(tempzeitreihe, i);
 		}
 		return results;
 	}
@@ -321,7 +326,6 @@ public class AnalysisTimeseries {
 		}
 
 		// Beginn des AR Teils
-		// replaced with White Noise function: Random r = new Random();
 		for (int h = 0; h < iterationen; h++) {// Durchführen der Durchläufe
 			double[] cashFlowsJeT = new double[p + 1];
 			// Deklariere double Arrayfür CF je t (length = 1 + Ordnung p). Dieses Array wird sich später verschieben.
@@ -347,22 +351,8 @@ public class AnalysisTimeseries {
 				}
 				
 				value += AnalysisTimeseries.getWhiteNoiseValue(standardabweichung, mittelwert);
-				double[] tmp = stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces + m];
-				try {
-					tmp[h] = value; 
-					// Wert zum array hinzufügen, iBackup+m => Verschiebung um die bereits vorhanden
-					// Werte h: Durchlauf der Iteration
-				} catch (Exception e) {
-					System.out.println(e.getMessage() + ", Cause: " + e.getCause());
-					System.out.println("" + tmp.length);
-					System.out.println("" + h + ".");
-					System.out.println("" + stochastischeErgebnisseDerCashFlows.length);
-					System.out.println("" + zuberechnendeperioden);
-					System.out.println("" + alreadyOccupiedPlaces);
-					System.out.println("" + m);
-					System.exit(0);
-				}
-				stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces + m] = tmp;
+				stochastischeErgebnisseDerCashFlows[alreadyOccupiedPlaces + m][h] =value;
+				
 				// Vordersten Wert von cashFlowsJeT freimachen
 				for (int n = cashFlowsJeT.length - 1; n > 0; n--) {
 					cashFlowsJeT[n] = cashFlowsJeT[n - 1];
@@ -372,17 +362,25 @@ public class AnalysisTimeseries {
 			}
 		}
 		//kopieren des Arrays
-		double[][] results = new double[stochastischeErgebnisseDerCashFlows.length
+		LOGGER.debug("Array kopieren");
+		double[][] results = new double[stochastischeErgebnisseDerCashFlows.length+1
 				- alreadyOccupiedPlaces][iterationen];
+		double [] nullArray = new double [iterationen];
+		for (int i=0; i<nullArray.length; i++) {
+			nullArray[i] = 0.0;
+		}
+
 		if (isfremdkapital) {
-			for (int i = 0; i < stochastischeErgebnisseDerCashFlows.length - alreadyOccupiedPlaces; i++) {
+			for (int i = 0; i < results.length-1; i++) {
 				results[i] = stochastischeErgebnisseDerCashFlows[i + alreadyOccupiedPlaces-1];
 			}
+			results[results.length-1] = nullArray;
 		}
 		else {
-			for (int i = 0; i < stochastischeErgebnisseDerCashFlows.length - alreadyOccupiedPlaces; i++) {
-				results[i] = stochastischeErgebnisseDerCashFlows[i + alreadyOccupiedPlaces];
+			for (int i = 1; i < results.length; i++) {
+				results[i] = stochastischeErgebnisseDerCashFlows[i + alreadyOccupiedPlaces-1];
 			}
+			results[0] = nullArray;
 		}
 
 		return results;
@@ -530,13 +528,14 @@ public class AnalysisTimeseries {
 	 * @return differenziertes Array
 	 */
 	// TODO: Differenzierung zwischen Fremdkapital und Cashflows wichtig?
-	public double[][] addTide(double[] timeseries, double[][] values, boolean isfremdkapital) {
+	public double[][] addTide(double[] timeseries, double[][] values) {
 		// Trendbereinigung wieder draufschlagen
 		// Perioden durchlaufen
 		Trendgerade trend = new Trendgerade(timeseries);
+		double newtide;
 		for (int i = 0; i < values.length; i++) {
 			// den Trend pro Periode ermitteln
-			double newtide = trend.getValue(i);
+			 newtide = trend.getValue(i);
 
 			/*
 			 * if (isfremdkapital) { this.erwartetesFremdkapital[i] =
@@ -561,7 +560,7 @@ public class AnalysisTimeseries {
 	 * zukünftiger Werte.
 	 * 
 	 * @author Marcel Rosenberger, Mirko Göpfrich, Nina Brauch, Raffaele
-	 *         Cipolla, Maurizio di Nunzio
+	 *         Cipolla, Maurizio di Nunzio, Jonathan Janke
 	 * @param zeitreihe
 	 *            auf deren Basis die Prognose erfolgt
 	 * @param p
@@ -608,7 +607,7 @@ public class AnalysisTimeseries {
 		// modellparameter, standardabweichung, zuberechnendePerioden,
 		// durchlaeufe, p,mittelwert, isfremdkapital);
 		LOGGER.debug("Berechnung der Prognosewerte abgeschlossen.");
-		prognosewerte = this.addTide(zeitreihe, prognosewerte, isfremdkapital);
+		prognosewerte = this.addTide(zeitreihe, prognosewerte);
 		return prognosewerte;
 	}
 

@@ -29,7 +29,7 @@ public class TestTideCalculator {
 		}
 		
 		
-		double [][] resolvedTimeseries = at.addTide(initialTimeseries, reducedTimeseries2D, false);
+		double [][] resolvedTimeseries = at.addTide(initialTimeseries, reducedTimeseries2D);
 	
 		assertArrayEquals(initialTimeseries2D, resolvedTimeseries);
 	}

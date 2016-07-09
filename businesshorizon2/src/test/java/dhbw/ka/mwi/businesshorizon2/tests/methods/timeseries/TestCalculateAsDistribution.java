@@ -18,17 +18,15 @@ public class TestCalculateAsDistribution {
 	private static final double BORROWING_COSTS_WITHOUT_TAXES = 0.080;
 	private static final double EQUITY_COSTS_WITHOUT_TAXES = 0.09969137;
 	private static final double TRADE_TAX = 0.140;
-	private static final double BUSINESS_TAX = 0.75 * TRADE_TAX + CORPORATE_AND_SOLITARY_TAX;
 	private static final double PERSONAL_TAX_RATE = 0.26375;
-	private static final double BORROWING_COSTS_AFTER_TAXES = BORROWING_COSTS_WITHOUT_TAXES * (1 - PERSONAL_TAX_RATE);
-	private static final double EQUITY_COSTs_AFTER_TAXES = EQUITY_COSTS_WITHOUT_TAXES * (1 - PERSONAL_TAX_RATE);
+
 	@Test
 	public void test() {
 		AnalysisTimeseries at = new AnalysisTimeseries();
 		double [] zeitreihe = {138.61, 202.31, 174.41, 202.52};
 		double [] initialInterestBearingDebtCapital = {1260.0,1320.0,1330.0,1400.0};
 		int p=3;
-		int zuberechnendePerioden = 3;
+		int zuberechnendePerioden = 1;
 		int durchlaeufe = 10000;
 		Szenario scenario = new Szenario(EQUITY_COSTS_WITHOUT_TAXES, BORROWING_COSTS_WITHOUT_TAXES, TRADE_TAX,
 				CORPORATE_AND_SOLITARY_TAX, PERSONAL_TAX_RATE, INCLUDE_IN_CALCULATION);
@@ -41,7 +39,7 @@ public class TestCalculateAsDistribution {
 			}
 			
 		} catch (Exception e) {
-			logger.info("CATCH: " + e.getMessage());
+			logger.info("CATCH: " + e.getMessage() + "; Cause: " + e.getCause() + "; " + e.getStackTrace());
 		}
 	}
 }

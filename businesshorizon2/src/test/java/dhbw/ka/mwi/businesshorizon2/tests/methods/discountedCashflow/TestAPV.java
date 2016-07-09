@@ -70,7 +70,7 @@ public class TestAPV extends TestCase {
 		interestBearingDebtCapital[1] = 1320.0;
 		interestBearingDebtCapital[2] = 1330.0;
 		interestBearingDebtCapital[3] = 1400.0;
-		interestBearingDebtCapital[4] = 1400.0;
+		interestBearingDebtCapital[4] = 0.0;
 
 		APV apv = new APV();
 		result = apv.calculateValues(cashflow, interestBearingDebtCapital, szenario);
