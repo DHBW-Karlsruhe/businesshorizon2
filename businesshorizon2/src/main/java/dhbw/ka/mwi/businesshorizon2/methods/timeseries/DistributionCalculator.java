@@ -19,8 +19,7 @@ import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContain
 public class DistributionCalculator {
 
 	
-    public Distribution calculate(Project project,
-            CallbackInterface callback) throws InterruptedException,
+    public Distribution calculate(Project project) throws InterruptedException,
             ConsideredPeriodsOfPastException, VarianceNegativeException,
             StochasticMethodException {
     	
@@ -44,7 +43,7 @@ public class DistributionCalculator {
 		}
 		
     	AnalysisTimeseries analysisTimeseries = new AnalysisTimeseries();
-    	Distribution distribution = analysisTimeseries.calculateAsDistribution(cashflow, fremdkapital, project.getRelevantPastPeriods(), project.getPeriodsToForecast(), project.getIterations(), scenario, callback);
+    	Distribution distribution = analysisTimeseries.calculateAsDistribution(cashflow, fremdkapital, project.getRelevantPastPeriods(), project.getPeriodsToForecast(), project.getIterations(), scenario);
     	
     	
     	return distribution;

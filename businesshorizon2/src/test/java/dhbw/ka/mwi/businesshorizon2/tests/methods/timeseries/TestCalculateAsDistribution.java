@@ -32,7 +32,7 @@ public class TestCalculateAsDistribution {
 				CORPORATE_AND_SOLITARY_TAX, PERSONAL_TAX_RATE, INCLUDE_IN_CALCULATION);
 		
 		try {
-			Distribution dist = at.calculateAsDistribution(zeitreihe, initialInterestBearingDebtCapital, p, zuberechnendePerioden, durchlaeufe, scenario, null);
+			Distribution dist = at.calculateAsDistribution(zeitreihe, initialInterestBearingDebtCapital, p, zuberechnendePerioden, durchlaeufe, scenario);
 			logger.info("Distribution values:");
 			for (int i=0; i<dist.getIntervalStartValues().length; i++) {
 				logger.info(dist.getValueRange(i)+ ": " + dist.getValues()[i]);

@@ -579,7 +579,7 @@ public class AnalysisTimeseries {
 	// @Override
 
 	public double[][] calculate(double[] zeitreihe, int p, int zuberechnendePerioden, int durchlaeufe,
-			CallbackInterface callback, boolean isfremdkapital) throws InterruptedException, StochasticMethodException {
+			boolean isfremdkapital) throws InterruptedException, StochasticMethodException {
 
 		// vorbereitende Initialisierung
 		double[][] prognosewerte = new double[zuberechnendePerioden][durchlaeufe];
@@ -612,13 +612,13 @@ public class AnalysisTimeseries {
 	}
 
 	public Distribution calculateAsDistribution(double[] zeitreihe, double[] initialInterestBearingDebtCapital, int p,
-			int zuberechnendePerioden, int durchlaeufe, Szenario scenario, CallbackInterface callback)
+			int zuberechnendePerioden, int durchlaeufe, Szenario scenario)
 			throws InterruptedException, StochasticMethodException {
 
-		double[][] cashFlowPrognosis = this.calculate(zeitreihe, p, zuberechnendePerioden, durchlaeufe, callback,
+		double[][] cashFlowPrognosis = this.calculate(zeitreihe, p, zuberechnendePerioden, durchlaeufe,
 				false);
 		double[][] interestBearingDebtCapitaPrognosis = this.calculate(initialInterestBearingDebtCapital, p,
-				zuberechnendePerioden, durchlaeufe, callback, true);
+				zuberechnendePerioden, durchlaeufe, true);
 		// TODO: Variablen interestBearingDebtCapital, scenario auffüllen
 
 		double[] interestBearingDebtCapital = new double[interestBearingDebtCapitaPrognosis.length];

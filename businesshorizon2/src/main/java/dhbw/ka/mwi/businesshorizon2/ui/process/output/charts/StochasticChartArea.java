@@ -47,7 +47,7 @@ import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
  * stochastischen Verfahrens. Es können mehrere Diagramme sowie Labels
  * hinzugefügt und im Gridlayout angeordnet werden.
  * 
- * @author Florian Stier, Marcel Rosenberger
+ * @author Florian Stier, Marcel Rosenberger, Markus Baader, Timo Rösch, Marius Müller
  * 
  */
 public class StochasticChartArea extends HorizontalLayout {

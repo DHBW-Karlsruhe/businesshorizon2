@@ -50,7 +50,6 @@ public class TestCalculate {
 		double[] zeitreihe = new double[6];
 		int zuberechnendeperioden = 5;
 		int durchlaeufe = 10000;
-		CallbackInterface callback = null;
 		boolean isfremdkapital = false;
 		double[][] prognosewerte = new double[zuberechnendeperioden][durchlaeufe];
 
@@ -63,7 +62,7 @@ public class TestCalculate {
 
 		AnalysisTimeseries at = new AnalysisTimeseries();
 
-		prognosewerte = at.calculate(zeitreihe, p, zuberechnendeperioden, durchlaeufe, callback, isfremdkapital);
+		prognosewerte = at.calculate(zeitreihe, p, zuberechnendeperioden, durchlaeufe, isfremdkapital);
 
 		Assert.assertNotNull(prognosewerte);
 	}

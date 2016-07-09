@@ -35,6 +35,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.mvplite.event.EventBus;
 import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
+import com.vaadin.ui.Label;
 
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
@@ -334,8 +335,13 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 		getView().showOutputView();
 		project = projectProxy.getSelectedProject();
 		if(project.getProjectInputType().isStochastic()){
-			methodRunner = new MethodRunner(project, this);
-			methodRunner.start();
+			onProgressChange(0.5f);
+			eventBus.fireEvent(new OneScenarioCalculationEvent(project));
+			getView().showView(oneScenarioView);
+			
+			onProgressChange(1f);
+//			methodRunner = new MethodRunner(project, this);
+//			methodRunner.start();
 		}
 		if(project.getProjectInputType().isDeterministic()){
 			
@@ -527,7 +533,10 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 //				validierung, project.getScenarios());
 				
 		getView().changeProgress(1);
-		getView().addStochasticChartArea(stochasticChartArea, project.getScenarios().size());
+//		getView().addStochasticChartArea(stochasticChartArea, 1);
+		Label label = new Label("Test");
+		getView().addLabel(label);
+//		getView().addStochasticChartArea(stochasticChartArea, project.getScenarios().size());
 		
 	}
 

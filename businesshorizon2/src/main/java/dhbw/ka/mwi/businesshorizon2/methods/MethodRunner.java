@@ -83,11 +83,13 @@ public class MethodRunner extends Thread {
 //			StochasticResultContainer result = method.calculate(project, callback);
 //			callback.onCompleteOld(result, method);
 			
-			Distribution distribution =  distributionCalculator.calculate(project, callback); 
+			Distribution distribution =  distributionCalculator.calculate(project); 
 			callback.onComplete(distribution);
 		} catch (InterruptedException e) {
+			System.out.println("Fehler 1");
 			callback.onComplete(null);
 		} catch (StochasticMethodException e) {
+			System.out.println("Fehler 2");
 			callback.onComplete(null);
 		} 		
 	}
