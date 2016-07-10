@@ -91,7 +91,7 @@ public class Distribution {
 	}
 	
 	public String getValueRange (int i) {
-		return this.getIntervalStartValues()[i] + " - " + (this.getIntervalStartValues()[i] + this.getIntervalLength());
+		return this.getIntervalStartValues()[i] + " - " + (Math.ceil(10*(this.getIntervalStartValues()[i] + this.getIntervalLength()))/10);
 	}
 
 }

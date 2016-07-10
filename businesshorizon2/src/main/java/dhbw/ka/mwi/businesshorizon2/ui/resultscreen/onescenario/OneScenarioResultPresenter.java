@@ -63,7 +63,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.OneScenarioCalculationEvent;
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
  * 
  * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio,
- *         Timo Rösch, Marius Müller, Markus Baader
+ *         Timo Rösch, Marius Müller, Markus Baader, Jonathan Janke
  * 
  */
 
@@ -268,13 +268,13 @@ public class OneScenarioResultPresenter extends
 			columnChart.setOption("is3D", true);
 			columnChart.setOption("isStacked", true);
 			columnChart.setOption("legend", "bottom");
-			columnChart.setOption("title", "Unternehmenswert");
-			columnChart.setOption("width", 250);
-			columnChart.setOption("height", 240);
+			columnChart.setOption("title", "Wahrscheinlichkeitsverteilung der Unternehmenswerte");
+			columnChart.setOption("width", 700);
+			columnChart.setOption("height", 300);
 			columnChart.setColors(new String[] { "#92D050", "#D9D9D9",
 					"#FF8533", "#0099FF" });
-			columnChart.addXAxisLabel("Year");
-			columnChart.addColumn("Unternehmenswert");
+			columnChart.addXAxisLabel("Wertebereiche");
+			columnChart.addColumn("Wertehäufigkeit");
 
 			NumberFormat nfUS = NumberFormat.getInstance(Locale.US);
 			nfUS.setMinimumFractionDigits(2);
@@ -286,9 +286,10 @@ public class OneScenarioResultPresenter extends
 
 			int count = 1;
 			for(double value : distribution.getValues()){
-				columnChart.add(String.valueOf(count), new double[] {value});
+				columnChart.add(distribution.getValueRange(count-1), new double[] {value});
 				count++;
 			}
+			
 
 			getView().setScenarioValue(
 					nfDE.format(scenario.getRateReturnEquity()),
@@ -314,7 +315,7 @@ public class OneScenarioResultPresenter extends
 						new double[] { period.getFreeCashFlow() });
 			}
 			
-			getView().setCapitalChart(columnChart);
+			getView().setStochasticCapitalChart(columnChart);
 			getView().setCashFlowChart(lineChart);
 		}
 	}

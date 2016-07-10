@@ -45,7 +45,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Ausgabe" in
  * Vaadin.
  * 
- * @author Florian Stier, Mirko Göpfrich
+ * @author Florian Stier, Mirko Göpfrich, Jonathan Janke
  * 
  */
 public class OneScenarioResultViewImpl extends VerticalLayout implements OneScenarioResultViewInterface {
@@ -164,7 +164,7 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		expandingGap.setSizeFull();
 
 		planningLayout.setWidth(100, UNITS_PERCENTAGE);
-		companyValueLayout.setHeight(60, UNITS_PIXELS);
+		companyValueLayout.setHeight(100, UNITS_PIXELS);
 		companyValueLayout.setWidth(100, UNITS_PERCENTAGE);
 		scenarioLayout.setWidth(100, UNITS_PERCENTAGE);
 		planningLabel.setWidth(SIZE_UNDEFINED, 0);
@@ -288,12 +288,28 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		addComponent(label);		
 	}
 
-	@Override
+	/* 
+	 * @author Jonathan Janke
+	 * @param chart from OneScenarioResultPresenter
+	 */
 	public void setCapitalChart(ColumnChart chart) {
 		chart.setSizeFull();
 		capitalChartLayout.removeAllComponents();
+		companyValue.setCaption("");
+		companyValueLayout.setStyleName("companyValueLayout");
+		companyValueLayout.setHeight(100, UNITS_PIXELS);
 		capitalChartLayout.addComponent(chart);
-
+	}
+	
+	public void setStochasticCapitalChart (ColumnChart chart) {
+		chart.setSizeFull();
+		companyValueLayout.removeAllComponents();
+		companyValueLayout.setCaption("Unternehmenswert:");
+		companyValueLayout.setStyleName("nostylehere");
+		companyValueLayout.setHeight(300, UNITS_PIXELS);
+		//companyValueLabel = new Label("Unternehmenswert:");
+		//companyValueLayout.addComponent(companyValueLabel);
+		companyValueLayout.addComponent(chart);
 	}
 	
 	public void setCashFlowChart(LineChart chart) {
