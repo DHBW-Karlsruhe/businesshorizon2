@@ -60,9 +60,11 @@ public interface OneScenarioResultViewInterface extends View {
 	public void setCompanyValue(String valueOf);
 
 	public void setScenarioValue(String valueOf, String valueOf2,
-			String valueOf3, String valueOf4);
+			String valueOf3, String valueOf4, String valueOf5);
 
 	public void setCapitalChart(ColumnChart chart);
+	
+	public void setStochasticCapitalChart(ColumnChart chart);
 	
 	public void setCashFlowChart(LineChart chart);
 

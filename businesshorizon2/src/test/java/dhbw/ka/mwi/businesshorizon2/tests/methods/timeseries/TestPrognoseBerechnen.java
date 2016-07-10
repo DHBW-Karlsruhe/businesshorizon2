@@ -57,7 +57,7 @@ public class TestPrognoseBerechnen extends TestCase {
 		//DoubleMatrix2D matrixValuations = DoubleFactory2D.dense.make(p, i);
 		
 		double standardabweichung = 1.8551461075783124; 
-		int zuberechnendeperioden = 5;
+		int zuberechnendeperioden = 6;
 		int durchlaeufe = 10000;
 		//double mittelwert = 8.166666666666666;
 		double mittelwert = 0;
@@ -79,8 +79,8 @@ public class TestPrognoseBerechnen extends TestCase {
 		
 		
 		//prognosewerte = at.prognoseBerechnen(cashflows, matrixValuations, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
-		prognosewerte = at.prognoseBerechnenNew(cashflows, phiValues, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
-		compareValues = at.prognoseBerechnenNew(cashflows, phiValues, 0, zuberechnendeperioden, durchlaeufe, p, 0, isfremdkapital)  ;
+		prognosewerte = at.prognoseBerechnen(cashflows, phiValues, standardabweichung, zuberechnendeperioden, durchlaeufe, p, mittelwert, isfremdkapital)  ;
+		compareValues = at.prognoseBerechnen(cashflows, phiValues, 0, zuberechnendeperioden, durchlaeufe, p, 0, isfremdkapital)  ;
 		//array zum Überprüfen, ob Mittelwerte der Perioden ungefähr beeinander liegen
 		double averagePerPeriod[] = new double [zuberechnendeperioden];
 		double averagePerPeriodCompare[] = new double [zuberechnendeperioden];
@@ -102,7 +102,7 @@ public class TestPrognoseBerechnen extends TestCase {
 		
 		
 		//prüfen, ob Prognosearray rightige Länge besitzt (Dimension 1); richtige Länge, wenn bisherige Cashflows + zuberechnendePerioden enthalten sind
-		assertEquals(prognosewerte.length, cashflows.length+zuberechnendeperioden);
+		assertEquals(prognosewerte.length, zuberechnendeperioden);
 		//prüfen, ob Prognosearray rightige Länge besitzt (Dimension 2); richtige Länge, wenn durchlaeufe in Dimension 2 sind
 		assertEquals(prognosewerte[0].length, durchlaeufe);
 		assertNotNull(prognosewerte);

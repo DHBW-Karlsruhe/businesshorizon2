@@ -36,12 +36,8 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.GridLayout;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
-import com.vaadin.ui.ProgressIndicator;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Window.Notification;
 
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
@@ -49,7 +45,7 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea
  * Diese Klasse implementiert das GUI fuer den Prozessschritt "Ausgabe" in
  * Vaadin.
  * 
- * @author Florian Stier, Mirko Göpfrich
+ * @author Florian Stier, Mirko Göpfrich, Jonathan Janke
  * 
  */
 public class OneScenarioResultViewImpl extends VerticalLayout implements OneScenarioResultViewInterface {
@@ -78,6 +74,8 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	private Label gewerbeStLabel;
 
 	private Label koerperStLabel;
+        
+        private Label personalTaxRateLabel;
 
 	private HorizontalLayout companyValueLayout;
 
@@ -88,6 +86,8 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 	private Label gewerbeSt;
 
 	private Label koerperSt;
+        
+    private Label personalTaxRate;
 
 	private Label gap;
 
@@ -132,15 +132,17 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		setSizeFull();
 		planningLayout = new HorizontalLayout();
 		planningLabel = new Label("Planungsprämissen:");
-		scenarioLayout = new GridLayout(2, 4);
+		scenarioLayout = new GridLayout(2, 5);
 		renditeEKLabel = new Label("Renditeforderung EK:");
 		renditeFKLabel = new Label("Renditeforderung FK:");
 		gewerbeStLabel = new Label("Gewerbesteuer:");
 		koerperStLabel = new Label("Körperschaftssteuer inkl. Solidaritätszuschlag:");
+                personalTaxRateLabel = new Label ("Persönlicher Steuersatz");
 		renditeEK = new Label();
 		renditeFK = new Label();
 		gewerbeSt = new Label();
 		koerperSt = new Label();
+                personalTaxRate = new Label();
 		companyValueLayout = new HorizontalLayout();
 		companyValueLabel = new Label("Unternehmenswert:");
 		companyValue = new Label();
@@ -162,7 +164,7 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		expandingGap.setSizeFull();
 
 		planningLayout.setWidth(100, UNITS_PERCENTAGE);
-		companyValueLayout.setHeight(60, UNITS_PIXELS);
+		companyValueLayout.setHeight(100, UNITS_PIXELS);
 		companyValueLayout.setWidth(100, UNITS_PERCENTAGE);
 		scenarioLayout.setWidth(100, UNITS_PERCENTAGE);
 		planningLabel.setWidth(SIZE_UNDEFINED, 0);
@@ -180,10 +182,12 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		renditeFKLabel.setStyleName("font12bold");
 		gewerbeStLabel.setStyleName("font12bold");
 		koerperStLabel.setStyleName("font12bold");
+                personalTaxRateLabel.setStyleName("font12bold");
 		renditeEK.setStyleName("font12bold");
 		renditeFK.setStyleName("font12bold");
 		gewerbeSt.setStyleName("font12bold");
 		koerperSt.setStyleName("font12bold");
+                personalTaxRate.setStyleName("font12bold");
 		companyValueLabel.setStyleName("font14bold");
 		companyValue.setStyleName("font14bold");
 
@@ -201,6 +205,8 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		scenarioLayout.addComponent(gewerbeSt, 1, 2);
 		scenarioLayout.addComponent(koerperStLabel, 0, 3);
 		scenarioLayout.addComponent(koerperSt, 1, 3);
+                scenarioLayout.addComponent(personalTaxRateLabel, 0, 4);
+		scenarioLayout.addComponent(personalTaxRate, 1, 4);
 		companyValueLayout.addComponent(expandingGap2);
 		companyValueLayout.addComponent(companyValueLabel);
 		companyValueLayout.addComponent(gap);
@@ -250,11 +256,12 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		//		vl.addComponent(outputArea);
 	}
 
-	public void setScenarioValue(String renditeEK, String renditeFK, String gewerbeSt, String koerperSt){
+	public void setScenarioValue(String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String personalTax){
 		this.renditeEK.setValue(renditeEK);
 		this.renditeFK.setValue(renditeFK);
 		this.gewerbeSt.setValue(gewerbeSt);
-		this.koerperSt.setValue(koerperSt);		
+		this.koerperSt.setValue(koerperSt);
+		this.personalTaxRate.setValue(personalTax);
 		logger.debug("Planungsprämissen im UI gesetzt");
 	}
 
@@ -281,12 +288,28 @@ public class OneScenarioResultViewImpl extends VerticalLayout implements OneScen
 		addComponent(label);		
 	}
 
-	@Override
+	/* 
+	 * @author Jonathan Janke
+	 * @param chart from OneScenarioResultPresenter
+	 */
 	public void setCapitalChart(ColumnChart chart) {
 		chart.setSizeFull();
 		capitalChartLayout.removeAllComponents();
+		companyValue.setCaption("");
+		companyValueLayout.setStyleName("companyValueLayout");
+		companyValueLayout.setHeight(100, UNITS_PIXELS);
 		capitalChartLayout.addComponent(chart);
-
+	}
+	
+	public void setStochasticCapitalChart (ColumnChart chart) {
+		chart.setSizeFull();
+		companyValueLayout.removeAllComponents();
+		companyValueLayout.setCaption("Unternehmenswert:");
+		companyValueLayout.setStyleName("nostylehere");
+		companyValueLayout.setHeight(300, UNITS_PIXELS);
+		//companyValueLabel = new Label("Unternehmenswert:");
+		//companyValueLayout.addComponent(companyValueLabel);
+		companyValueLayout.addComponent(chart);
 	}
 	
 	public void setCashFlowChart(LineChart chart) {

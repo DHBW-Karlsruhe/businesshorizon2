@@ -55,11 +55,12 @@ public class BasicColumnChart extends ColumnChart {
 
 	}
 
-	public void addValues(Map<String, double[]> values) {
+	public void addValues(double[] values) {
 
-		for (Map.Entry<String, double[]> value : values.entrySet()) {
-			add(value.getKey(), value.getValue());
-		}
+		add("Label", values);
+//		for (Map.Entry<String, double[]> value : values.entrySet()) {
+//			add(value.getKey(), value.getValue());
+//		}
 
 	}
 

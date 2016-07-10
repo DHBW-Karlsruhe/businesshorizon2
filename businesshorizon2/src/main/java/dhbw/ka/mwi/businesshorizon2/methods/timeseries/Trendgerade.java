@@ -3,6 +3,9 @@ package dhbw.ka.mwi.businesshorizon2.methods.timeseries;
  * Klasse zur Berechnung der Trendgerade mit der Formel f(x) = m*x +b
  * Annahme: Erster Wert ist das Ergebnis von f(1)
  * @author Philipp Nagel, Jonathan Janke
+ * 
+ * @param m Steigung der Trendgeraden
+ * @param b Anfangswert an der Koordinatenachse der Trendgeraden, wenn x=0
  *
  */
 public class Trendgerade {

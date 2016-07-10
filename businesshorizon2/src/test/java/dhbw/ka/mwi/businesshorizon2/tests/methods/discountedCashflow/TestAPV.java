@@ -56,7 +56,7 @@ public class TestAPV extends TestCase {
 		double[] cashflow = new double[5];
 		double[] interestBearingDebtCapital = new double[5];
 		Szenario szenario = new Szenario(EQUITY_COSTS_WITHOUT_TAXES, BORROWING_COSTS_WITHOUT_TAXES, TRADE_TAX,
-				CORPORATE_AND_SOLITARY_TAX, INCLUDE_IN_CALCULATION);
+				CORPORATE_AND_SOLITARY_TAX, PERSONAL_TAX_RATE, INCLUDE_IN_CALCULATION);
 		double expectedResult = 1075.24;
 		double result;
 
@@ -70,7 +70,7 @@ public class TestAPV extends TestCase {
 		interestBearingDebtCapital[1] = 1320.0;
 		interestBearingDebtCapital[2] = 1330.0;
 		interestBearingDebtCapital[3] = 1400.0;
-		interestBearingDebtCapital[4] = 1400.0;
+		interestBearingDebtCapital[4] = 0.0;
 
 		APV apv = new APV();
 		result = apv.calculateValues(cashflow, interestBearingDebtCapital, szenario);

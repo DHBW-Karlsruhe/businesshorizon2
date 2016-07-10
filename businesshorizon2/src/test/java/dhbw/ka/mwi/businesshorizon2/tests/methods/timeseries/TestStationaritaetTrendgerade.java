@@ -28,8 +28,8 @@ public class TestStationaritaetTrendgerade extends TestCase{
 		assertEquals(2.0, gerade.getM());
 		assertEquals(1.0, gerade.getB());
 		
-		zeitreihe = new double [] {3,3,3,3,3,3,3,3,3,4,5};
-		gerade=new Trendgerade(zeitreihe);
+		double [] logZeitreihe = {138.61, 202.31, 174.41, 202.52};
+		gerade=new Trendgerade(logZeitreihe);
 		logger.info ("m: " + gerade.getM());
 		logger.info ("b: " + gerade.getB());
 		

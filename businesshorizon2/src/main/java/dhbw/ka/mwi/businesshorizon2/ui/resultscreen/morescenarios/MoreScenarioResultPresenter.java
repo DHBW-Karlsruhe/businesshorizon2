@@ -47,6 +47,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.WACC;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.Distribution;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -74,12 +75,18 @@ import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.MoreScenarioCalculationEvent
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
  * 
- * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio
+ * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio, Thomas Zapf
  * 
  */
 
 public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioResultViewInterface>
 		implements CallbackInterface {
+	@Override
+	public void onComplete(Distribution distribution) {
+		// TODO Auto-generated method stub
+		
+	}
+
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
@@ -179,7 +186,7 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 		nfDE.setMaximumFractionDigits(2);
 		nfDE.setMinimumFractionDigits(1);
 		
-		getView().setScenarioValue(numScenario, nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()), nfDE.format(unternehmenswert));
+		getView().setScenarioValue(numScenario, nfDE.format(scenario.getRateReturnEquity()), nfDE.format(scenario.getRateReturnCapitalStock()), nfDE.format(scenario.getBusinessTax()), nfDE.format(scenario.getCorporateAndSolitaryTax()), nfDE.format(unternehmenswert), nfDE.format(scenario.getPersonalTaxRate()));
 		
 		ColumnChart cc = new ColumnChart();	
 		cc.setOption("is3D", true);	
@@ -496,7 +503,7 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onComplete(StochasticResultContainer result,
+	public void onCompleteOld(StochasticResultContainer result,
 			AbstractStochasticMethod method) {
 
 		StochasticChartArea stochasticChartArea;
@@ -576,17 +583,17 @@ public class MoreScenarioResultPresenter extends ScreenPresenter<MoreScenarioRes
 			validierung = timeseriesCalculator.getModellabweichung();
 			logger.debug("Modellabweichung: " + validierung);
 
-			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						expectedValues, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
-			} else {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						null, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
-			}
-			getView().changeProgress(1);
-			getView().addStochasticChartArea(stochasticChartArea, counter);
+//			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						expectedValues, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
+//			} else {
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						null, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
+//			}
+//			getView().changeProgress(1);
+//			getView().addStochasticChartArea(stochasticChartArea, counter);
 
 		}
 	}

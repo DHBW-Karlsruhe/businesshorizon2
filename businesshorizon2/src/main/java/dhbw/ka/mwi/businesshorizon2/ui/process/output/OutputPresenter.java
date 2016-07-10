@@ -43,6 +43,7 @@ import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.Distribution;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
@@ -326,8 +327,8 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			}
 			for (AbstractStochasticMethod method : project.getMethods()) {
 				if (method.getSelected()) {
-					methodRunner = new MethodRunner(method, project, this);
-					methodRunner.start();
+//					methodRunner = new MethodRunner(method, project, this);
+//					methodRunner.start();
 				}
 			}
 		}
@@ -370,7 +371,7 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onComplete(StochasticResultContainer result,
+	public void onCompleteOld(StochasticResultContainer result,
 			AbstractStochasticMethod method) {
 
 		StochasticChartArea stochasticChartArea;
@@ -451,18 +452,24 @@ public class OutputPresenter extends ScreenPresenter<OutputViewInterface>
 			logger.debug("Modellabweichung: " + validierung);
 
 			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						expectedValues, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						expectedValues, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
 			} else {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						null, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						null, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
 			}
 			getView().changeProgress(1);
-			getView().addStochasticChartArea(stochasticChartArea, counter);
+//			getView().addStochasticChartArea(stochasticChartArea, counter);
 
 		}
+	}
+
+	@Override
+	public void onComplete(Distribution distribution) {
+		// TODO Auto-generated method stub
+		
 	}
 
 	@Override

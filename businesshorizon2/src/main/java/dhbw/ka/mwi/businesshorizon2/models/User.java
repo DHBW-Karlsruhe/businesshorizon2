@@ -27,6 +27,7 @@ package dhbw.ka.mwi.businesshorizon2.models;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Das User Objekt beinhaltet die für Loginzwecke zu speichernden Daten wie auch
@@ -45,7 +46,7 @@ public class User implements Serializable {
 	private String emailAdress;
 	private int password;
 
-	protected ArrayList<Project> projects = new ArrayList<Project>();
+	protected List<Project> projects = new ArrayList<Project>();
 
 	public User(){
 		
@@ -186,7 +187,7 @@ public class User implements Serializable {
 	 * @author Christian Scherer
 	 * @return Die Projekte des Anwenders
 	 */
-	public ArrayList<Project> getProjects() {
+	public List<Project> getProjects() {
 		return projects;
 	}
 	
@@ -196,7 +197,7 @@ public class User implements Serializable {
 	 * @author Marcel Rosenberger
 	 * @param die neue Liste
 	 */
-	public void setProjects(ArrayList<Project> userProjects) {
+	public void setProjects(List<Project> userProjects) {
 		this.projects = userProjects;
 	}
 	

@@ -30,32 +30,23 @@ import javax.annotation.PostConstruct;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import dhbw.ka.mwi.businesshorizon2.models.User;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.AuthenticationServiceInterface;
-import dhbw.ka.mwi.businesshorizon2.services.authentication.UserNotLoggedInException;
-import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.InitialScreenViewInterface;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.*;
-
 import com.mvplite.view.View;
 import com.vaadin.terminal.Sizeable;
 import com.vaadin.terminal.ThemeResource;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Component.Event;
-import com.vaadin.ui.themes.Reindeer;
 import com.vaadin.ui.Component;
 import com.vaadin.ui.Embedded;
 import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.HorizontalSplitPanel;
 import com.vaadin.ui.Label;
-import com.vaadin.ui.Panel;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.VerticalSplitPanel;
 import com.vaadin.ui.Window;
+
+import dhbw.ka.mwi.businesshorizon2.services.proxies.UserProxy;
+import dhbw.ka.mwi.businesshorizon2.ui.TopBarButton;
 
 /**
 * Dies ist die Vaadin-Implementierung der InitalScreenView (dem
@@ -90,7 +81,7 @@ private Embedded logo;
 private Embedded titleIcon;
 
 private Label homeButtonLabel;
-private Label accountButtonLabel;
+//private Label accountButtonLabel;
 private Label gap;
 private Label middleGap;
 private Label bottomGap;
@@ -99,11 +90,11 @@ private VerticalLayout left;
 private VerticalLayout descriptionLayout;
 private VerticalLayout leftLogolayout;
 private VerticalLayout homeButtonLayout;
-private VerticalLayout accountButtonLayout;
+//private VerticalLayout accountButtonLayout;
 private HorizontalLayout menuButtonsLayout;
 
 private Button homeButton;
-private Button accountButton;
+//private Button accountButton;
 
 private HorizontalLayout middle;
 
@@ -286,25 +277,25 @@ private void generateUi() {
 	homeButtonLayout.setComponentAlignment(homeButtonLabel, Alignment.MIDDLE_CENTER);
 	
 	menuButtonsLayout.addComponent(homeButtonLayout);
-
-	accountButtonLayout = new VerticalLayout();
-	accountButtonLayout.setSizeFull();
-	
-	accountButton = new Button();
-	accountButton.setHeight(30, UNITS_PIXELS);
-	accountButton.setWidth(30, UNITS_PIXELS);
-	accountButton.setStyleName("accountButton");
-	
-	accountButtonLabel = new Label("Mein Konto");
-	accountButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
-	accountButtonLabel.setStyleName("topBarButtonLabel");
-	
-	accountButtonLayout.addComponent(accountButton);
-	accountButtonLayout.addComponent(accountButtonLabel);
-	accountButtonLayout.setComponentAlignment(accountButton, Alignment.TOP_CENTER);;
-	accountButtonLayout.setComponentAlignment(accountButtonLabel, Alignment.MIDDLE_CENTER);
-	
-	menuButtonsLayout.addComponent(accountButtonLayout);
+//
+//	accountButtonLayout = new VerticalLayout();
+//	accountButtonLayout.setSizeFull();
+//	
+//	accountButton = new Button();
+//	accountButton.setHeight(30, UNITS_PIXELS);
+//	accountButton.setWidth(30, UNITS_PIXELS);
+//	accountButton.setStyleName("accountButton");
+//	
+//	accountButtonLabel = new Label("Mein Konto");
+//	accountButtonLabel.setWidth(Sizeable.SIZE_UNDEFINED, 0);
+//	accountButtonLabel.setStyleName("topBarButtonLabel");
+//	
+//	accountButtonLayout.addComponent(accountButton);
+//	accountButtonLayout.addComponent(accountButtonLabel);
+//	accountButtonLayout.setComponentAlignment(accountButton, Alignment.TOP_CENTER);;
+//	accountButtonLayout.setComponentAlignment(accountButtonLabel, Alignment.MIDDLE_CENTER);
+//	
+//	menuButtonsLayout.addComponent(accountButtonLayout);
 	
 	bottomGap = new Label();
 	bottomGap.setHeight("380px");
@@ -327,7 +318,7 @@ private void generateUi() {
 	leftLayout.setExpandRatio(leftContentLayout, 1.0f);
 	
 	
-	//Buttonleiste
+	//Buttonleiste oben
 	
 	TopBarButton button = new TopBarButton("saveButton", "Speichern");
 	addTopButton(button.getButtonComponent());
@@ -341,6 +332,7 @@ private void generateUi() {
 
 		@Override
 		public void buttonClick(ClickEvent event) {
+			System.out.println("cancel on safe");
 			presenter.abbrechen();			
 		}
 		

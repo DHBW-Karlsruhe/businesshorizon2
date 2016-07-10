@@ -200,12 +200,12 @@ public class TimeseriesCalculator extends AbstractStochasticMethod {
                 double[][] resultTimeseriesBorrowedCapital = timeseries.calculate(
                                 previousFremdkapital, project.getRelevantPastPeriods(),
                                 project.getPeriodsToForecast(), project.getIterations(),
-                                callback, true);
+                                true);
                 double abweichungfk = timeseries.getAbweichung();
                 double[][] resultTimeseries = timeseries.calculate(previousCashflows,
                                 project.getRelevantPastPeriods(),
                                 project.getPeriodsToForecast(), project.getIterations(),
-                                callback, false);
+                                false);
                 double abweichungcf = timeseries.getAbweichung();
 
                 // Modellabweichung berechnen (Durchschnitt Abweichung Fremdkapital

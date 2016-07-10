@@ -39,4 +39,6 @@
     <inherits name="org.vaadin.vaadinvisualizations.widgetset.VaadinvisualizationApplicationWidgetset" />
 
     
+
+    
 </module>

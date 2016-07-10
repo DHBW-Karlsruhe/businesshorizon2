@@ -7,15 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickEvent;
-import com.vaadin.event.LayoutEvents.LayoutClickListener;
-import com.vaadin.terminal.Sizeable;
-import com.vaadin.terminal.ThemeResource;
-import com.vaadin.ui.Alignment;
-import com.vaadin.ui.Embedded;
 import com.vaadin.ui.Form;
-import com.vaadin.ui.GridLayout;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.OptionGroup;
 import com.vaadin.ui.VerticalLayout;
@@ -24,7 +16,6 @@ import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.models.InputType;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.initialscreen.projectlist.SelectProjectEvent;
 
 /**
  * Diese View ist zuständig für das Anzeigen der Details zu einem Projekt.
@@ -169,11 +160,11 @@ public class MethodScreenViewImpl extends VerticalLayout implements MethodScreen
 		});
 
 		berechnungGroup.addItem("apv");
-		berechnungGroup.addItem("fte");
-		berechnungGroup.addItem("wac");
+		//berechnungGroup.addItem("fte");
+		//berechnungGroup.addItem("wac");
 		berechnungGroup.setItemCaption("apv", "APV (Adjusted Present Value)");
-		berechnungGroup.setItemCaption("fte", "FTE (Flow to Equity)");
-		berechnungGroup.setItemCaption("wac", "WACC (Weighted Average Cost of Capital)");
+		//berechnungGroup.setItemCaption("fte", "FTE (Flow to Equity)");
+		//berechnungGroup.setItemCaption("wac", "WACC (Weighted Average Cost of Capital)");
 //		berechnungGroup.setValue("apv");
 		berechnungGroup.setImmediate(true);
 		berechnungGroup.addListener(new Property.ValueChangeListener() {

@@ -92,10 +92,11 @@ public class TestCashFlowCalculatorGKVDet extends TestCase{
 		double businessTax = 45.0;
 		double corporateAndSolitaryTax = 0.0;
 		boolean includeInCalculation = true;
+		double personalTaxRate = 0.0;
 
 		Szenario szenario = new Szenario(rateReturnEquity,
 				rateReturnCapitalStock, businessTax, corporateAndSolitaryTax,
-				includeInCalculation);
+				personalTaxRate, includeInCalculation);
 
 		// Erwartete Ausgabe CashFlow
 		double ergebnisVorgabe =9.685000000000006;

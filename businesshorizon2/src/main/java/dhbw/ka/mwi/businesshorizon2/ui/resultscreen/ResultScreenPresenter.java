@@ -24,7 +24,6 @@
  ******************************************************************************/
 package dhbw.ka.mwi.businesshorizon2.ui.resultscreen;
 
-import java.text.DecimalFormat;
 import java.util.Iterator;
 import java.util.TreeSet;
 
@@ -38,33 +37,20 @@ import com.mvplite.event.EventHandler;
 import com.mvplite.presenter.Presenter;
 import com.vaadin.ui.Label;
 
-import dhbw.ka.mwi.businesshorizon2.methods.AbstractDeterministicMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.AbstractStochasticMethod;
 import dhbw.ka.mwi.businesshorizon2.methods.CallbackInterface;
 import dhbw.ka.mwi.businesshorizon2.methods.MethodRunner;
 import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.APV;
-import dhbw.ka.mwi.businesshorizon2.methods.discountedCashflow.FTE;
+import dhbw.ka.mwi.businesshorizon2.methods.timeseries.Distribution;
 import dhbw.ka.mwi.businesshorizon2.methods.timeseries.TimeseriesCalculator;
-import dhbw.ka.mwi.businesshorizon2.models.DeterministicResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Project;
 import dhbw.ka.mwi.businesshorizon2.models.StochasticResultContainer;
 import dhbw.ka.mwi.businesshorizon2.models.Szenario;
 import dhbw.ka.mwi.businesshorizon2.models.CompanyValue.CompanyValueStochastic;
-import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowCalculator;
 import dhbw.ka.mwi.businesshorizon2.models.Period.CashFlowPeriod;
-import dhbw.ka.mwi.businesshorizon2.models.Period.UmsatzkostenVerfahrenCashflowPeriod;
 import dhbw.ka.mwi.businesshorizon2.models.Period.Period;
 import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.AbstractPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.CashFlowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.GesamtkostenVerfahrenCashflowPeriodContainer;
-import dhbw.ka.mwi.businesshorizon2.models.PeriodContainer.UmsatzkostenVerfahrenCashflowPeriodContainer;
 import dhbw.ka.mwi.businesshorizon2.services.proxies.ProjectProxy;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenPresenter;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ScreenSelectableEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ShowErrorsOnScreenEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.ValidateContentStateEvent;
-import dhbw.ka.mwi.businesshorizon2.ui.process.navigation.NavigationSteps;
-import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.morescenarios.MoreScenarioResultViewImpl;
 import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResultViewImpl;
@@ -72,12 +58,13 @@ import dhbw.ka.mwi.businesshorizon2.ui.resultscreen.onescenario.OneScenarioResul
 /**
  * Der Presenter fuer die Maske des Prozessschrittes zur Ergebnisausgabe.
  * 
- * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio
+ * @author Florian Stier, Annika Weis, Marcel Rosenberger, Maurizio di Nunzio, Timo Rösch, Marius Müller, Markus Baader
  * 
  */
 
 public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 		implements CallbackInterface {
+
 	private static final long serialVersionUID = 1L;
 
 	private static final Logger logger = Logger
@@ -348,7 +335,13 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 		getView().showOutputView();
 		project = projectProxy.getSelectedProject();
 		if(project.getProjectInputType().isStochastic()){
+			onProgressChange(0.5f);
+			eventBus.fireEvent(new OneScenarioCalculationEvent(project));
+			getView().showView(oneScenarioView);
 			
+			onProgressChange(1f);
+//			methodRunner = new MethodRunner(project, this);
+//			methodRunner.start();
 		}
 		if(project.getProjectInputType().isDeterministic()){
 			
@@ -429,7 +422,7 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 	 */
 	@SuppressWarnings("unchecked")
 	@Override
-	public void onComplete(StochasticResultContainer result,
+	public void onCompleteOld(StochasticResultContainer result,
 			AbstractStochasticMethod method) {
 
 		StochasticChartArea stochasticChartArea;
@@ -510,18 +503,41 @@ public class ResultScreenPresenter extends Presenter<ResultScreenViewInterface>
 			logger.debug("Modellabweichung: " + validierung);
 
 			if (method.getName().equalsIgnoreCase("zeitreihenanalyse")) {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						expectedValues, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						expectedValues, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
 			} else {
-				stochasticChartArea = new StochasticChartArea(method.getName(),
-						null, companyValues.getGradedCompanyValues(),
-						validierung, scenario);
+//				stochasticChartArea = new StochasticChartArea(method.getName(),
+//						null, companyValues.getGradedCompanyValues(),
+//						validierung, scenario);
 			}
 			getView().changeProgress(1);
-			getView().addStochasticChartArea(stochasticChartArea, counter);
+//			getView().addStochasticChartArea(stochasticChartArea, counter);
 
 		}
+	}
+	
+	@Override
+	public void onComplete(Distribution distribution) {
+
+		System.out.println();
+		
+		StochasticChartArea stochasticChartArea;
+		
+		distribution.getValues();
+
+    		stochasticChartArea = new StochasticChartArea("APV", project.getStochasticPeriods().getPeriods(), distribution, validierung, project.getScenarios().get(0));
+		
+//		stochasticChartArea = new StochasticChartArea("APV",
+//				expectedValues, companyValues.getGradedCompanyValues(),
+//				validierung, project.getScenarios());
+				
+		getView().changeProgress(1);
+//		getView().addStochasticChartArea(stochasticChartArea, 1);
+		Label label = new Label("Test");
+		getView().addLabel(label);
+//		getView().addStochasticChartArea(stochasticChartArea, project.getScenarios().size());
+		
 	}
 
 	@Override

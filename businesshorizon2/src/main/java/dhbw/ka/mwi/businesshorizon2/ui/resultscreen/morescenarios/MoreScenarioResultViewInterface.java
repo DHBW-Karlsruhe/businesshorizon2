@@ -35,6 +35,12 @@ import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.BasicLineChart;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.DeterministicChartArea;
 import dhbw.ka.mwi.businesshorizon2.ui.process.output.charts.StochasticChartArea;
 
+/**
+ * 
+ * @author Thomas Zapf
+ * 
+ */
+
 public interface MoreScenarioResultViewInterface extends View {
 
 
@@ -73,7 +79,7 @@ public interface MoreScenarioResultViewInterface extends View {
 
 	public void createLayout();
 	
-	public void setScenarioValue(int numScenario, String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String companyValue);
+	public void setScenarioValue(int numScenario, String renditeEK, String renditeFK, String gewerbeSt, String koerperSt, String companyValue, String personalTax);
 	
 	public void addScenario3ToLayout ();
 	
