@@ -64,6 +64,8 @@ public interface OneScenarioResultViewInterface extends View {
 
 	public void setCapitalChart(ColumnChart chart);
 	
+	public void setStochasticCapitalChart(ColumnChart chart);
+	
 	public void setCashFlowChart(LineChart chart);
 
 }

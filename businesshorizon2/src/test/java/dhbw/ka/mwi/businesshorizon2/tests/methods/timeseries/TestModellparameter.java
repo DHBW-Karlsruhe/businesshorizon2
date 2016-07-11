@@ -39,16 +39,17 @@ import junit.framework.TestCase;
  * @author Volker Maier
  * 
  */
-@Ignore
+
 public class TestModellparameter extends TestCase {
 
 	@Test
 	public void testModellparameter() {
 
-		double[] cashflows = { 1002323, 33256673, 44, 55, 66 };
+		double[] cashflows = {22, 33, 44, 55, 66 };
 
 		double[] expectedParmas = { -1.09253751, -0.790322469, -0.651577395, -0.488155996, -0.215330237 };
-
+		double [] expectedParams = {1, 3.5E-16, -1.7E-16, 1.1E-16, -5.6E-17};
+		
 		AnalysisTimeseries at = new AnalysisTimeseries();
 
 		// try {
@@ -58,15 +59,15 @@ public class TestModellparameter extends TestCase {
 		// logger.debug(e.getMessage());
 		// }
 
-		for (double d : parameters) {
+		/*for (double d : parameters) {
 			System.out.println("actualparams: " + d);
 		}
 
-		for (double d : expectedParmas) {
+		for (double d : expectedParams) {
 			System.out.println("expectedparams: " + d);
-		}
+		}*/
 
-		Assert.assertArrayEquals(expectedParmas, parameters, 0.1);
+		Assert.assertArrayEquals(expectedParams, parameters, 0.1);
 
 	}
 
