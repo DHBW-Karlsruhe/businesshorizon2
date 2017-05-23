@@ -11,7 +11,7 @@ import dhbw.ka.mwi.businesshorizon2.cf.parameter.CFParameter;
 public interface CFAlgorithm<T extends CFResult> {
 	/**
 	 * Führt eine Cashflow Berechnung durch
-	 * @param parameterd Die Paramter
+	 * @param parameter Die Paramter
 	 * @return Das Ergebniss der Cashflow Berechnung
 	 */
     T calculate(CFParameter parameter);

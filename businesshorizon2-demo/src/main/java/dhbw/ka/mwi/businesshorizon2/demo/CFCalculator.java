@@ -44,15 +44,15 @@ public class CFCalculator {
 
     public double[] calculateStochi(){
         final Map<Texts,ARModel> modelMap = new EnumMap<>(Texts.class);
-        modelMap.put(Texts.GESAMTLEISTUNG,AR.getModel(ModelToArrayConverter.getRow(guvPanel.getModel(),0), (Integer) headerPanel.getP().getValue()));
-        modelMap.put(Texts.OPKOSTEN,AR.getModel(ModelToArrayConverter.getRow(guvPanel.getModel(),1),(Integer) headerPanel.getP().getValue()));
-        modelMap.put(Texts.ABSCHR,AR.getModel(ModelToArrayConverter.getRow(guvPanel.getModel(),2),(Integer) headerPanel.getP().getValue()));
+        modelMap.put(Texts.GESAMTLEISTUNG,AR.getModel(ModelToArrayConverter.getRow(guvPanel.getModel(),0)));
+        modelMap.put(Texts.OPKOSTEN,AR.getModel(ModelToArrayConverter.getRow(guvPanel.getModel(),1)));
+        modelMap.put(Texts.ABSCHR,AR.getModel(ModelToArrayConverter.getRow(guvPanel.getModel(),2)));
 
-        modelMap.put(Texts.ANLAGE,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),0),(Integer) headerPanel.getP().getValue()));
-        modelMap.put(Texts.UMLAUF,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),1),(Integer) headerPanel.getP().getValue()));
-        modelMap.put(Texts.EK,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),2),(Integer) headerPanel.getP().getValue()));
-        modelMap.put(Texts.ZINS_PF_PASSIVA,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),3),(Integer) headerPanel.getP().getValue()));
-        modelMap.put(Texts.SONST_PASSIVA,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),4),(Integer) headerPanel.getP().getValue()));
+        modelMap.put(Texts.ANLAGE,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),0)));
+        modelMap.put(Texts.UMLAUF,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),1)));
+        modelMap.put(Texts.EK,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),2)));
+        modelMap.put(Texts.ZINS_PF_PASSIVA,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),3)));
+        modelMap.put(Texts.SONST_PASSIVA,AR.getModel(ModelToArrayConverter.getRow(bilanzPanel.getModel(),4)));
 
         return Stochi.doStochi((Integer) headerPanel.getIter().getValue(), () -> {
             final double[] gesamtleistung = modelMap.get(Texts.GESAMTLEISTUNG).predict((Integer) headerPanel.getHorizont().getValue());

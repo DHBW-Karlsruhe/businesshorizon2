@@ -13,7 +13,6 @@ public class HeaderPanel extends JPanel {
     private final JSpinner perioden = new JSpinner();
     private final JSpinner horizont = new JSpinner();
     private final JSpinner iter = new JSpinner();
-    private final JSpinner p = new JSpinner();
     private final JPanel stochiPanel = new JPanel(new  GridBagLayout());
 
     HeaderPanel() {
@@ -38,7 +37,7 @@ public class HeaderPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 1;
         add(new JLabel("Perioden"),c);
-        perioden.setModel(new SpinnerNumberModel(2, 2, 10, 1));
+        perioden.setModel(new SpinnerNumberModel(3, 3, 10, 1));
         c.gridx = 1;
         c.gridy = 1;
         add(perioden,c);
@@ -65,14 +64,6 @@ public class HeaderPanel extends JPanel {
         c.gridx = 1;
         c.gridy = 1;
         stochiPanel.add(iter,c);
-
-        c.gridx = 0;
-        c.gridy = 2;
-        stochiPanel.add(new JLabel("Matrix Dingsda"),c);
-        p.setModel(new SpinnerNumberModel(2, 1, 10, 1));
-        c.gridx = 1;
-        c.gridy = 2;
-        stochiPanel.add(p,c);
 
         stochi.addChangeListener(e -> stochiPanel.setVisible(stochi.isSelected()));
 
@@ -111,7 +102,4 @@ public class HeaderPanel extends JPanel {
         return horizont;
     }
 
-    public JSpinner getP() {
-        return p;
-    }
 }

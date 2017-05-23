@@ -27,7 +27,7 @@ public class GuvPanel extends JPanel {
         buttonPanel.add(load);
         add(buttonPanel, BorderLayout.NORTH);
 
-        table = new JTable(GuvModelProvider.getModel(2, CFMode.DETER));
+        table = new JTable(GuvModelProvider.getModel(3, CFMode.DETER));
 
         final JScrollPane scroller = new JScrollPane(table);
         scroller.setMaximumSize(new Dimension(0,10));

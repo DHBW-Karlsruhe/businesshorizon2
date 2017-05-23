@@ -27,7 +27,7 @@ public class BilanzPanel extends JPanel {
         buttonPanel.add(load);
         add(buttonPanel, BorderLayout.NORTH);
 
-        table = new JTable(BilanzModelProvider.getModel(2, CFMode.DETER));
+        table = new JTable(BilanzModelProvider.getModel(3, CFMode.DETER));
 
         final JScrollPane scroller = new JScrollPane(table);
         add(scroller);
