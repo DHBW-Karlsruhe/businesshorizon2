@@ -1,8 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.ar.model;
 
-import org.apache.commons.math3.linear.Array2DRowRealMatrix;
-import org.apache.commons.math3.linear.LUDecomposition;
-import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.linear.*;
 import org.apache.commons.math3.stat.correlation.Covariance;
 import org.apache.commons.math3.stat.descriptive.moment.Variance;
 
@@ -13,13 +11,12 @@ public class YuleWalkerModelCalculator implements ARModelCalculator {
 	@Override
 	public ARModel getModel(final double[] timeSeries, final int p) {
 		final RealMatrix yuleWalkerMatrix = buildYuleWalkerMatrix(timeSeries, p);
-		final RealMatrix inverted = new LUDecomposition(yuleWalkerMatrix).getSolver().getInverse();
-
-		final RealMatrix coeffizientMatrix = new Array2DRowRealMatrix(p, 1);
-		for (int i = 0; i < coeffizientMatrix.getRowDimension(); i++) {
-			coeffizientMatrix.setEntry(i, 0, getAutocorrelation(timeSeries, i + 1));
+		final RealVector coeffizientVector = new ArrayRealVector(p);
+		for (int i = 0; i < coeffizientVector.getDimension(); i++) {
+			coeffizientVector.setEntry(i, getAutocorrelation(timeSeries, i + 1));
 		}
-		return new ARModel(inverted.multiply(coeffizientMatrix).getColumn(0),timeSeries);
+		final RealVector solved = new LUDecomposition(yuleWalkerMatrix).getSolver().solve(coeffizientVector);
+		return new ARModel(solved.toArray(),timeSeries);
 	}
 
 	private static double getAutocorrelation(final double[] timeSeries, final int p) {
