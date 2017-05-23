@@ -16,4 +16,5 @@ public class TestARPredictorRunner {
 		final double[] predictions = new ARPredictorRunner(new ARPredictor(new Random(1))).runPredictions(timeSeries, coeffs, 2);
 		assertArrayEquals(new double[]{75584.95,73541.64}, predictions,0.01);
 	}
+
 }

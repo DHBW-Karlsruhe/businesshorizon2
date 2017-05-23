@@ -10,6 +10,10 @@ public class YuleWalkerModelCalculator implements ARModelCalculator {
 
 	@Override
 	public ARModel getModel(final double[] timeSeries, final int p) {
+		if(new Variance(false).evaluate(timeSeries) == 0){
+			return new ARModel(new double[p],timeSeries);
+		}
+
 		final RealMatrix yuleWalkerMatrix = buildYuleWalkerMatrix(timeSeries, p);
 		final RealVector coeffizientVector = new ArrayRealVector(p);
 		for (int i = 0; i < coeffizientVector.getDimension(); i++) {
