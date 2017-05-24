@@ -7,6 +7,7 @@ import dhbw.ka.mwi.businesshorizon2.demo.models.GuvModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.models.ModelCopier;
 
 import javax.swing.*;
+import javax.swing.event.ChangeListener;
 import javax.swing.table.TableModel;
 
 public class MainWindow extends JFrame {
@@ -29,10 +30,10 @@ public class MainWindow extends JFrame {
         header = new HeaderPanel();
         tab.addTab("Kopf",header);
 
-        guv = new GuvPanel();
+        guv = new GuvPanel(header);
         tab.addTab("GUV",guv);
 
-        bilanz = new BilanzPanel();
+        bilanz = new BilanzPanel(header);
         tab.addTab("Bilanz",bilanz);
 
         szenario = new SzenarioPanel();
@@ -41,26 +42,29 @@ public class MainWindow extends JFrame {
         resultPanel = new ResultPanel();
         tab.addTab("Unternehmenswert",resultPanel);
 
-        header.getPerioden().addChangeListener(e -> {
+        final ChangeListener yearAndPeriodenListener = e -> {
             final TableModel oldBilanz = bilanz.getModel();
-            final TableModel newBilanz = BilanzModelProvider.getModel((Integer) header.getPerioden().getValue(), header.getCurrentMode());
-            ModelCopier.copyModel(oldBilanz,newBilanz,header.getCurrentMode());
+            final TableModel newBilanz = BilanzModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode());
+            ModelCopier.copyModel(oldBilanz, newBilanz, header.getCurrentMode());
             bilanz.setModel(newBilanz);
             final TableModel oldGuv = guv.getModel();
-            final TableModel newGuv = GuvModelProvider.getModel((Integer) header.getPerioden().getValue(), header.getCurrentMode());
-            ModelCopier.copyModel(oldGuv,newGuv,header.getCurrentMode());
+            final TableModel newGuv = GuvModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode());
+            ModelCopier.copyModel(oldGuv, newGuv, header.getCurrentMode());
             guv.setModel(newGuv);
-        });
+        };
+
+        header.getPerioden().addChangeListener(yearAndPeriodenListener);
+        header.getBasisjahr().addChangeListener(yearAndPeriodenListener);
 
         header.getStochi().addActionListener(e -> {
-            bilanz.setModel(BilanzModelProvider.getModel((Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            guv.setModel(GuvModelProvider.getModel((Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            bilanz.setModel(BilanzModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            guv.setModel(GuvModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             resultPanel.getChartPanel().setVisible(header.getCurrentMode() == CFMode.STOCHI);
         });
 
         header.getDeter().addActionListener(e -> {
-            bilanz.setModel(BilanzModelProvider.getModel((Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            guv.setModel(GuvModelProvider.getModel((Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            bilanz.setModel(BilanzModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            guv.setModel(GuvModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             resultPanel.getChartPanel().setVisible(header.getCurrentMode() == CFMode.STOCHI);
         });
 

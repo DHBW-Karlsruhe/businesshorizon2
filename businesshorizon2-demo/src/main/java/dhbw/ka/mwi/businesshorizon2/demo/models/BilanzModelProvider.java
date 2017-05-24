@@ -9,7 +9,7 @@ public final class BilanzModelProvider {
     private BilanzModelProvider() {
     }
 
-    public static DefaultTableModel getModel(final int perioden, final CFMode mode) {
+    public static DefaultTableModel getModel(final int basisjahr, final int perioden, final CFMode mode) {
 
         final DefaultTableModel model = new DefaultTableModel() {
             @Override
@@ -24,7 +24,7 @@ public final class BilanzModelProvider {
         };
         model.addColumn(Texts.HEADER);
         for (int i = 0; i < perioden; i++) {
-            model.addColumn("t" + (mode == CFMode.DETER ? i : -perioden + i + 1));
+            model.addColumn((mode == CFMode.DETER ? i : -perioden + i + 1) + basisjahr);
         }
 
         model.addRow(getRow(perioden,Texts.ANLAGE));

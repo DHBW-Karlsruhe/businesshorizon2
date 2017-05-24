@@ -4,19 +4,20 @@ import dhbw.ka.mwi.businesshorizon2.demo.CFMode;
 import dhbw.ka.mwi.businesshorizon2.demo.models.GuvModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvExport;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvImport;
+import dhbw.ka.mwi.businesshorizon2.demo.saving.ExportListener;
+import dhbw.ka.mwi.businesshorizon2.demo.saving.ImportListener;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class GuvPanel extends JPanel {
 
     private final JTable table;
 
-    GuvPanel() {
+    GuvPanel(final HeaderPanel headerPanel) {
         setLayout(new BorderLayout());
 
         final JButton save = new JButton("Speichern");
@@ -26,36 +27,15 @@ public class GuvPanel extends JPanel {
         buttonPanel.add(load);
         add(buttonPanel, BorderLayout.NORTH);
 
-        table = new JTable(GuvModelProvider.getModel(3, CFMode.DETER));
+        table = new JTable(GuvModelProvider.getModel(new GregorianCalendar().get(Calendar.YEAR),3, CFMode.DETER));
 
         final JScrollPane scroller = new JScrollPane(table);
         scroller.setMaximumSize(new Dimension(0,10));
         add(scroller);
 
-        save.addActionListener(e -> {
-            final JFileChooser chooser = new JFileChooser();
-            if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                final File file = chooser.getSelectedFile().getName().endsWith(".csv") ? chooser.getSelectedFile() : new File(chooser.getSelectedFile().getAbsolutePath() + ".csv");
-                try {
-                    CsvExport.exportGuv(getModel(), file);
-                } catch (final IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
+        save.addActionListener(new ExportListener(file -> CsvExport.exportGuv(getModel(), file)));
+        load.addActionListener(new ImportListener(file -> setModel(CsvImport.importGuv(file,(Integer) headerPanel.getPerioden().getValue(),(Integer) headerPanel.getBasisjahr().getValue(),headerPanel.getCurrentMode()))));
 
-        load.addActionListener(e -> {
-            final JFileChooser chooser = new JFileChooser();
-            chooser.setFileFilter(new FileNameExtensionFilter("CSV", "csv"));
-            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                try {
-                    setModel(CsvImport.importGuv(chooser.getSelectedFile()));
-                } catch (final Exception e1) {
-                    e1.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Datei kann nicht importiert werden: " + e1.getLocalizedMessage());
-                }
-            }
-        });
     }
 
     public void setModel(final TableModel model){

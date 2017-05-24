@@ -52,14 +52,14 @@ public final class CsvImport {
         }
     }
 
-    public static TableModel importGuv(final File file) throws IOException {
+    public static TableModel importGuv(final File file, final int perioden, final int basisjahr, final CFMode mode) throws IOException {
         final Iterable<CSVRecord> records = CSVParser.parse(file, Charset.forName("ISO-8859-1"), CSVFormat.DEFAULT.withDelimiter(';'));
         TableModel model = null;
 
         for (final CSVRecord record : records) {
             switch (Texts.get(record.get(0))) {
                 case HEADER:
-                    model = GuvModelProvider.getModel(record.size() - 1, "t0".equals(record.get(1)) ? CFMode.DETER : CFMode.STOCHI);
+                    model = GuvModelProvider.getModel(basisjahr,perioden,mode);
                     break;
                 case GESAMTLEISTUNG:
                     for (int i = 1; i < record.size(); i++) {
@@ -82,14 +82,14 @@ public final class CsvImport {
     }
 
 
-    public static TableModel importBilanz(final File file) throws IOException {
+    public static TableModel importBilanz(final File file, final int perioden, final int basisjahr, final CFMode mode) throws IOException {
         final Iterable<CSVRecord> records = CSVParser.parse(file, Charset.forName("ISO-8859-1"), CSVFormat.DEFAULT.withDelimiter(';'));
         TableModel model = null;
 
         for (final CSVRecord record : records) {
             switch (Texts.get(record.get(0))) {
                 case HEADER:
-                    model = BilanzModelProvider.getModel(record.size() - 1, "t0".equals(record.get(1)) ? CFMode.DETER : CFMode.STOCHI);
+                    model = BilanzModelProvider.getModel(basisjahr,perioden,mode);
                     break;
                 case ANLAGE:
                     for (int i = 1; i < record.size(); i++) {

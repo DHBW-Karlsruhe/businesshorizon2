@@ -4,13 +4,12 @@ import dhbw.ka.mwi.businesshorizon2.demo.CFAlgo;
 import dhbw.ka.mwi.businesshorizon2.demo.Texts;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvExport;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvImport;
+import dhbw.ka.mwi.businesshorizon2.demo.saving.ExportListener;
+import dhbw.ka.mwi.businesshorizon2.demo.saving.ImportListener;
 import dhbw.ka.mwi.businesshorizon2.demo.ui.controls.JPercentField;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.io.File;
-import java.io.IOException;
 
 public class SzenarioPanel extends JPanel {
 
@@ -58,30 +57,8 @@ public class SzenarioPanel extends JPanel {
         fields.add(algo);
         innerPanel.add(fields);
 
-        save.addActionListener(e -> {
-            final JFileChooser chooser = new JFileChooser();
-            if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                final File file = chooser.getSelectedFile().getName().endsWith(".csv") ? chooser.getSelectedFile() : new File(chooser.getSelectedFile().getAbsolutePath() + ".csv");
-                try {
-                    CsvExport.exportScenario(this, file);
-                } catch (final IOException e1) {
-                    e1.printStackTrace();
-                }
-            }
-        });
-
-        load.addActionListener(e -> {
-            final JFileChooser chooser = new JFileChooser();
-            chooser.setFileFilter(new FileNameExtensionFilter("CSV", "csv"));
-            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
-                try {
-                    CsvImport.importSzenario(this,chooser.getSelectedFile());
-                } catch (final Exception e1) {
-                    e1.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Datei kann nicht importiert werden: " + e1.getLocalizedMessage());
-                }
-            }
-        });
+        save.addActionListener(new ExportListener(file -> CsvExport.exportScenario(this, file)));
+        load.addActionListener(new ImportListener(file -> CsvImport.importSzenario(this,file)));
     }
 
     public JPercentField getEkKosten() {

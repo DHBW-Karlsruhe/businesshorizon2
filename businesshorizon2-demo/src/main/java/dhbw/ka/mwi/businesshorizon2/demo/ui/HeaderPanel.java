@@ -4,12 +4,15 @@ import dhbw.ka.mwi.businesshorizon2.demo.CFMode;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 public class HeaderPanel extends JPanel {
     private final JLabel status = new JLabel();
     private final JRadioButton deter = new JRadioButton("Deterministisch");
     private final JRadioButton stochi = new JRadioButton("Stochastisch");
 
+    private final JSpinner basisjahr = new JSpinner();
     private final JSpinner perioden = new JSpinner();
     private final JSpinner horizont = new JSpinner();
     private final JSpinner iter = new JSpinner();
@@ -36,17 +39,27 @@ public class HeaderPanel extends JPanel {
         c.gridy = 0;
         innerPanel.add(stochi,c);
 
+
+
         c.gridx = 0;
         c.gridy = 1;
+        innerPanel.add(new JLabel("Basisjahr"),c);
+        basisjahr.setModel(new SpinnerNumberModel(new GregorianCalendar().get(Calendar.YEAR), 1900, 3000, 1));
+        c.gridx = 1;
+        c.gridy = 1;
+        innerPanel.add(basisjahr,c);
+
+        c.gridx = 0;
+        c.gridy = 2;
         innerPanel.add(new JLabel("Perioden"),c);
         perioden.setModel(new SpinnerNumberModel(3, 3, 10, 1));
         c.gridx = 1;
-        c.gridy = 1;
+        c.gridy = 2;
         innerPanel.add(perioden,c);
 
         stochiPanel.setVisible(false);
         c.gridx = 0;
-        c.gridy = 2;
+        c.gridy = 3;
         c.gridwidth = 2;
         innerPanel.add(stochiPanel,c);
 
@@ -104,4 +117,7 @@ public class HeaderPanel extends JPanel {
         return horizont;
     }
 
+    JSpinner getBasisjahr() {
+        return basisjahr;
+    }
 }
