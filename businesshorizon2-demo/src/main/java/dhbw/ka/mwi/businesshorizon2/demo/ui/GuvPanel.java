@@ -1,6 +1,5 @@
 package dhbw.ka.mwi.businesshorizon2.demo.ui;
 
-import dhbw.ka.mwi.businesshorizon2.demo.CFMode;
 import dhbw.ka.mwi.businesshorizon2.demo.models.GuvModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvExport;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvImport;
@@ -10,8 +9,6 @@ import dhbw.ka.mwi.businesshorizon2.demo.saving.ImportListener;
 import javax.swing.*;
 import javax.swing.table.TableModel;
 import java.awt.*;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
 
 public class GuvPanel extends JPanel {
 
@@ -27,7 +24,7 @@ public class GuvPanel extends JPanel {
         buttonPanel.add(load);
         add(buttonPanel, BorderLayout.NORTH);
 
-        table = new JTable(GuvModelProvider.getModel(new GregorianCalendar().get(Calendar.YEAR),3, CFMode.DETER));
+        table = new JTable(GuvModelProvider.getModel((Integer) headerPanel.getBasisjahr().getValue(),(Integer) headerPanel.getPerioden().getValue(), headerPanel.getCurrentMode()));
 
         final JScrollPane scroller = new JScrollPane(table);
         scroller.setMaximumSize(new Dimension(0,10));

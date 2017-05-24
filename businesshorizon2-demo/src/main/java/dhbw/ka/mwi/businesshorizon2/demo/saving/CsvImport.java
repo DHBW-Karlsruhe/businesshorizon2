@@ -52,6 +52,25 @@ public final class CsvImport {
         }
     }
 
+    private static void checkHeader(final CSVRecord record, final int perioden, final int basisjahr, final CFMode mode){
+        if (record.size() != perioden + 1){
+            throw new IllegalArgumentException("Anzahl Perioden stimmt nicht mit Selektion überein");
+        }
+        switch (mode){
+            case STOCHI:
+                if(!record.get(record.size() - 1).equals(String.valueOf(basisjahr))){
+                    throw new IllegalArgumentException("Basisjahr stimmt nicht mit Selektion überein");
+                }
+                break;
+            case DETER:
+                if(!record.get(1).equals(String.valueOf(basisjahr))){
+                    throw new IllegalArgumentException("Basisjahr stimmt nicht mit Selektion überein");
+                }
+                break;
+        }
+
+    }
+
     public static TableModel importGuv(final File file, final int perioden, final int basisjahr, final CFMode mode) throws IOException {
         final Iterable<CSVRecord> records = CSVParser.parse(file, Charset.forName("ISO-8859-1"), CSVFormat.DEFAULT.withDelimiter(';'));
         TableModel model = null;
@@ -59,6 +78,7 @@ public final class CsvImport {
         for (final CSVRecord record : records) {
             switch (Texts.get(record.get(0))) {
                 case HEADER:
+                    checkHeader(record,perioden,basisjahr,mode);
                     model = GuvModelProvider.getModel(basisjahr,perioden,mode);
                     break;
                 case GESAMTLEISTUNG:
@@ -89,6 +109,7 @@ public final class CsvImport {
         for (final CSVRecord record : records) {
             switch (Texts.get(record.get(0))) {
                 case HEADER:
+                    checkHeader(record,perioden,basisjahr,mode);
                     model = BilanzModelProvider.getModel(basisjahr,perioden,mode);
                     break;
                 case ANLAGE:
