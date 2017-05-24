@@ -22,15 +22,16 @@ public class SzenarioPanel extends JPanel {
     private final JComboBox<CFAlgo> algo = new JComboBox<>(CFAlgo.values());
 
     SzenarioPanel() {
+        final JPanel innerPanel = new JPanel(new BorderLayout());
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder("Szenario"));
+        add(innerPanel,BorderLayout.NORTH);
 
         final JButton save = new JButton("Speichern");
         final JButton load = new JButton("Laden");
         final JPanel buttonPanel = new JPanel(new GridLayout(0,2));
         buttonPanel.add(save);
         buttonPanel.add(load);
-        add(buttonPanel, BorderLayout.NORTH);
+        innerPanel.add(buttonPanel, BorderLayout.NORTH);
         final JPanel fields = new JPanel(new  GridLayout(0,2));
         fields.add(new JLabel(Texts.EK_KOSTEN.toString()));
         ekKosten.setValue(0.100582);
@@ -55,7 +56,7 @@ public class SzenarioPanel extends JPanel {
 
         fields.add(new JLabel("Algo"));
         fields.add(algo);
-        add(fields);
+        innerPanel.add(fields);
 
         save.addActionListener(e -> {
             final JFileChooser chooser = new JFileChooser();

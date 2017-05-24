@@ -16,12 +16,14 @@ public class HeaderPanel extends JPanel {
     private final JPanel stochiPanel = new JPanel(new  GridBagLayout());
 
     HeaderPanel() {
+        final JPanel innerPanel = new JPanel(new GridBagLayout());
+        setLayout(new BorderLayout());
+        add(innerPanel,BorderLayout.NORTH);
         final GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
         c.weightx = 1;
         c.weighty = 1;
 
-        setLayout(new GridBagLayout());
         final ButtonGroup inputMethod = new ButtonGroup();
         inputMethod.add(deter);
         inputMethod.add(stochi);
@@ -29,24 +31,24 @@ public class HeaderPanel extends JPanel {
         deter.setSelected(true);
         c.gridx = 0;
         c.gridy = 0;
-        add(deter,c);
+        innerPanel.add(deter,c);
         c.gridx = 1;
         c.gridy = 0;
-        add(stochi,c);
+        innerPanel.add(stochi,c);
 
         c.gridx = 0;
         c.gridy = 1;
-        add(new JLabel("Perioden"),c);
+        innerPanel.add(new JLabel("Perioden"),c);
         perioden.setModel(new SpinnerNumberModel(3, 3, 10, 1));
         c.gridx = 1;
         c.gridy = 1;
-        add(perioden,c);
+        innerPanel.add(perioden,c);
 
         stochiPanel.setVisible(false);
         c.gridx = 0;
         c.gridy = 2;
         c.gridwidth = 2;
-        add(stochiPanel,c);
+        innerPanel.add(stochiPanel,c);
 
         c.gridx = 0;
         c.gridy = 0;
@@ -70,7 +72,7 @@ public class HeaderPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 4;
         c.gridwidth = 2;
-        add(status,c);
+        innerPanel.add(status,c);
 
     }
 

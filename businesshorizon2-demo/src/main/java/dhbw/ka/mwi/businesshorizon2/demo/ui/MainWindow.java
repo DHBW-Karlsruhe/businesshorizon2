@@ -23,20 +23,23 @@ public class MainWindow extends JFrame {
         setSize(1024, 768);
         setLayout(new BoxLayout(getContentPane(), BoxLayout.Y_AXIS));
 
+        final JTabbedPane tab = new JTabbedPane();
+        add(tab);
+
         header = new HeaderPanel();
-        add(header);
+        tab.addTab("Kopf",header);
 
         guv = new GuvPanel();
-        add(guv);
+        tab.addTab("GUV",guv);
 
         bilanz = new BilanzPanel();
-        add(bilanz);
+        tab.addTab("Bilanz",bilanz);
 
         szenario = new SzenarioPanel();
-        add(szenario);
+        tab.addTab("Szenario",szenario);
 
         resultPanel = new ResultPanel();
-        add(resultPanel);
+        tab.addTab("Unternehmenswert",resultPanel);
 
         header.getPerioden().addChangeListener(e -> {
             final TableModel oldBilanz = bilanz.getModel();

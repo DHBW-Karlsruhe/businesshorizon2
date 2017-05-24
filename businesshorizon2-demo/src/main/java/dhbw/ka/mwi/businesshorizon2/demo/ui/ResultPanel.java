@@ -21,7 +21,6 @@ class ResultPanel extends JPanel {
         setLayout(new BorderLayout());
 
         final JPanel northPanel = new JPanel(new GridLayout(0,2));
-        setBorder(BorderFactory.createTitledBorder("Unternehmenswert"));
 
         uWert.setFont(new Font(Font.SANS_SERIF, Font.BOLD, 30));
 

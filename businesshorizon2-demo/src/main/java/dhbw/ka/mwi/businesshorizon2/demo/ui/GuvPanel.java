@@ -18,7 +18,6 @@ public class GuvPanel extends JPanel {
 
     GuvPanel() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder("Gewinn- und Verlustrechnung"));
 
         final JButton save = new JButton("Speichern");
         final JButton load = new JButton("Laden");

@@ -18,7 +18,6 @@ public class BilanzPanel extends JPanel {
 
     BilanzPanel() {
         setLayout(new BorderLayout());
-        setBorder(BorderFactory.createTitledBorder("Struktur-Bilanzen"));
 
         final JButton save = new JButton("Speichern");
         final JButton load = new JButton("Laden");
