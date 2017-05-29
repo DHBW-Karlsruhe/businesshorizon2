@@ -3,7 +3,7 @@ package dhbw.ka.mwi.businesshorizon2.ar;
 import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
-//Test Tobias
+
 public class TestAR {
 
     @Test
