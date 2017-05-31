@@ -1,9 +1,9 @@
 package dhbw.ka.mwi.businesshorizon2.cf.apv;
 
-import static org.junit.Assert.assertEquals;
-
-import java.util.List;
-
+import dhbw.ka.mwi.businesshorizon2.cf.JUnitHelper;
+import dhbw.ka.mwi.businesshorizon2.cf.TestData;
+import dhbw.ka.mwi.businesshorizon2.cf.TestDataProvider;
+import dhbw.ka.mwi.businesshorizon2.cf.equity.LazyEquityAlgorithm;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
@@ -11,10 +11,9 @@ import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 import org.junit.runners.Parameterized.Parameters;
 
-import dhbw.ka.mwi.businesshorizen2.cf.JUnitHelper;
-import dhbw.ka.mwi.businesshorizen2.cf.TestData;
-import dhbw.ka.mwi.businesshorizen2.cf.TestDataProvider;
-import dhbw.ka.mwi.businesshorizon2.cf.equity.LazyEquityAlgorithm;
+import java.util.List;
+
+import static org.junit.Assert.assertEquals;
 
 @RunWith(Parameterized.class)
 public class TestLazyAPV {

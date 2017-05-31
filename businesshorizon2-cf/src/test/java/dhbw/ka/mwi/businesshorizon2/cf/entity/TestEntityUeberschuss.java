@@ -1,8 +1,8 @@
 package dhbw.ka.mwi.businesshorizon2.cf.entity;
 
-import dhbw.ka.mwi.businesshorizen2.cf.JUnitHelper;
-import dhbw.ka.mwi.businesshorizen2.cf.TestData;
-import dhbw.ka.mwi.businesshorizen2.cf.TestDataProvider;
+import dhbw.ka.mwi.businesshorizon2.cf.JUnitHelper;
+import dhbw.ka.mwi.businesshorizon2.cf.TestData;
+import dhbw.ka.mwi.businesshorizon2.cf.TestDataProvider;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
