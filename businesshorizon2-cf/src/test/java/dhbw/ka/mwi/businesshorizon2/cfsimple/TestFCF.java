@@ -12,4 +12,9 @@ public class TestFCF {
         assertEquals(1055.24,new FCF().calculateUWert(parameter),0.001);
     }
 
+    @Test
+    public void testFCFPohl() throws Exception {
+        final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.100582,0.35,0.08);
+        assertEquals(1611.97,new FCF().calculateUWert(parameter),0.001);
+    }
 }
