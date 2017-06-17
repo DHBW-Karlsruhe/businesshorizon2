@@ -4,17 +4,17 @@ public abstract class SteppingCFAlgorithm<T extends CFParameter> implements CFAl
 
     abstract CFIntermediateResult step(final T parameter, final CFIntermediateResult intermediate);
 
-    private static double[] getInit(final int numPerioden, final double initVal){
+    private static double[] getInit(final int numPerioden){
         final double[] init = new double[numPerioden];
         for (int i = 0; i < init.length; i++) {
-            init[i] = initVal;
+            init[i] = 1;
         }
         return init;
     }
 
     @Override
     public double calculateUWert(final T parameter) {
-        CFIntermediateResult intermediate = new CFIntermediateResult(getInit(parameter.numPerioden(),1055),getInit(parameter.numPerioden(),2315),getInit(parameter.numPerioden(),0.12));
+        CFIntermediateResult intermediate = new CFIntermediateResult(getInit(parameter.numPerioden()),getInit(parameter.numPerioden()),getInit(parameter.numPerioden()));
 
         for (int i = 0; i < 200; i++) {
             intermediate = step(parameter,intermediate);
