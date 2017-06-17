@@ -13,7 +13,7 @@ public class FCF extends SteppingCFAlgorithm<CFEntityParameter> {
             return intermediate.getGk()[periode - 1];
             //return parameter.getFCF()[periode] / getWACC(parameter,intermediate,periode); //TODO das hier ist eigentlich korrekt
         }
-        return (getGK(parameter,intermediate, periode +1) + parameter.getFCF()[periode + 1]) / (1 + getWACC(parameter,intermediate,periode + 1));
+        return (getGK(parameter,intermediate,periode + 1) + parameter.getFCF()[periode + 1]) / (1 + getWACC(parameter,intermediate,periode + 1));
     }
 
     private static double calculateUWert(final CFEntityParameter parameter, final CFIntermediateResult intermediate, final int periode){
