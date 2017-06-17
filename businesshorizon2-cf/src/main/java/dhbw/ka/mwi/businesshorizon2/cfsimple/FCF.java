@@ -5,7 +5,6 @@ public class FCF extends SteppingCFAlgorithm<CFEntityParameter> {
     private static double getWACC(final CFEntityParameter parameter, final CFIntermediateResult intermediate, final int periode){
         final double ekQoute = intermediate.getuWert()[periode - 1] / intermediate.getGk()[periode - 1];
         final double fkQoute = parameter.getFK()[periode - 1] / intermediate.getGk()[periode - 1];
-        System.out.println(intermediate.getEkKost()[periode] * ekQoute + parameter.getFKKosten() * (1 - parameter.getuSteusatz()) * fkQoute);
         return intermediate.getEkKost()[periode] * ekQoute + parameter.getFKKosten() * (1 - parameter.getuSteusatz()) * fkQoute;
     }
 
