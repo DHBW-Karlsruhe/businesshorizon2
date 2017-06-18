@@ -1,6 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.cfsimple;
 
-public class CFParameter {
+public abstract class CFParameter {
 
     private final double[] FK;
 
