@@ -15,11 +15,12 @@ abstract class SteppingCFAlgorithm<T extends CFParameter> implements CFAlgorithm
     @Override
     public double calculateUWert(final T parameter) {
         CFIntermediateResult intermediate = new CFIntermediateResult(getInit(parameter.numPerioden()),getInit(parameter.numPerioden()),getInit(parameter.numPerioden()));
-
-        for (int i = 0; i < CFConfig.getSteps(); i++) {
-            intermediate = step(parameter,intermediate);
+        while (true){
+            final CFIntermediateResult next = step(parameter,intermediate);
+            if(Math.abs(next.getuWert()[0] - intermediate.getuWert()[0]) < CFConfig.getPrecision()){
+                return next.getuWert()[0];
+            }
+            intermediate = next;
         }
-
-        return intermediate.getuWert()[0];
     }
 }
