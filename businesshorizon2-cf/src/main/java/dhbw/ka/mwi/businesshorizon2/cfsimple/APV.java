@@ -3,17 +3,19 @@ package dhbw.ka.mwi.businesshorizon2.cfsimple;
 public class APV implements CFAlgorithm<CFEntityParameter> {
 
     private static double getUWFiktiv(final CFEntityParameter parameter, final int periode) {
-        if (periode < parameter.numPerioden() - 2) {
-            return getUWFiktiv(parameter, periode + 1) + parameter.getFCF()[periode + 1] / Math.pow(1 + parameter.getEKKosten(), periode + 1);
+        double summe = 0;
+        for (int i = periode + 1; i < parameter.numPerioden() - 1; i++) {
+            summe += parameter.getFCF()[i] / Math.pow(1 + parameter.getEKKosten(), i - periode);
         }
-        return parameter.getFCF()[periode + 1] / (parameter.getEKKosten() * Math.pow(1 + parameter.getEKKosten(), periode));
+        return summe + parameter.getFCF()[parameter.numPerioden() - 1] /  (parameter.getEKKosten() * Math.pow(1 + parameter.getEKKosten(), parameter.numPerioden() - 2 - periode));
     }
 
-    private static double getTaxShield(final CFEntityParameter parameter, final int periode) {
-        if (periode < parameter.numPerioden() - 2) {
-            return getTaxShield(parameter, periode + 1) + parameter.getuSteusatz() * parameter.getFKKosten() * parameter.getFK()[periode] / Math.pow(parameter.getFKKosten() + 1, periode + 1);
+    private static double getTaxShield(final CFParameter parameter, final int periode) {
+        double summe = 0;
+        for (int i = periode + 1; i < parameter.numPerioden() - 1; i++) {
+            summe += parameter.getuSteusatz() * parameter.getFKKosten() * parameter.getFK()[i - 1] / Math.pow(parameter.getFKKosten() + 1, i - periode);
         }
-        return parameter.getuSteusatz() * parameter.getFK()[periode] / Math.pow(parameter.getFKKosten() + 1, periode);
+        return summe + parameter.getuSteusatz() * parameter.getFK()[parameter.numPerioden() - 2] / Math.pow(parameter.getFKKosten() + 1, parameter.numPerioden() - 2 - periode);
     }
 
     private static double getGesamtkapital(final CFEntityParameter parameter, final int periode) {

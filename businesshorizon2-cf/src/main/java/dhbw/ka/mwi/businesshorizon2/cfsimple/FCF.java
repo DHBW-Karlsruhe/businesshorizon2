@@ -19,6 +19,7 @@ public class FCF extends SteppingCFAlgorithm<CFEntityParameter> {
     private static double calculateUWert(final CFEntityParameter parameter, final CFIntermediateResult intermediate, final int periode){
         return intermediate.getGk()[periode] - parameter.getFK()[periode];
     }
+
     @Override
     CFIntermediateResult step(final CFEntityParameter parameter, final CFIntermediateResult intermediate){
         final double[] uWert = new double[parameter.numPerioden()];

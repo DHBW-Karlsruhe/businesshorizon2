@@ -1,6 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.cfsimple;
 
-public abstract class SteppingCFAlgorithm<T extends CFParameter> implements CFAlgorithm<T> {
+abstract class SteppingCFAlgorithm<T extends CFParameter> implements CFAlgorithm<T> {
 
     abstract CFIntermediateResult step(final T parameter, final CFIntermediateResult intermediate);
 
