@@ -16,7 +16,7 @@ abstract class SteppingCFAlgorithm<T extends CFParameter> implements CFAlgorithm
     public double calculateUWert(final T parameter) {
         CFIntermediateResult intermediate = new CFIntermediateResult(getInit(parameter.numPerioden()),getInit(parameter.numPerioden()),getInit(parameter.numPerioden()));
 
-        for (int i = 0; i < 200; i++) {
+        for (int i = 0; i < CFConfig.getSteps(); i++) {
             intermediate = step(parameter,intermediate);
         }
 

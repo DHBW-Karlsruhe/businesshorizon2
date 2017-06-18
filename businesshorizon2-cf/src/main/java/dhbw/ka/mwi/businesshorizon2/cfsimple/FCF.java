@@ -30,7 +30,7 @@ public class FCF extends SteppingCFAlgorithm<CFEntityParameter> {
             uWert[i] = calculateUWert(parameter,intermediate,i);
             gk[i] = getGK(parameter,intermediate,i);
             if(i > 0) {
-                ekKost[i] = EKKostVerschCalculator.getEKKostenVersch(parameter, intermediate, i);
+                ekKost[i] = CFConfig.getEkKostVerschCalculator().calculateEKKostenVersch(parameter, intermediate, i);
             }
         }
 
