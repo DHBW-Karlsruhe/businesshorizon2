@@ -20,7 +20,7 @@ public class TrendRemovedTimeSeries {
         final double[] timeSeriesWithTrend = new double[timeSeriesWithoutTrend.length];
 
         for (int i = 0; i < timeSeriesWithoutTrend.length; i++) {
-            double trend = (this.timeSeriesWithoutTrend.length + i + 1) * slope + intercept;
+            double trend = (this.timeSeriesWithoutTrend.length + i) * slope + intercept;
             timeSeriesWithTrend[i] = timeSeriesWithoutTrend[i] + trend;
         }
         return timeSeriesWithTrend;

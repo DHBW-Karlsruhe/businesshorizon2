@@ -15,7 +15,7 @@ public final class TrendRemover {
         final double intercept = regression.getIntercept();
 
         for (int i = 0; i < timeSeriesWithTrend.length; i++) {
-            double trend = (i + 1) * slope + intercept;
+            double trend = i * slope + intercept;
             timeSeriesWithoutTrend[i] = timeSeriesWithTrend[i] - trend;
         }
         return new TrendRemovedTimeSeries(timeSeriesWithoutTrend,slope,intercept);
@@ -24,7 +24,7 @@ public final class TrendRemover {
     private static SimpleRegression getRegression(final double[] timeSeries){
         final SimpleRegression regression = new SimpleRegression();
         for (int i = 0; i < timeSeries.length; i++) {
-            regression.addData(i + 1,timeSeries[i]);
+            regression.addData(i,timeSeries[i]);
         }
         return regression;
     }
