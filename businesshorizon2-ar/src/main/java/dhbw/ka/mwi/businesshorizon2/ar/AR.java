@@ -15,7 +15,7 @@ public final class AR {
 	 * @return Das AR Modell für die Zeitreihe
 	 */
 	public static ARModel getModel(final double[] timeSeries){
-		return getModel(timeSeries, timeSeries.length - 2);
+		return getModel(timeSeries, 2);
 	}
 	/**
 	 * Erstellt das AR Modell für die Zeitreihe
