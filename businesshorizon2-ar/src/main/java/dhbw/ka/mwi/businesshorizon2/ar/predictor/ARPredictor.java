@@ -14,6 +14,14 @@ public class ARPredictor {
 		this.random = random;
 	}
 
+    /**
+     * Berechnet einen zukünftigen Wert der Zeitreihe
+     * @param centeredValues Die zentrierten Werte einer Zeitreihe
+     * @param coefficients Die Koeffizeinten der AR-Modellgleichung
+     * @param stdDev Die Standardabweichung der Zeitreihe
+     * @param avg Der Mittelwert der Zeitreihe
+     * @return
+     */
 	public double predict(final double[] centeredValues, final double[] coefficients, final double stdDev, final double avg) {
 		if (centeredValues.length != coefficients.length) {
 			throw new IllegalArgumentException("Length of values and length of coeffs does not match");

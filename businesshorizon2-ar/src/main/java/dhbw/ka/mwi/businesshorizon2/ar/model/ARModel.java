@@ -5,6 +5,9 @@ import dhbw.ka.mwi.businesshorizon2.ar.predictor.ARPredictorRunner;
 
 public class ARModel {
 
+    /**
+     * Koeffizienten der AR-Model Gleichung
+     */
     private final double[] coefficients;
     private final double[] timeSeries;
 
@@ -13,6 +16,11 @@ public class ARModel {
         this.timeSeries = timeSeries;
     }
 
+    /**
+     * Prognostizert die zukünftigen Werte der Zeitreihe
+     * @param numPeriods Die Anzahl an zukünftigen Zeitpunkten, die prognostiziert werden
+     * @return Die prognostizierten Werte der Zeitreihe
+     */
     public double[] predict(final int numPeriods) {
         return new ARPredictorRunner(new ARPredictor()).runPredictions(timeSeries, coefficients, numPeriods);
     }
