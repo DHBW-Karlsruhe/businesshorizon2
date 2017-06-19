@@ -1,16 +1,16 @@
 package dhbw.ka.mwi.businesshorizon2.cfsimple;
 
-public class FTE extends SteppingCFAlgorithm<CFEquityParameter> {
+public class FTE extends SteppingCFAlgorithm {
 
-    private static double calculateUWert(final CFEquityParameter parameter, final CFIntermediateResult intermediate, final int periode){
+    private static double calculateUWert(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         if(periode >= parameter.numPerioden() - 1){
-            return parameter.getAusschuettung()[periode] / intermediate.getEkKost()[periode];
+            return parameter.getFTE()[periode] / intermediate.getEkKost()[periode];
         }
-        return (intermediate.getuWert()[periode + 1] + parameter.getAusschuettung()[periode + 1]) / (1 + intermediate.getEkKost()[periode + 1]);
+        return (intermediate.getuWert()[periode + 1] + parameter.getFTE()[periode + 1]) / (1 + intermediate.getEkKost()[periode + 1]);
     }
 
     @Override
-    CFIntermediateResult step(final CFEquityParameter parameter, final CFIntermediateResult intermediate){
+    CFIntermediateResult step(final CFParameter parameter, final CFIntermediateResult intermediate){
         final double[] uWert = new double[parameter.numPerioden()];
         final double[] ekKost = new double[parameter.numPerioden()];
         for (int i = 0; i < parameter.numPerioden(); i++) {

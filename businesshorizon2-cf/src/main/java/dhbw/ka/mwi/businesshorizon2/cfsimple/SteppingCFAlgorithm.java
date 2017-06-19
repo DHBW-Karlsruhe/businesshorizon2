@@ -1,8 +1,8 @@
 package dhbw.ka.mwi.businesshorizon2.cfsimple;
 
-abstract class SteppingCFAlgorithm<T extends CFParameter> implements CFAlgorithm<T> {
+abstract class SteppingCFAlgorithm implements CFAlgorithm {
 
-    abstract CFIntermediateResult step(final T parameter, final CFIntermediateResult intermediate);
+    abstract CFIntermediateResult step(final CFParameter parameter, final CFIntermediateResult intermediate);
 
     private static double[] getInit(final int numPerioden){
         final double[] init = new double[numPerioden];
@@ -13,7 +13,7 @@ abstract class SteppingCFAlgorithm<T extends CFParameter> implements CFAlgorithm
     }
 
     @Override
-    public double calculateUWert(final T parameter) {
+    public double calculateUWert(final CFParameter parameter) {
         CFIntermediateResult intermediate = new CFIntermediateResult(getInit(parameter.numPerioden()),getInit(parameter.numPerioden()),getInit(parameter.numPerioden()));
         while (true){
             final CFIntermediateResult next = step(parameter,intermediate);
