@@ -1,6 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.cfsimple;
 
-public class APV implements CFAlgorithm {
+public class APV implements CFAlgorithm<APVResult> {
 
     private static double getUWFiktiv(final CFParameter parameter, final int periode) {
         double summe = 0;
@@ -10,16 +10,12 @@ public class APV implements CFAlgorithm {
         return summe + parameter.getFCF()[parameter.numPerioden() - 1] /  (parameter.getEKKosten() * Math.pow(1 + parameter.getEKKosten(), parameter.numPerioden() - 2 - periode));
     }
 
-    private static double getGesamtkapital(final CFParameter parameter, final int periode) {
-        return getUWFiktiv(parameter,periode) + TaxShieldCalculator.calculateTaxShield(parameter,periode);
-    }
-
-    private static double calculateUWert(final CFParameter parameter, final int periode) {
-        return getGesamtkapital(parameter,periode) - parameter.getFK()[periode];
-    }
-
     @Override
-    public double calculateUWert(final CFParameter parameter) {
-        return calculateUWert(parameter,0);
+    public APVResult calculateUWert(final CFParameter parameter) {
+        final double uwFiktiv = getUWFiktiv(parameter,0);
+        final double taxShield = TaxShieldCalculator.calculateTaxShield(parameter,0);
+        final double gk = uwFiktiv + taxShield;
+        final double uWert = gk - parameter.getFK()[0];
+        return new APVResult(uWert,uwFiktiv,taxShield,gk);
     }
 }

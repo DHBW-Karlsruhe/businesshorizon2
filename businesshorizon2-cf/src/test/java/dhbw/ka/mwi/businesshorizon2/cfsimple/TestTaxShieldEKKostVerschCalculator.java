@@ -14,7 +14,7 @@ public class TestTaxShieldEKKostVerschCalculator {
         assertEquals(0.1164268,calculator.calculateEKKostenVersch(parameter,result,1),0.1164268 / 10000);
         assertEquals(0.1175229,calculator.calculateEKKostenVersch(parameter,result,2),0.1175229 / 10000);
         assertEquals(0.1178684,calculator.calculateEKKostenVersch(parameter,result,3),0.1178684 / 10000);
-        assertEquals(0.12,calculator.calculateEKKostenVersch(parameter,result,4),0.12 / 10000);;
+        assertEquals(0.12,calculator.calculateEKKostenVersch(parameter,result,4),0.12 / 10000);
     }
 
 

@@ -1,6 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.cfsimple;
 
-public class FCF extends SteppingCFAlgorithm {
+public class FCF implements CFAlgorithm<FCFResult> {
 
     private static double getWACC(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         final double ekQoute = intermediate.getuWert()[periode - 1] / intermediate.getGk()[periode - 1];
@@ -20,20 +20,32 @@ public class FCF extends SteppingCFAlgorithm {
         return intermediate.getGk()[periode] - parameter.getFK()[periode];
     }
 
-    @Override
-    CFIntermediateResult step(final CFParameter parameter, final CFIntermediateResult intermediate){
-        final double[] uWert = new double[parameter.numPerioden()];
-        final double[] gk = new double[parameter.numPerioden()];
-        final double[] ekKost = new double[parameter.numPerioden()];
-
-        for (int i = 0; i < parameter.numPerioden(); i++) {
-            uWert[i] = calculateUWert(parameter,intermediate,i);
-            gk[i] = getGK(parameter,intermediate,i);
-            if(i > 0) {
-                ekKost[i] = CFConfig.getEkKostVerschCalculator().calculateEKKostenVersch(parameter, intermediate, i);
-            }
+    private static double[] getInit(final int numPerioden){
+        final double[] init = new double[numPerioden];
+        for (int i = 0; i < init.length; i++) {
+            init[i] = 1;
         }
+        return init;
+    }
 
-        return new CFIntermediateResult(uWert,gk,ekKost);
+    @Override
+    public FCFResult calculateUWert(final CFParameter parameter) {
+        final CFIntermediateResult start = new CFIntermediateResult(getInit(parameter.numPerioden()),getInit(parameter.numPerioden()),getInit(parameter.numPerioden()));
+        final CFIntermediateResult result = Stepper.performStepping(start, cfIntermediateResult -> {
+            final double[] uWert = new double[parameter.numPerioden()];
+            final double[] gk = new double[parameter.numPerioden()];
+            final double[] ekKost = new double[parameter.numPerioden()];
+
+            for (int i = 0; i < parameter.numPerioden(); i++) {
+                uWert[i] = calculateUWert(parameter,cfIntermediateResult,i);
+                gk[i] = getGK(parameter,cfIntermediateResult,i);
+                if(i > 0) {
+                    ekKost[i] = CFConfig.getEkKostVerschCalculator().calculateEKKostenVersch(parameter, cfIntermediateResult, i);
+                }
+            }
+
+            return new CFIntermediateResult(uWert,gk,ekKost);
+        });
+        return new FCFResult(result.getuWert()[0],result.getGk()[0]);
     }
 }

@@ -1,8 +1,8 @@
 package dhbw.ka.mwi.businesshorizon2.cfsimple;
 
 @FunctionalInterface
-public interface CFAlgorithm {
+public interface CFAlgorithm<T extends CFResult> {
 
-    double calculateUWert(CFParameter parameter);
+    T calculateUWert(CFParameter parameter);
 
 }
