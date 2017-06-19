@@ -1,9 +1,9 @@
 package dhbw.ka.mwi.businesshorizon2.demo.ui;
 
+import dhbw.ka.mwi.businesshorizon2.demo.CFAlgo;
 import dhbw.ka.mwi.businesshorizon2.demo.CFCalculator;
 import dhbw.ka.mwi.businesshorizon2.demo.CFMode;
-import dhbw.ka.mwi.businesshorizon2.demo.models.BilanzModelProvider;
-import dhbw.ka.mwi.businesshorizon2.demo.models.GuvModelProvider;
+import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.models.ModelCopier;
 
 import javax.swing.*;
@@ -12,8 +12,7 @@ import javax.swing.table.TableModel;
 
 public class MainWindow extends JFrame {
 
-    private final GuvPanel guv;
-    private final BilanzPanel bilanz;
+    private final CompanyPanel company;
     private final SzenarioPanel szenario;
     private final ResultPanel resultPanel;
     private final HeaderPanel header;
@@ -30,11 +29,8 @@ public class MainWindow extends JFrame {
         header = new HeaderPanel();
         tab.addTab("Kopf",header);
 
-        guv = new GuvPanel(header);
-        tab.addTab("GUV",guv);
-
-        bilanz = new BilanzPanel(header);
-        tab.addTab("Bilanz",bilanz);
+        company = new CompanyPanel(header);
+        tab.addTab("Unternehmenswerte", company);
 
         szenario = new SzenarioPanel();
         tab.addTab("Szenario",szenario);
@@ -43,34 +39,31 @@ public class MainWindow extends JFrame {
         tab.addTab("Unternehmenswert",resultPanel);
 
         final ChangeListener yearAndPeriodenListener = e -> {
-            final TableModel oldBilanz = bilanz.getModel();
-            final TableModel newBilanz = BilanzModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode());
-            ModelCopier.copyModel(oldBilanz, newBilanz, header.getCurrentMode());
-            bilanz.setModel(newBilanz);
-            final TableModel oldGuv = guv.getModel();
-            final TableModel newGuv = GuvModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode());
-            ModelCopier.copyModel(oldGuv, newGuv, header.getCurrentMode());
-            guv.setModel(newGuv);
+            final TableModel oldCompany = company.getModel();
+            final TableModel newCompany = CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode());
+            ModelCopier.copyModel(oldCompany, newCompany, header.getCurrentMode());
+            company.setModel(newCompany);
         };
 
         header.getPerioden().addChangeListener(yearAndPeriodenListener);
         header.getBasisjahr().addChangeListener(yearAndPeriodenListener);
 
         header.getStochi().addActionListener(e -> {
-            bilanz.setModel(BilanzModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            guv.setModel(GuvModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             resultPanel.getChartPanel().setVisible(header.getCurrentMode() == CFMode.STOCHI);
+            resultPanel.getStochiPanel().setVisible(header.getCurrentMode() == CFMode.STOCHI);
+
         });
 
         header.getDeter().addActionListener(e -> {
-            bilanz.setModel(BilanzModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            guv.setModel(GuvModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             resultPanel.getChartPanel().setVisible(header.getCurrentMode() == CFMode.STOCHI);
+            resultPanel.getStochiPanel().setVisible(header.getCurrentMode() == CFMode.STOCHI);
         });
 
         resultPanel.getCalculate().addActionListener(e -> {
             try {
-                final CFCalculator calculator = new CFCalculator(header, bilanz, guv, szenario);
+                final CFCalculator calculator = new CFCalculator(header, company, szenario, (CFAlgo)resultPanel.getAlgo().getSelectedItem());
                 final double uWert;
                 switch (header.getCurrentMode()){
                     case STOCHI:
@@ -81,7 +74,7 @@ public class MainWindow extends JFrame {
                         System.out.println((System.nanoTime() - was) / 1000000);
                         break;
                     case DETER:
-                        uWert = calculator.calculateDeter().getUnternehmenswertNow();
+                        uWert = calculator.calculateDeter().getuWert();
                         break;
                     default:
                         uWert = 0;

@@ -2,19 +2,11 @@ package dhbw.ka.mwi.businesshorizon2.demo;
 
 public enum Texts {
     HEADER("Feld"),
-    GESAMTLEISTUNG("Gesamtleistung"),
-    OPKOSTEN("operative Kosten"),
-    ABSCHR("Abschreibungen"),
-    ANLAGE("Anlagevermögen"),
-    UMLAUF("Umlaufvermögen"),
-    EK("Eigenkapital"),
-    ZINS_PF_PASSIVA("Zinspflichtiges Passiva"),
-    SONST_PASSIVA("Sonstige Passiva"),
+    FCF("FCF"),
+    FK("Fremdkapital"),
     EK_KOSTEN("Eigenkapitalkosten(unverschuldet)"),
-    PER_STEUER("persönliche Steuern"),
-    JAHRES_UEBERSCHUSS("Jahresüberschuss"),
-    STRUKTURBILANZEN("Struktur-Bilanzen"),
-    ZINSAUFWAND("Zinsaufwand");
+    FK_KOSTEN("Fremdkapitalkosten"),
+    STEUSATZ("Steuersatz");
 
     private final String text;
 
