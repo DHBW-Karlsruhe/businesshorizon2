@@ -3,29 +3,25 @@ package dhbw.ka.mwi.businesshorizon2.ar.trendy;
 public class TrendRemovedTimeSeries {
 
     private final double[] timeSeriesWithoutTrend;
-    private final double[] trend;
+    private final double slope;
+    private final double intercept;
 
-    TrendRemovedTimeSeries(final double[] timeSeriesWithoutTrend, final double[] trend) {
+    TrendRemovedTimeSeries(final double[] timeSeriesWithoutTrend, final double slope, final double intercept) {
         this.timeSeriesWithoutTrend = timeSeriesWithoutTrend;
-        this.trend = trend;
+        this.slope = slope;
+        this.intercept = intercept;
     }
 
     public double[] getTimeSeriesWithoutTrend() {
         return timeSeriesWithoutTrend;
     }
 
-    public double[] getTrend() {
-        return trend;
-    }
-
     public double[] getTimeSeriesWithTrend(final double[] timeSeriesWithoutTrend){
-        if(timeSeriesWithoutTrend.length != trend.length){
-            throw new IllegalArgumentException("The length of the time series is " + timeSeriesWithoutTrend.length + " ,but the trend has a length of " + trend.length);
-        }
-        final double[] timeSeriesWithTrend = new double[trend.length];
+        final double[] timeSeriesWithTrend = new double[timeSeriesWithoutTrend.length];
 
         for (int i = 0; i < timeSeriesWithoutTrend.length; i++) {
-            timeSeriesWithTrend[i] = timeSeriesWithoutTrend[i] + trend[i];
+            double trend = (this.timeSeriesWithoutTrend.length + i + 1) * slope + intercept;
+            timeSeriesWithTrend[i] = timeSeriesWithoutTrend[i] + trend;
         }
         return timeSeriesWithTrend;
     }

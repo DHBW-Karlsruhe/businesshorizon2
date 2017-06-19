@@ -8,16 +8,17 @@ public final class TrendRemover {
     }
 
     public static TrendRemovedTimeSeries removeTrend(final double[] timeSeriesWithTrend){
-        final double[] trend = new double[timeSeriesWithTrend.length];
         final double[] timeSeriesWithoutTrend = new double[timeSeriesWithTrend.length];
 
         final SimpleRegression regression = getRegression(timeSeriesWithTrend);
+        final double slope = regression.getSlope();
+        final double intercept = regression.getIntercept();
 
-        for (int i = 0; i < trend.length; i++) {
-            trend[i] = (i + 1) * regression.getSlope() + regression.getIntercept();
-            timeSeriesWithoutTrend[i] = timeSeriesWithTrend[i] - trend[i];
+        for (int i = 0; i < timeSeriesWithTrend.length; i++) {
+            double trend = (i + 1) * slope + intercept;
+            timeSeriesWithoutTrend[i] = timeSeriesWithTrend[i] - trend;
         }
-        return new TrendRemovedTimeSeries(timeSeriesWithoutTrend,trend);
+        return new TrendRemovedTimeSeries(timeSeriesWithoutTrend,slope,intercept);
     }
 
     private static SimpleRegression getRegression(final double[] timeSeries){
