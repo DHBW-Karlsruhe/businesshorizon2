@@ -6,6 +6,7 @@ import dhbw.ka.mwi.businesshorizon2.demo.CFCalculator;
 import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.models.ModelCopier;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvExport;
+import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvImport;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
@@ -89,7 +90,7 @@ public class MainWindow extends JFrame {
             chooser.setFileFilter(new FileNameExtensionFilter("CSV", "csv"));
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 try {
-                    //importer.portFile(chooser.getSelectedFile());
+                    CsvImport.importCSV(chooser.getSelectedFile(),header,company,szenario);
                 } catch (final Exception e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Datei kann nicht importiert werden: " + e1.getLocalizedMessage());
@@ -144,7 +145,7 @@ public class MainWindow extends JFrame {
                         break;
                     case FTE:
                         final CFResult fteResult = new FTE().calculateUWert(parameter);
-                        deterResultPanel.displayFTE(fteResult,parameter.getFK()[0]);
+                        deterResultPanel.displayFTE(fteResult);
                         deterResultPanel.getuWert().setText(String.valueOf(fteResult.getuWert()));
                         break;
                 }

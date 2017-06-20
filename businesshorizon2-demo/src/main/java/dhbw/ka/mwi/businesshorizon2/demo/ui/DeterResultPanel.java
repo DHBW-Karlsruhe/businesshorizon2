@@ -95,7 +95,7 @@ class DeterResultPanel extends JPanel {
         chart.getCategoryPlot().setDataset(dataset);
     }
 
-    void displayFTE(final CFResult result, final double fk){
+    void displayFTE(final CFResult result){
         final double[][] starts = {{0}};
         final double[][] ends = {{result.getuWert()}};
         final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Unternehmenswert"},new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));

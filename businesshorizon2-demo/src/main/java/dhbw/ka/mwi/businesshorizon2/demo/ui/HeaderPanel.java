@@ -79,11 +79,11 @@ public class HeaderPanel extends JPanel {
         return perioden;
     }
 
-    JRadioButton getDeter() {
+    public JRadioButton getDeter() {
         return deter;
     }
 
-    JRadioButton getStochi() {
+    public JRadioButton getStochi() {
         return stochi;
     }
 
