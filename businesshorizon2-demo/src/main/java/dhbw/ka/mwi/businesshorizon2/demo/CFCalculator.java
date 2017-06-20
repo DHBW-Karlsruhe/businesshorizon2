@@ -83,7 +83,7 @@ public class CFCalculator {
         throw new IllegalArgumentException("This shouldn't happen");
     }
 
-    private CFParameter getParameter(){
+    public CFParameter getParameter(){
         return new CFParameter(ModelToArrayConverter.getRow(companyPanel.getModel(),0),ModelToArrayConverter.getRow(companyPanel.getModel(),1), (Double) szenarioPanel.getEkKosten().getValue(), (Double) szenarioPanel.getuSteusatz().getValue(), (Double) szenarioPanel.getFkKosten().getValue());
     }
 }

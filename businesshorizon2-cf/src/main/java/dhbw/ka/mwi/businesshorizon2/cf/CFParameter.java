@@ -33,27 +33,27 @@ public class CFParameter {
     }
 
 
-    double[] getFK() {
+    public double[] getFK() {
         return FK;
     }
 
-    double getEKKosten() {
+    public double getEKKosten() {
         return EKKosten;
     }
 
-    double getuSteusatz() {
+    public double getuSteusatz() {
         return uSteusatz;
     }
 
-    double getFKKosten() {
+    public double getFKKosten() {
         return FKKosten;
     }
 
-    int numPerioden(){
+    public int numPerioden(){
         return FK.length;
     }
 
-    double[] getFCF() {
+    public double[] getFCF() {
         return FCF;
     }
 
