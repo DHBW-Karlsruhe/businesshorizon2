@@ -75,7 +75,7 @@ public class MainWindow extends JFrame {
                     setTabs(tab);
                 } catch (final Exception e1) {
                     e1.printStackTrace();
-                    JOptionPane.showMessageDialog(null, "Datei kann nicht importiert werden: " + e1.getLocalizedMessage());
+                    JOptionPane.showMessageDialog(this, "Datei kann nicht importiert werden: " + e1.getLocalizedMessage());
                 }
             }
         });
@@ -88,6 +88,7 @@ public class MainWindow extends JFrame {
                     CsvExport.export(header,szenario,company.getModel(),file);
                 } catch (final IOException e1) {
                     e1.printStackTrace();
+                    JOptionPane.showMessageDialog(this, "Fehler beim Speichern: " + e1.getLocalizedMessage());
                 }
             }
         });
@@ -101,10 +102,9 @@ public class MainWindow extends JFrame {
                 stochiResultPanel.displayStochi(uWerts);
                 System.out.println("Dauer Stochi:" + (System.nanoTime() - was) / 1000000 + " ms");
                 stochiResultPanel.getuWert().setText(String.valueOf(uWert));
-                header.getStatus().setText("");
             } catch (final Exception e1) {
                 e1.printStackTrace();
-                header.getStatus().setText(e1.getLocalizedMessage());
+                JOptionPane.showMessageDialog(this, "Fehler bei der Berechnung: " + e1.getLocalizedMessage());
             }
         });
 
@@ -131,10 +131,9 @@ public class MainWindow extends JFrame {
                 }
 
                 final double uWert;
-                header.getStatus().setText("");
             } catch (final Exception e1) {
                 e1.printStackTrace();
-                header.getStatus().setText(e1.getLocalizedMessage());
+                JOptionPane.showMessageDialog(this, "Fehler bei der Berechnung: " + e1.getLocalizedMessage());
             }
         });
     }

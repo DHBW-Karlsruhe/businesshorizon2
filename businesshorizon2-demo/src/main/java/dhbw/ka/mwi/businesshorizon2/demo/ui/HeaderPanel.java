@@ -9,7 +9,6 @@ import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public class HeaderPanel extends JPanel {
-    private final JLabel status = new JLabel();
     private final JRadioButton deter = new JRadioButton("Deterministisch");
     private final JRadioButton stochi = new JRadioButton("Stochastisch");
 
@@ -63,16 +62,6 @@ public class HeaderPanel extends JPanel {
         c.gridx = 1;
         c.gridy = 3;
         innerPanel.add(perioden,c);
-
-        c.gridx = 0;
-        c.gridy = 5;
-        c.gridwidth = 2;
-        innerPanel.add(status,c);
-
-    }
-
-    JLabel getStatus() {
-        return status;
     }
 
     public JSpinner getPerioden() {
