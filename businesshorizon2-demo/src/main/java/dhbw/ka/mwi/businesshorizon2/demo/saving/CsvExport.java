@@ -57,10 +57,8 @@ public final class CsvExport {
     public static void exportScenario(final SzenarioPanel szenarioPanel, final File file) throws IOException{
         try (FileOutputStream fw = new FileOutputStream(file); OutputStreamWriter osw = new OutputStreamWriter(fw,Charset.forName("ISO-8859-1")); CSVPrinter printer = CSVFormat.DEFAULT.withDelimiter(';').withHeader(new String[]{Texts.HEADER.toString(),"Wert"}).print(osw) ) {
             printer.printRecord(Texts.EK_KOSTEN, (Double) szenarioPanel.getEkKosten().getValue() * 100);
-            printer.printRecord(Texts.PER_STEUER, (Double) szenarioPanel.getPerSteuer().getValue() * 100);
-            printer.printRecord(Texts.JAHRES_UEBERSCHUSS, (Double) szenarioPanel.getJahresUeberschuss().getValue() * 100);
-            printer.printRecord(Texts.STRUKTURBILANZEN, (Double) szenarioPanel.getStrukturbilanzen().getValue() * 100);
-            printer.printRecord(Texts.ZINSAUFWAND, (Double) szenarioPanel.getZinsaufwand().getValue() * 100);
+            printer.printRecord(Texts.FK_KOSTEN, (Double) szenarioPanel.getFkKosten().getValue() * 100);
+            printer.printRecord(Texts.STEUSATZ, (Double) szenarioPanel.getuSteusatz().getValue() * 100);
         }
     }
 }

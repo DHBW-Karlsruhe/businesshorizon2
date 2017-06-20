@@ -1,9 +1,9 @@
 package dhbw.ka.mwi.businesshorizon2.demo.ui;
 
+import dhbw.ka.mwi.businesshorizon2.cf.*;
+import dhbw.ka.mwi.businesshorizon2.demo.CFAlgo;
 import dhbw.ka.mwi.businesshorizon2.demo.CFCalculator;
-import dhbw.ka.mwi.businesshorizon2.demo.CFMode;
-import dhbw.ka.mwi.businesshorizon2.demo.models.BilanzModelProvider;
-import dhbw.ka.mwi.businesshorizon2.demo.models.GuvModelProvider;
+import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.models.ModelCopier;
 
 import javax.swing.*;
@@ -12,10 +12,10 @@ import javax.swing.table.TableModel;
 
 public class MainWindow extends JFrame {
 
-    private final GuvPanel guv;
-    private final BilanzPanel bilanz;
+    private final CompanyPanel company;
     private final SzenarioPanel szenario;
-    private final ResultPanel resultPanel;
+    private final StochiResultPanel stochiResultPanel;
+    private final DeterResultPanel deterResultPanel;
     private final HeaderPanel header;
 
     public MainWindow() {
@@ -30,63 +30,98 @@ public class MainWindow extends JFrame {
         header = new HeaderPanel();
         tab.addTab("Kopf",header);
 
-        guv = new GuvPanel(header);
-        tab.addTab("GUV",guv);
-
-        bilanz = new BilanzPanel(header);
-        tab.addTab("Bilanz",bilanz);
+        company = new CompanyPanel(header);
+        tab.addTab("Unternehmenswerte", company);
 
         szenario = new SzenarioPanel();
         tab.addTab("Szenario",szenario);
 
-        resultPanel = new ResultPanel();
-        tab.addTab("Unternehmenswert",resultPanel);
+        deterResultPanel = new DeterResultPanel();
+        tab.addTab("Unternehmenswert", deterResultPanel);
+
+        stochiResultPanel = new StochiResultPanel();
 
         final ChangeListener yearAndPeriodenListener = e -> {
-            final TableModel oldBilanz = bilanz.getModel();
-            final TableModel newBilanz = BilanzModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode());
-            ModelCopier.copyModel(oldBilanz, newBilanz, header.getCurrentMode());
-            bilanz.setModel(newBilanz);
-            final TableModel oldGuv = guv.getModel();
-            final TableModel newGuv = GuvModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode());
-            ModelCopier.copyModel(oldGuv, newGuv, header.getCurrentMode());
-            guv.setModel(newGuv);
+            final TableModel oldCompany = company.getModel();
+            final TableModel newCompany = CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode());
+            ModelCopier.copyModel(oldCompany, newCompany, header.getCurrentMode());
+            company.setModel(newCompany);
         };
 
         header.getPerioden().addChangeListener(yearAndPeriodenListener);
         header.getBasisjahr().addChangeListener(yearAndPeriodenListener);
 
         header.getStochi().addActionListener(e -> {
-            bilanz.setModel(BilanzModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            guv.setModel(GuvModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            resultPanel.getChartPanel().setVisible(header.getCurrentMode() == CFMode.STOCHI);
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            switch (header.getCurrentMode()){
+                case STOCHI:
+                    tab.remove(deterResultPanel);
+                    tab.addTab("Unternehmenswert", stochiResultPanel);
+                    break;
+                case DETER:
+                    tab.remove(stochiResultPanel);
+                    tab.addTab("Unternehmenswert", deterResultPanel);
+                    break;
+            }
+
         });
 
         header.getDeter().addActionListener(e -> {
-            bilanz.setModel(BilanzModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            guv.setModel(GuvModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            resultPanel.getChartPanel().setVisible(header.getCurrentMode() == CFMode.STOCHI);
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            switch (header.getCurrentMode()){
+                case STOCHI:
+                    tab.remove(deterResultPanel);
+                    tab.addTab("Unternehmenswert", stochiResultPanel);
+                    break;
+                case DETER:
+                    tab.remove(stochiResultPanel);
+                    tab.addTab("Unternehmenswert", deterResultPanel);
+                    break;
+            }
         });
 
-        resultPanel.getCalculate().addActionListener(e -> {
+        stochiResultPanel.getCalculate().addActionListener(e -> {
             try {
-                final CFCalculator calculator = new CFCalculator(header, bilanz, guv, szenario);
+                final CFCalculator calculator = new CFCalculator(header, company, szenario, (CFAlgo) stochiResultPanel.getAlgo().getSelectedItem());
                 final double uWert;
-                switch (header.getCurrentMode()){
-                    case STOCHI:
-                        final long was = System.nanoTime();
-                        final double[] uWerts = calculator.calculateStochi();
-                        uWert = CFCalculator.avg(uWerts);
-                        resultPanel.displayStochi(uWerts);
-                        System.out.println((System.nanoTime() - was) / 1000000);
+
+                final long was = System.nanoTime();
+                final double[] uWerts = calculator.calculateStochi();
+                uWert = CFCalculator.avg(uWerts);
+                stochiResultPanel.displayStochi(uWerts);
+                System.out.println((System.nanoTime() - was) / 1000000);
+                stochiResultPanel.getuWert().setText(String.valueOf(uWert));
+                header.getStatus().setText("");
+            } catch (final Exception e1) {
+                e1.printStackTrace();
+                header.getStatus().setText(e1.getLocalizedMessage());
+            }
+        });
+
+
+        deterResultPanel.getCalculate().addActionListener(e -> {
+            try {
+                final CFCalculator calculator = new CFCalculator(header, company, szenario, (CFAlgo) stochiResultPanel.getAlgo().getSelectedItem());
+                CFParameter parameter = calculator.getParameter();
+                switch ((CFAlgo) deterResultPanel.getAlgo().getSelectedItem()){
+                    case APV:
+                        APVResult apvResult = new APV().calculateUWert(parameter);
+                        deterResultPanel.displayAPV(apvResult,parameter.getFK()[0]);
+                        deterResultPanel.getuWert().setText(String.valueOf(apvResult.getuWert()));
                         break;
-                    case DETER:
-                        uWert = calculator.calculateDeter().getUnternehmenswertNow();
+                    case FCF:
+                        FCFResult fcfResult = new FCF().calculateUWert(parameter);
+                        deterResultPanel.displayFCF(fcfResult,parameter.getFK()[0]);
+                        deterResultPanel.getuWert().setText(String.valueOf(fcfResult.getuWert()));
                         break;
-                    default:
-                        uWert = 0;
+                    case FTE:
+                        CFResult fteResult = new FTE().calculateUWert(parameter);
+                        deterResultPanel.displayFTE(fteResult,parameter.getFK()[0]);
+                        deterResultPanel.getuWert().setText(String.valueOf(fteResult.getuWert()));
+                        break;
                 }
-                resultPanel.getuWert().setText(String.valueOf(uWert));
+
+                final double uWert;
                 header.getStatus().setText("");
             } catch (final Exception e1) {
                 e1.printStackTrace();
