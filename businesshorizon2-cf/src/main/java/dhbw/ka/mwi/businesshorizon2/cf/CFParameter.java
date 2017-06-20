@@ -14,6 +14,9 @@ public class CFParameter {
     	if(FK[FK.length - 1] != FK[FK.length - 2]){
     		throw new IllegalArgumentException("Letzte beide FKs müssen identisch sein");
     	}
+        if(FK.length != FCF.length){
+            throw new IllegalArgumentException("FK und FCF haben eine unterschiedliche länge");
+        }
         this.FCF = FCF;
         this.FK = FK;
         this.EKKosten = EKKosten;
