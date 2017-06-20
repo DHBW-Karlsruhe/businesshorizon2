@@ -9,11 +9,13 @@ import org.jfree.chart.ChartUtilities;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.axis.CategoryAxis;
 import org.jfree.chart.axis.NumberAxis;
+import org.jfree.chart.labels.IntervalCategoryToolTipGenerator;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.renderer.category.IntervalBarRenderer;
 import org.jfree.data.DataUtilities;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultIntervalCategoryDataset;
+import org.jfree.data.category.IntervalCategoryDataset;
 
 import javax.swing.*;
 import java.awt.*;
@@ -63,6 +65,12 @@ class DeterResultPanel extends JPanel {
         CategoryAxis domainAxis = new CategoryAxis("");
         NumberAxis rangeAxis = new NumberAxis("");
         IntervalBarRenderer renderer = new IntervalBarRenderer();
+        renderer.setBaseToolTipGenerator(new IntervalCategoryToolTipGenerator());
+        renderer.setBaseToolTipGenerator((dataset, row, column) -> {
+            IntervalCategoryDataset icd = (IntervalCategoryDataset)dataset;
+            return icd.getRowKey(row).toString() + ": " + (icd.getEndValue(row, column).doubleValue() - icd.getStartValue(row, column).doubleValue());
+        });
+
         CategoryPlot plot = new CategoryPlot(null, domainAxis, rangeAxis, renderer);
         JFreeChart chart = new JFreeChart("Unternehmenswert", plot);
         plot.setDomainGridlinesVisible(true);
