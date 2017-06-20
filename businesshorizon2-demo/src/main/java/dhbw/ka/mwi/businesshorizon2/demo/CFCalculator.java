@@ -12,7 +12,10 @@ import dhbw.ka.mwi.businesshorizon2.demo.ui.SzenarioPanel;
 
 import java.util.Arrays;
 
-public class CFCalculator {
+public final class CFCalculator {
+
+    private CFCalculator() {
+    }
 
     public static double[] calculateStochi(final CompanyPanel companyPanel, final SzenarioPanel szenarioPanel, final StochiResultPanel stochiResultPanel, final CFAlgo algo){
         final TrendRemovedTimeSeries fcfSeries = TrendRemover.removeTrend(ModelToArrayConverter.getRow(companyPanel.getModel(),0));
@@ -23,9 +26,8 @@ public class CFCalculator {
         final CFAlgorithm cfAlgorithm = getAlgo(algo);
         return Stochi.doStochi((Integer) stochiResultPanel.getIter().getValue(), () -> {
             final double[] fcf = fcfSeries.getTimeSeriesWithTrend(fcfModel.predict((Integer) stochiResultPanel.getHorizont().getValue()));
-            final double[] fk = fkSeries.getTimeSeriesWithTrend(fcfModel.predict((Integer) stochiResultPanel.getHorizont().getValue() - 1));
+            final double[] fk = fkSeries.getTimeSeriesWithTrend(fkModel.predict((Integer) stochiResultPanel.getHorizont().getValue() - 1));
             final double[] fk2 = appendLastValueAgain(fk);
-
             return cfAlgorithm.calculateUWert(getParameter(fcf,fk2,szenarioPanel)).getuWert();
         });
     }

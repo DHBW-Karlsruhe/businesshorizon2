@@ -20,7 +20,7 @@ public class StochiResultPanel extends JPanel {
     private final JSpinner horizont = new JSpinner();
     private final JSpinner iter = new JSpinner();
 
-    public StochiResultPanel() {
+    StochiResultPanel() {
         setLayout(new BorderLayout());
 
         final JPanel northPanel = new JPanel(new GridBagLayout());
@@ -44,7 +44,7 @@ public class StochiResultPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 2;
         northPanel.add(new JLabel("PrognosePerioden"),c);
-        horizont.setModel(new SpinnerNumberModel(3, 1, 20, 1));
+        horizont.setModel(new SpinnerNumberModel(3, 2, 20, 1));
 
         c.gridx = 1;
         c.gridy = 2;
