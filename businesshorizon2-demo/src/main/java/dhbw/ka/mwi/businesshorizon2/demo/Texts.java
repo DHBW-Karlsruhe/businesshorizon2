@@ -6,7 +6,10 @@ public enum Texts {
     FK("Fremdkapital"),
     EK_KOSTEN("Eigenkapitalkosten(unverschuldet)"),
     FK_KOSTEN("Fremdkapitalkosten"),
-    STEUSATZ("Steuersatz");
+    STEUSATZ("Steuersatz"),
+    MODUS("Modus"),
+    BASISJAHR("Basisjahr"),
+    PERIODEN("Perioden");
 
     private final String text;
 

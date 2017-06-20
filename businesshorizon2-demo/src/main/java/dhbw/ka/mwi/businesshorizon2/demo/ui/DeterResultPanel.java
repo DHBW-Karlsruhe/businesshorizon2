@@ -61,18 +61,18 @@ class DeterResultPanel extends JPanel {
         add(new ChartPanel(chart));
     }
 
-    private JFreeChart createChart() {
-        CategoryAxis domainAxis = new CategoryAxis("");
-        NumberAxis rangeAxis = new NumberAxis("");
-        IntervalBarRenderer renderer = new IntervalBarRenderer();
+    private static JFreeChart createChart() {
+        final CategoryAxis domainAxis = new CategoryAxis("");
+        final NumberAxis rangeAxis = new NumberAxis("");
+        final IntervalBarRenderer renderer = new IntervalBarRenderer();
         renderer.setBaseToolTipGenerator(new IntervalCategoryToolTipGenerator());
         renderer.setBaseToolTipGenerator((dataset, row, column) -> {
-            IntervalCategoryDataset icd = (IntervalCategoryDataset)dataset;
-            return icd.getRowKey(row).toString() + ": " + (icd.getEndValue(row, column).doubleValue() - icd.getStartValue(row, column).doubleValue());
+            final IntervalCategoryDataset icd = (IntervalCategoryDataset)dataset;
+            return icd.getRowKey(row) + ": " + (icd.getEndValue(row, column).doubleValue() - icd.getStartValue(row, column).doubleValue());
         });
 
-        CategoryPlot plot = new CategoryPlot(null, domainAxis, rangeAxis, renderer);
-        JFreeChart chart = new JFreeChart("Unternehmenswert", plot);
+        final CategoryPlot plot = new CategoryPlot(null, domainAxis, rangeAxis, renderer);
+        final JFreeChart chart = new JFreeChart("Unternehmenswert", plot);
         plot.setDomainGridlinesVisible(true);
         plot.setRangePannable(true);
         ChartUtilities.applyCurrentTheme(chart);
@@ -88,28 +88,28 @@ class DeterResultPanel extends JPanel {
         return calculate;
     }
 
-    void displayAPV(final APVResult result, double fk){
+    void displayAPV(final APVResult result, final double fk){
         final double[][] starts = {{0}, {0},{result.getUwFiktiv()},{result.getuWert()},{0}};
         final double[][] ends = {{result.getGk()}, {result.getUwFiktiv()},{result.getUwFiktiv() + result.getTaxShield()},{result.getuWert() + fk},{result.getuWert()}};
         final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Gesamtkapital","EK (eigenfinanziert)","Tax shield","Fremdkapital","Unternehmenswert"},new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
         chart.getCategoryPlot().setDataset(dataset);
     }
 
-    void displayFTE(final CFResult result, double fk){
+    void displayFTE(final CFResult result, final double fk){
         final double[][] starts = {{0}};
         final double[][] ends = {{result.getuWert()}};
         final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Unternehmenswert"},new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
         chart.getCategoryPlot().setDataset(dataset);
     }
 
-    void displayFCF(final FCFResult result, double fk){
+    void displayFCF(final FCFResult result, final double fk){
         final double[][] starts = {{0},{result.getuWert()},{0}};
         final double[][] ends = {{result.getGk()}, {result.getuWert() + fk},{result.getuWert()}};
-        final DefaultIntervalCategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Gesamtkapital","Fremdkapital","Unternehmenswert"},new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
+        final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Gesamtkapital","Fremdkapital","Unternehmenswert"},new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
         chart.getCategoryPlot().setDataset(dataset);
     }
 
-    public JComboBox<CFAlgo> getAlgo() {
+    JComboBox<CFAlgo> getAlgo() {
         return algo;
     }
 }

@@ -5,10 +5,14 @@ import dhbw.ka.mwi.businesshorizon2.demo.CFAlgo;
 import dhbw.ka.mwi.businesshorizon2.demo.CFCalculator;
 import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.models.ModelCopier;
+import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvExport;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
+import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
+import java.io.File;
+import java.io.IOException;
 
 public class MainWindow extends JFrame {
 
@@ -80,14 +84,38 @@ public class MainWindow extends JFrame {
             }
         });
 
+        header.getLoad().addActionListener(e -> {
+            final JFileChooser chooser = new JFileChooser();
+            chooser.setFileFilter(new FileNameExtensionFilter("CSV", "csv"));
+            if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
+                try {
+                    //importer.portFile(chooser.getSelectedFile());
+                } catch (final Exception e1) {
+                    e1.printStackTrace();
+                    JOptionPane.showMessageDialog(null, "Datei kann nicht importiert werden: " + e1.getLocalizedMessage());
+                }
+            }
+        });
+
+        header.getSave().addActionListener(e -> {
+            final JFileChooser chooser = new JFileChooser();
+            if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
+                final File file = chooser.getSelectedFile().getName().endsWith(".csv") ? chooser.getSelectedFile() : new File(chooser.getSelectedFile().getAbsolutePath() + ".csv");
+                try {
+                    CsvExport.export(header,szenario,company.getModel(),file);
+                } catch (final IOException e1) {
+                    e1.printStackTrace();
+                }
+            }
+        });
+
         stochiResultPanel.getCalculate().addActionListener(e -> {
             try {
-                final CFCalculator calculator = new CFCalculator(header, company, szenario, (CFAlgo) stochiResultPanel.getAlgo().getSelectedItem());
-                final double uWert;
+                final CFCalculator calculator = new CFCalculator(company, szenario, (CFAlgo) stochiResultPanel.getAlgo().getSelectedItem());
 
                 final long was = System.nanoTime();
                 final double[] uWerts = calculator.calculateStochi();
-                uWert = CFCalculator.avg(uWerts);
+                final double uWert = CFCalculator.avg(uWerts);
                 stochiResultPanel.displayStochi(uWerts);
                 System.out.println((System.nanoTime() - was) / 1000000);
                 stochiResultPanel.getuWert().setText(String.valueOf(uWert));
@@ -101,21 +129,21 @@ public class MainWindow extends JFrame {
 
         deterResultPanel.getCalculate().addActionListener(e -> {
             try {
-                final CFCalculator calculator = new CFCalculator(header, company, szenario, (CFAlgo) stochiResultPanel.getAlgo().getSelectedItem());
-                CFParameter parameter = calculator.getParameter();
+                final CFCalculator calculator = new CFCalculator(company, szenario, (CFAlgo) stochiResultPanel.getAlgo().getSelectedItem());
+                final CFParameter parameter = calculator.getParameter();
                 switch ((CFAlgo) deterResultPanel.getAlgo().getSelectedItem()){
                     case APV:
-                        APVResult apvResult = new APV().calculateUWert(parameter);
+                        final APVResult apvResult = new APV().calculateUWert(parameter);
                         deterResultPanel.displayAPV(apvResult,parameter.getFK()[0]);
                         deterResultPanel.getuWert().setText(String.valueOf(apvResult.getuWert()));
                         break;
                     case FCF:
-                        FCFResult fcfResult = new FCF().calculateUWert(parameter);
+                        final FCFResult fcfResult = new FCF().calculateUWert(parameter);
                         deterResultPanel.displayFCF(fcfResult,parameter.getFK()[0]);
                         deterResultPanel.getuWert().setText(String.valueOf(fcfResult.getuWert()));
                         break;
                     case FTE:
-                        CFResult fteResult = new FTE().calculateUWert(parameter);
+                        final CFResult fteResult = new FTE().calculateUWert(parameter);
                         deterResultPanel.displayFTE(fteResult,parameter.getFK()[0]);
                         deterResultPanel.getuWert().setText(String.valueOf(fteResult.getuWert()));
                         break;

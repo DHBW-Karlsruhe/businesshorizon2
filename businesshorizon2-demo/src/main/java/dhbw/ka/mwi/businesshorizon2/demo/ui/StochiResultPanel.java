@@ -88,7 +88,7 @@ class StochiResultPanel extends JPanel {
     }
 
 
-    public JComboBox<CFAlgo> getAlgo() {
+    JComboBox<CFAlgo> getAlgo() {
         return algo;
     }
 

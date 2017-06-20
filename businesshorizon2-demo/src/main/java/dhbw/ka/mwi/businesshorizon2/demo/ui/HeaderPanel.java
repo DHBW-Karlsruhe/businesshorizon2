@@ -1,13 +1,10 @@
 package dhbw.ka.mwi.businesshorizon2.demo.ui;
 
 import dhbw.ka.mwi.businesshorizon2.demo.CFMode;
+import dhbw.ka.mwi.businesshorizon2.demo.Texts;
 
 import javax.swing.*;
-import javax.swing.filechooser.FileNameExtensionFilter;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.io.File;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -19,6 +16,9 @@ public class HeaderPanel extends JPanel {
     private final JSpinner basisjahr = new JSpinner();
     private final JSpinner perioden = new JSpinner();
 
+    private final JButton save = new JButton("Speichern");
+    private final JButton load = new JButton("Laden");
+
     HeaderPanel() {
         final JPanel innerPanel = new JPanel(new GridBagLayout());
         setLayout(new BorderLayout());
@@ -29,46 +29,12 @@ public class HeaderPanel extends JPanel {
         c.weightx = 1;
         c.weighty = 1;
 
-        final JButton save = new JButton("Speichern");
-        final JButton load = new JButton("Laden");
         c.gridx = 0;
         c.gridy = 0;
         innerPanel.add(save, c);
         c.gridx = 1;
         c.gridy = 0;
         innerPanel.add(load, c);
-
-        load.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                final JFileChooser chooser = new JFileChooser();
-                chooser.setFileFilter(new FileNameExtensionFilter("CSV", "csv"));
-                if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    try {
-                        //importer.portFile(chooser.getSelectedFile());
-                    } catch (final Exception e1) {
-                        e1.printStackTrace();
-                        JOptionPane.showMessageDialog(null, "Datei kann nicht importiert werden: " + e1.getLocalizedMessage());
-                    }
-                }
-            }
-        });
-
-        save.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(final ActionEvent e) {
-                final JFileChooser chooser = new JFileChooser();
-                if (chooser.showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
-                    final File file = chooser.getSelectedFile().getName().endsWith(".csv") ? chooser.getSelectedFile() : new File(chooser.getSelectedFile().getAbsolutePath() + ".csv");
-                    /*try {
-                        exporter.portFile(file);
-                    } catch (final IOException e1) {
-                        e1.printStackTrace();
-                    }*/
-                }
-            }
-        });
-
 
         final ButtonGroup inputMethod = new ButtonGroup();
         inputMethod.add(deter);
@@ -84,7 +50,7 @@ public class HeaderPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = 2;
-        innerPanel.add(new JLabel("Basisjahr"),c);
+        innerPanel.add(new JLabel(Texts.BASISJAHR.toString()),c);
         basisjahr.setModel(new SpinnerNumberModel(new GregorianCalendar().get(Calendar.YEAR), 1900, 3000, 1));
         c.gridx = 1;
         c.gridy = 2;
@@ -92,7 +58,7 @@ public class HeaderPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = 3;
-        innerPanel.add(new JLabel("Perioden"),c);
+        innerPanel.add(new JLabel(Texts.PERIODEN.toString()),c);
         perioden.setModel(new SpinnerNumberModel(3, 3, 10, 1));
         c.gridx = 1;
         c.gridy = 3;
@@ -109,7 +75,7 @@ public class HeaderPanel extends JPanel {
         return status;
     }
 
-    JSpinner getPerioden() {
+    public JSpinner getPerioden() {
         return perioden;
     }
 
@@ -121,11 +87,19 @@ public class HeaderPanel extends JPanel {
         return stochi;
     }
 
-    CFMode getCurrentMode(){
+    public CFMode getCurrentMode(){
         return deter.isSelected() ? CFMode.DETER : CFMode.STOCHI;
     }
 
-    JSpinner getBasisjahr() {
+    public JSpinner getBasisjahr() {
         return basisjahr;
+    }
+
+    JButton getSave() {
+        return save;
+    }
+
+    JButton getLoad() {
+        return load;
     }
 }

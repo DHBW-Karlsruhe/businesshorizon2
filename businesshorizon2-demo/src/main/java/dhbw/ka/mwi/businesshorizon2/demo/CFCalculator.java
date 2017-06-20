@@ -3,18 +3,15 @@ package dhbw.ka.mwi.businesshorizon2.demo;
 import dhbw.ka.mwi.businesshorizon2.cf.*;
 import dhbw.ka.mwi.businesshorizon2.demo.converter.ModelToArrayConverter;
 import dhbw.ka.mwi.businesshorizon2.demo.ui.CompanyPanel;
-import dhbw.ka.mwi.businesshorizon2.demo.ui.HeaderPanel;
 import dhbw.ka.mwi.businesshorizon2.demo.ui.SzenarioPanel;
 
 public class CFCalculator {
 
-    private final HeaderPanel headerPanel;
     private final CompanyPanel companyPanel;
     private final SzenarioPanel szenarioPanel;
     private final CFAlgo algo;
 
-    public CFCalculator(final HeaderPanel headerPanel, final CompanyPanel companyPanel, final SzenarioPanel szenarioPanel, final CFAlgo algo) {
-        this.headerPanel = headerPanel;
+    public CFCalculator(final CompanyPanel companyPanel, final SzenarioPanel szenarioPanel, final CFAlgo algo) {
         this.companyPanel = companyPanel;
         this.szenarioPanel = szenarioPanel;
         this.algo = algo;
