@@ -19,7 +19,7 @@ public class FTE implements CFAlgorithm<CFResult> {
 
     @Override
     public CFResult calculateUWert(final CFParameter parameter) {
-        final CFIntermediateResult start = new CFIntermediateResult(getInit(parameter.numPerioden()),getInit(parameter.numPerioden()),getInit(parameter.numPerioden()));
+        final CFIntermediateResult start = new CFIntermediateResult(getInit(parameter.numPerioden()),getInit(parameter.numPerioden()));
         final CFIntermediateResult result = Stepper.performStepping(start, cfIntermediateResult -> {
             final double[] uWert = new double[parameter.numPerioden()];
             final double[] ekKost = new double[parameter.numPerioden()];
@@ -30,7 +30,7 @@ public class FTE implements CFAlgorithm<CFResult> {
                 }
             }
 
-            return new CFIntermediateResult(uWert,null,ekKost);
+            return new CFIntermediateResult(uWert,ekKost);
         });
         return new CFResult(result.getuWert()[0]);
     }
