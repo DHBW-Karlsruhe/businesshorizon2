@@ -11,7 +11,7 @@ import org.jfree.data.statistics.HistogramType;
 import javax.swing.*;
 import java.awt.*;
 
-class StochiResultPanel extends JPanel {
+public class StochiResultPanel extends JPanel {
 
     private final JLabel uWert = new JLabel("0",SwingConstants.CENTER);
     private final JButton calculate = new JButton("Berechnen");
@@ -20,7 +20,7 @@ class StochiResultPanel extends JPanel {
     private final JSpinner horizont = new JSpinner();
     private final JSpinner iter = new JSpinner();
 
-    StochiResultPanel() {
+    public StochiResultPanel() {
         setLayout(new BorderLayout());
 
         final JPanel northPanel = new JPanel(new GridBagLayout());
@@ -44,7 +44,7 @@ class StochiResultPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 2;
         northPanel.add(new JLabel("PrognosePerioden"),c);
-        horizont.setModel(new SpinnerNumberModel(3, 1, 10, 1));
+        horizont.setModel(new SpinnerNumberModel(3, 1, 20, 1));
 
         c.gridx = 1;
         c.gridy = 2;
@@ -53,7 +53,7 @@ class StochiResultPanel extends JPanel {
         c.gridx = 0;
         c.gridy = 3;
         northPanel.add(new JLabel("Unternehmenswerte"),c);
-        iter.setModel(new SpinnerNumberModel(10000, 1, 100000, 1000));
+        iter.setModel(new SpinnerNumberModel(10000, 1, 1000000, 1000));
 
         c.gridx = 1;
         c.gridy = 3;
@@ -83,7 +83,7 @@ class StochiResultPanel extends JPanel {
     void displayStochi(final double[] result){
         final HistogramDataset dataset = new HistogramDataset();
         dataset.setType(HistogramType.RELATIVE_FREQUENCY);
-        dataset.addSeries("Unternehmenswert",result,10);
+        dataset.addSeries("Unternehmenswert",result,100);
         chart.getXYPlot().setDataset(dataset);
     }
 

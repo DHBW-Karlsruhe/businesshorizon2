@@ -58,31 +58,12 @@ public class MainWindow extends JFrame {
 
         header.getStochi().addActionListener(e -> {
             company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            switch (header.getCurrentMode()){
-                case STOCHI:
-                    tab.remove(deterResultPanel);
-                    tab.addTab("Unternehmenswert", stochiResultPanel);
-                    break;
-                case DETER:
-                    tab.remove(stochiResultPanel);
-                    tab.addTab("Unternehmenswert", deterResultPanel);
-                    break;
-            }
-
+            setTabs(tab);
         });
 
         header.getDeter().addActionListener(e -> {
             company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
-            switch (header.getCurrentMode()){
-                case STOCHI:
-                    tab.remove(deterResultPanel);
-                    tab.addTab("Unternehmenswert", stochiResultPanel);
-                    break;
-                case DETER:
-                    tab.remove(stochiResultPanel);
-                    tab.addTab("Unternehmenswert", deterResultPanel);
-                    break;
-            }
+            setTabs(tab);
         });
 
         header.getLoad().addActionListener(e -> {
@@ -91,6 +72,7 @@ public class MainWindow extends JFrame {
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 try {
                     CsvImport.importCSV(chooser.getSelectedFile(),header,company,szenario);
+                    setTabs(tab);
                 } catch (final Exception e1) {
                     e1.printStackTrace();
                     JOptionPane.showMessageDialog(null, "Datei kann nicht importiert werden: " + e1.getLocalizedMessage());
@@ -112,13 +94,12 @@ public class MainWindow extends JFrame {
 
         stochiResultPanel.getCalculate().addActionListener(e -> {
             try {
-                final CFCalculator calculator = new CFCalculator(company, szenario, (CFAlgo) stochiResultPanel.getAlgo().getSelectedItem());
 
                 final long was = System.nanoTime();
-                final double[] uWerts = calculator.calculateStochi();
+                final double[] uWerts = CFCalculator.calculateStochi(company,szenario,stochiResultPanel, (CFAlgo) deterResultPanel.getAlgo().getSelectedItem());
                 final double uWert = CFCalculator.avg(uWerts);
                 stochiResultPanel.displayStochi(uWerts);
-                System.out.println((System.nanoTime() - was) / 1000000);
+                System.out.println("Dauer Stochi:" + (System.nanoTime() - was) / 1000000 + " ms");
                 stochiResultPanel.getuWert().setText(String.valueOf(uWert));
                 header.getStatus().setText("");
             } catch (final Exception e1) {
@@ -130,8 +111,7 @@ public class MainWindow extends JFrame {
 
         deterResultPanel.getCalculate().addActionListener(e -> {
             try {
-                final CFCalculator calculator = new CFCalculator(company, szenario, (CFAlgo) stochiResultPanel.getAlgo().getSelectedItem());
-                final CFParameter parameter = calculator.getParameter();
+                final CFParameter parameter = CFCalculator.getParameter(company,szenario);
                 switch ((CFAlgo) deterResultPanel.getAlgo().getSelectedItem()){
                     case APV:
                         final APVResult apvResult = new APV().calculateUWert(parameter);
@@ -159,6 +139,17 @@ public class MainWindow extends JFrame {
         });
     }
 
-
+    private void setTabs(final JTabbedPane tab) {
+        switch (header.getCurrentMode()){
+            case STOCHI:
+                tab.remove(deterResultPanel);
+                tab.addTab("Unternehmenswert", stochiResultPanel);
+                break;
+            case DETER:
+                tab.remove(stochiResultPanel);
+                tab.addTab("Unternehmenswert", deterResultPanel);
+                break;
+        }
+    }
 
 }
