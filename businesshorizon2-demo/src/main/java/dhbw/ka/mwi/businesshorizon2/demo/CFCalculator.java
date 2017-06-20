@@ -1,6 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.demo;
 
 import dhbw.ka.mwi.businesshorizon2.cf.*;
+import dhbw.ka.mwi.businesshorizon2.demo.converter.ModelToArrayConverter;
 import dhbw.ka.mwi.businesshorizon2.demo.ui.CompanyPanel;
 import dhbw.ka.mwi.businesshorizon2.demo.ui.HeaderPanel;
 import dhbw.ka.mwi.businesshorizon2.demo.ui.SzenarioPanel;
@@ -83,6 +84,6 @@ public class CFCalculator {
     }
 
     private CFParameter getParameter(){
-        return new CFParameter(new double[]{0,138.61,202.31,174.41,202.51},new double[]{1260,1320,1330,1400,1400},0.09969137,0.26325,0.08);
+        return new CFParameter(ModelToArrayConverter.getRow(companyPanel.getModel(),0),ModelToArrayConverter.getRow(companyPanel.getModel(),1), (Double) szenarioPanel.getEkKosten().getValue(), (Double) szenarioPanel.getuSteusatz().getValue(), (Double) szenarioPanel.getFkKosten().getValue());
     }
 }

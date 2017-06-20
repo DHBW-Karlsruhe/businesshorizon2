@@ -14,12 +14,12 @@ public final class CompanyModelProvider {
         final DefaultTableModel model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(final int row, final int column) {
-                return column > (mode == CFMode.DETER ? 1 : 0) && super.isCellEditable(row, column);
+                return (row > 0 || column > (mode == CFMode.DETER ? 1 : 0)) && super.isCellEditable(row, column);
             }
 
             @Override
             public Class<?> getColumnClass(final int columnIndex) {
-                return columnIndex > (mode == CFMode.DETER ? 1 : 0) ? Double.class : String.class;
+                return columnIndex > 0 ? Double.class : String.class;
             }
         };
         model.addColumn(Texts.HEADER);
@@ -28,7 +28,7 @@ public final class CompanyModelProvider {
         }
 
         model.addRow(getRow(perioden, Texts.FCF,mode));
-        model.addRow(getRow(perioden, Texts.FK,mode));
+        model.addRow(getRow(perioden, Texts.FK, mode));
 
         return model;
     }
@@ -36,11 +36,12 @@ public final class CompanyModelProvider {
     private static Object[] getRow(final int perioden, final Texts text, final CFMode mode) {
         final Object[] row = new Object[perioden + 1];
         row[0] = text;
-        if(mode == CFMode.DETER) {
-            row[1] = "-";
-        }
-        for (int i = mode == CFMode.DETER ? 2 : 1; i < row.length; i++) {
-            row[i] = 0d;
+        for (int i = 1; i < row.length; i++) {
+            if(i == 1 && mode == CFMode.DETER && text == Texts.FCF){
+                row[1] = Double.NaN;
+            } else {
+                row[i] = 0d;
+            }
         }
         return row;
     }

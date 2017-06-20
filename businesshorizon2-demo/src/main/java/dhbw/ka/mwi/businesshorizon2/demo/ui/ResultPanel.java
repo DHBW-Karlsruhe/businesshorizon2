@@ -25,7 +25,6 @@ class ResultPanel extends JPanel {
     ResultPanel() {
         setLayout(new BorderLayout());
 
-
         final JPanel northPanel = new JPanel(new GridBagLayout());
 
         final GridBagConstraints c = new GridBagConstraints();
@@ -56,7 +55,7 @@ class ResultPanel extends JPanel {
 
         c.gridx = 1;
         c.gridy = 2;
-
+        northPanel.add(uWert,c);
 
         stochiPanel.add(new JLabel("PrognosePerioden"));
         horizont.setModel(new SpinnerNumberModel(3, 1, 10, 1));
