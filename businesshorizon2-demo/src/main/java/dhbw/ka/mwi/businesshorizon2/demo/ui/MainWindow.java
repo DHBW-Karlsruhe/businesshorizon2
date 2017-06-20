@@ -95,12 +95,11 @@ public class MainWindow extends JFrame {
 
         stochiResultPanel.getCalculate().addActionListener(e -> {
             try {
-
                 final long was = System.nanoTime();
                 final double[] uWerts = CFCalculator.calculateStochi(company,szenario,stochiResultPanel, (CFAlgo) deterResultPanel.getAlgo().getSelectedItem());
                 final double uWert = CFCalculator.avg(uWerts);
-                stochiResultPanel.displayStochi(uWerts);
                 System.out.println("Dauer Stochi:" + (System.nanoTime() - was) / 1000000 + " ms");
+                stochiResultPanel.displayStochi(uWerts);
                 stochiResultPanel.getuWert().setText(String.valueOf(uWert));
             } catch (final Exception e1) {
                 e1.printStackTrace();
@@ -130,7 +129,6 @@ public class MainWindow extends JFrame {
                         break;
                 }
 
-                final double uWert;
             } catch (final Exception e1) {
                 e1.printStackTrace();
                 JOptionPane.showMessageDialog(this, "Fehler bei der Berechnung: " + e1.getLocalizedMessage());
