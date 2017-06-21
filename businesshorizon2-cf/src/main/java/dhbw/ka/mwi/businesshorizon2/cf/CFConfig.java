@@ -4,7 +4,7 @@ public final class CFConfig {
 
     private static double precision = 0.001;
 
-    private static EKKostVerschCalculator ekKostVerschCalculator = new NastyEKKostVerschCalculator();
+    private static EKKostVerschCalculator ekKostVerschCalculator = new TaxShieldEKKostVerschCalculator();
 
     private CFConfig() {
     }
