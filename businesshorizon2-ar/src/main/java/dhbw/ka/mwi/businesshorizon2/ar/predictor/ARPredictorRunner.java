@@ -3,6 +3,11 @@ package dhbw.ka.mwi.businesshorizon2.ar.predictor;
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
 import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
+/**
+ * Beinhaltet in einem {@link SlidingWindow} stets die Werte einer Zeitreihe,
+ * die für die nächste Prognose relevant sind
+ * und berechnet anhand des {@link ARPredictor}s die nächsten Werte der Zeitreihe
+ */
 public class ARPredictorRunner {
 
 	private final ARPredictor predictor;

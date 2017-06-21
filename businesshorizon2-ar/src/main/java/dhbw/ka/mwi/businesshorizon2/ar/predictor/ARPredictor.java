@@ -2,6 +2,9 @@ package dhbw.ka.mwi.businesshorizon2.ar.predictor;
 
 import java.util.Random;
 
+/**
+ * Eine Klasse, die den nächsten Wert einer Zeitreihe prognostiziert
+ */
 public class ARPredictor {
 
 	private final Random random;
@@ -20,7 +23,7 @@ public class ARPredictor {
      * @param coefficients Die Koeffizeinten der AR-Modellgleichung
      * @param stdDev Die Standardabweichung der Zeitreihe
      * @param avg Der Mittelwert der Zeitreihe
-     * @return
+     * @return Die Prognose des nächsten Wertes der Zeitreihe
      */
 	public double predict(final double[] centeredValues, final double[] coefficients, final double stdDev, final double avg) {
 		if (centeredValues.length != coefficients.length) {

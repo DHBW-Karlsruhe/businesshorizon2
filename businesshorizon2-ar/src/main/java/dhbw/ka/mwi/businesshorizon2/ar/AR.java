@@ -14,7 +14,6 @@ public final class AR {
 	 * @param timeSeries Die Zeitreihe, für die das Modell erstellt werden soll
 	 * @return Das AR Modell für die Zeitreihe
 	 */
-
 	public static ARModel getModel(final double[] timeSeries){
 		return getModel(timeSeries, 2);
 	}
@@ -25,7 +24,6 @@ public final class AR {
 	 * @param p Der Grad des AR-Modells
 	 * @return Das AR Modell für die Zeitreihe
 	 */
-
 	public static ARModel getModel(final double[] timeSeries, final int p){
 		return ARConfig.getModelCalculator().getModel(timeSeries, p);
 	}
