@@ -24,6 +24,7 @@ class DeterResultPanel extends JPanel {
 
     private final JLabel uWert = new JLabel("0",SwingConstants.CENTER);
     private final JButton calculate = new JButton("Berechnen");
+    private final JButton export = new JButton("Exportieren");
     private final JFreeChart chart;
     private final JComboBox<CFAlgo> algo = new JComboBox<>(CFAlgo.values());
 
@@ -49,12 +50,15 @@ class DeterResultPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = 1;
-        c.gridwidth = 1;
         northPanel.add(calculate,c);
 
         c.gridx = 1;
         c.gridy = 1;
         northPanel.add(uWert,c);
+
+        c.gridx = 0;
+        c.gridy = 2;
+        northPanel.add(export,c);
 
         add(northPanel,BorderLayout.NORTH);
         chart = createChart();
@@ -111,5 +115,9 @@ class DeterResultPanel extends JPanel {
 
     JComboBox<CFAlgo> getAlgo() {
         return algo;
+    }
+
+    public JButton getExport() {
+        return export;
     }
 }

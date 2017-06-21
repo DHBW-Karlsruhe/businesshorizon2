@@ -7,13 +7,12 @@ import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.models.ModelCopier;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvExport;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvImport;
+import dhbw.ka.mwi.businesshorizon2.demo.saving.ExportListener;
 
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
 import javax.swing.table.TableModel;
-import java.io.File;
-import java.io.IOException;
 
 public class MainWindow extends JFrame {
 
@@ -79,19 +78,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-
-        header.getSave().addActionListener(e -> {
-            final JFileChooser chooser = new JFileChooser();
-            if (chooser.showSaveDialog(this) == JFileChooser.APPROVE_OPTION) {
-                final File file = chooser.getSelectedFile().getName().endsWith(".csv") ? chooser.getSelectedFile() : new File(chooser.getSelectedFile().getAbsolutePath() + ".csv");
-                try {
-                    CsvExport.export(header,szenario,company.getModel(),file);
-                } catch (final IOException e1) {
-                    e1.printStackTrace();
-                    JOptionPane.showMessageDialog(this, "Fehler beim Speichern: " + e1.getLocalizedMessage());
-                }
-            }
-        });
+        header.getSave().addActionListener(new ExportListener(file -> CsvExport.export(header, szenario, company.getModel(), file)));
 
         stochiResultPanel.getCalculate().addActionListener(e -> {
             try {
@@ -134,6 +121,8 @@ public class MainWindow extends JFrame {
                 JOptionPane.showMessageDialog(this, "Fehler bei der Berechnung: " + e1.getLocalizedMessage());
             }
         });
+
+        deterResultPanel.getExport().addActionListener(new ExportListener(file -> CsvExport.exportDeter(file,Double.parseDouble(deterResultPanel.getuWert().getText()))));
     }
 
     private void setTabs(final JTabbedPane tab) {
