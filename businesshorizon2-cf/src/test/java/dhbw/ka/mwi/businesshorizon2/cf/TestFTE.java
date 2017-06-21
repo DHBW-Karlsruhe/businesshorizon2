@@ -13,7 +13,7 @@ public class TestFTE {
 
     @Test
     public void testFTEPohl() throws Exception {
-        final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.100582,0.3063,0.08);
+        final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.100582,0.30625,0.08);
         assertEquals(1569.19,new FTE().calculateUWert(parameter).getuWert(),1569.19  / 10000);
     }
 }

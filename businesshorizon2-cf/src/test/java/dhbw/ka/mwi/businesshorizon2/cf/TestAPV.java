@@ -27,10 +27,10 @@ public class TestAPV {
 
     @Test
     public void testFCFPohl() throws Exception {
-        final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.100582,0.3063,0.08);
+        final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.100582,0.30625,0.08);
         final APVResult result = new APV().calculateUWert(parameter);
         assertEquals(1569.19,result.getuWert(),1569.19 / 10000);
-        assertEquals(415.69,result.getTaxShield(),415.69 / 1000);
+        assertEquals(415.69,result.getTaxShield(),415.69 / 10000);
         assertEquals(2413.50,result.getUwFiktiv(),2413.50 / 10000);
         assertEquals(2829.19,result.getGk(),2829.19 / 10000);
     }
