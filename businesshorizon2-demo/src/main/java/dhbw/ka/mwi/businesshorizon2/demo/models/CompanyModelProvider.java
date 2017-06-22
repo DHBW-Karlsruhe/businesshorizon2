@@ -1,6 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.demo.models;
 
 import dhbw.ka.mwi.businesshorizon2.demo.CFMode;
+import dhbw.ka.mwi.businesshorizon2.demo.FCFMode;
 import dhbw.ka.mwi.businesshorizon2.demo.Texts;
 
 import javax.swing.table.DefaultTableModel;
@@ -42,6 +43,47 @@ public final class CompanyModelProvider {
             } else {
                 row[i] = 0d;
             }
+        }
+        return row;
+    }
+
+
+    public static DefaultTableModel getDetailModel(final int basisjahr, final int perioden, final CFMode mode) {
+
+        final DefaultTableModel model = new DefaultTableModel() {
+
+            @Override
+            public Class<?> getColumnClass(final int columnIndex) {
+                if(columnIndex == 0){
+                    return String.class;
+                }
+                if (columnIndex == 1){
+                    return FCFMode.class;
+                }
+
+                return Double.class;
+            }
+        };
+        model.addColumn("Bezeichnung");
+        model.addColumn("Typ");
+        for (int i = 1; i < perioden; i++) {
+            model.addColumn((mode == CFMode.DETER ? i : -perioden + i + 1) + basisjahr);
+        }
+
+        model.addRow(getDetailRow(perioden, FCFMode.EINNAHMEN));
+        model.addRow(getDetailRow(perioden, FCFMode.AUSGABEN));
+
+        return model;
+    }
+
+
+    private static Object[] getDetailRow(final int perioden, final FCFMode fcfMode) {
+        final Object[] row = new Object[perioden + 1];
+        row[0] = "Bezeichnung";
+        row[1] = fcfMode;
+
+        for (int i = 2; i < row.length; i++) {
+            row[i] = 0d;
         }
         return row;
     }
