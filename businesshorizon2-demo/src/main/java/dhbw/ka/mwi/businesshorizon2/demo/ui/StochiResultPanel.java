@@ -15,10 +15,13 @@ public class StochiResultPanel extends JPanel {
 
     private final JLabel uWert = new JLabel("0",SwingConstants.CENTER);
     private final JButton calculate = new JButton("Berechnen");
+    private final JButton export = new JButton("Exportieren");
     private final JFreeChart chart;
     private final JComboBox<CFAlgo> algo = new JComboBox<>(CFAlgo.values());
     private final JSpinner horizont = new JSpinner();
     private final JSpinner iter = new JSpinner();
+
+    private double[] lastResult = {};
 
     StochiResultPanel() {
         setLayout(new BorderLayout());
@@ -67,6 +70,10 @@ public class StochiResultPanel extends JPanel {
         c.gridy = 4;
         northPanel.add(uWert,c);
 
+        c.gridx = 0;
+        c.gridy = 5;
+        northPanel.add(export,c);
+
         add(northPanel,BorderLayout.NORTH);
         chart = ChartFactory.createHistogram("Histogram","Euros","Wahrscheinlichkeit",null, PlotOrientation.VERTICAL,true,true,true);
         add(new ChartPanel(chart));
@@ -80,7 +87,7 @@ public class StochiResultPanel extends JPanel {
         return calculate;
     }
 
-    void displayStochi(final double[] result){
+    private void displayStochi(final double[] result){
         final HistogramDataset dataset = new HistogramDataset();
         dataset.setType(HistogramType.RELATIVE_FREQUENCY);
         dataset.addSeries("Unternehmenswert",result,100);
@@ -99,4 +106,16 @@ public class StochiResultPanel extends JPanel {
         return horizont;
     }
 
+    JButton getExport() {
+        return export;
+    }
+
+    double[] getLastResult() {
+        return lastResult;
+    }
+
+    public void setLastResult(final double[] lastResult) {
+        this.lastResult = lastResult;
+        displayStochi(lastResult);
+    }
 }

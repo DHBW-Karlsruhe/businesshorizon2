@@ -41,9 +41,11 @@ public final class CsvExport {
         }
     }
 
-    public static void exportDeter(final File file, final double uWert) throws IOException {
+    public static void exportResults(final File file, final double[] uWerts) throws IOException {
         try (FileOutputStream fw = new FileOutputStream(file); OutputStreamWriter osw = new OutputStreamWriter(fw,Charset.forName("ISO-8859-1")); CSVPrinter printer = CSVFormat.DEFAULT.withDelimiter(';').print(osw) ) {
-            printer.printRecord(uWert);
+            for (final double uWert : uWerts) {
+                printer.printRecord(uWert);
+            }
         }
     }
 

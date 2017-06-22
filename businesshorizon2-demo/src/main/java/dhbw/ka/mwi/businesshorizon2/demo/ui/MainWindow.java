@@ -86,7 +86,7 @@ public class MainWindow extends JFrame {
                 final double[] uWerts = CFCalculator.calculateStochi(company,szenario,stochiResultPanel, (CFAlgo) deterResultPanel.getAlgo().getSelectedItem());
                 final double uWert = CFCalculator.avg(uWerts);
                 System.out.println("Dauer Stochi:" + (System.nanoTime() - was) / 1000000 + " ms");
-                stochiResultPanel.displayStochi(uWerts);
+                stochiResultPanel.setLastResult(uWerts);
                 stochiResultPanel.getuWert().setText(String.valueOf(uWert));
             } catch (final Exception e1) {
                 e1.printStackTrace();
@@ -122,7 +122,8 @@ public class MainWindow extends JFrame {
             }
         });
 
-        deterResultPanel.getExport().addActionListener(new ExportListener(file -> CsvExport.exportDeter(file,Double.parseDouble(deterResultPanel.getuWert().getText()))));
+        deterResultPanel.getExport().addActionListener(new ExportListener(file -> CsvExport.exportResults(file,new double[]{Double.parseDouble(deterResultPanel.getuWert().getText())})));
+        stochiResultPanel.getExport().addActionListener(new ExportListener(file -> CsvExport.exportResults(file,stochiResultPanel.getLastResult())));
     }
 
     private void setTabs(final JTabbedPane tab) {
