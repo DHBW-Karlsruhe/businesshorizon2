@@ -23,6 +23,7 @@ public class CompanyPanel extends JPanel {
     CompanyPanel(final HeaderPanel headerPanel) {
         setLayout(new GridBagLayout());
         table = new JTable(CompanyModelProvider.getModel((Integer) headerPanel.getBasisjahr().getValue(),(Integer) headerPanel.getPerioden().getValue(), headerPanel.getCurrentMode(),detailMode));
+        table.getTableHeader().setReorderingAllowed(false);
 
         final JScrollPane scroller = new JScrollPane(table);
         scroller.setMaximumSize(new Dimension(0,10));
@@ -53,6 +54,7 @@ public class CompanyPanel extends JPanel {
                 return super.getCellEditor(row, column);
             }
         };
+        detailTable.getTableHeader().setReorderingAllowed(false);
 
         fcfRefresher = e -> FCFCalculator.calculateFCF(getModel(), getDetailModel(), headerPanel.getCurrentMode());
 
