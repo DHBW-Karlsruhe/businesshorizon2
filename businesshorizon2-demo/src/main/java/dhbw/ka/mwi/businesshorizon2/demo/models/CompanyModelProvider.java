@@ -66,19 +66,19 @@ public final class CompanyModelProvider {
         };
         model.addColumn("Bezeichnung");
         model.addColumn("Typ");
-        for (int i = 1; i < perioden; i++) {
+        for (int i = mode == CFMode.DETER ? 1 : 0; i < perioden; i++) {
             model.addColumn((mode == CFMode.DETER ? i : -perioden + i + 1) + basisjahr);
         }
 
-        model.addRow(getDetailRow(perioden, FCFMode.EINNAHMEN));
-        model.addRow(getDetailRow(perioden, FCFMode.AUSGABEN));
+        model.addRow(getDetailRow(perioden, FCFMode.EINNAHMEN,mode));
+        model.addRow(getDetailRow(perioden, FCFMode.AUSGABEN,mode));
 
         return model;
     }
 
 
-    private static Object[] getDetailRow(final int perioden, final FCFMode fcfMode) {
-        final Object[] row = new Object[perioden + 1];
+    public static Object[] getDetailRow(final int perioden, final FCFMode fcfMode, final CFMode mode) {
+        final Object[] row = new Object[perioden + (mode == CFMode.DETER ? 1 : 2)];
         row[0] = "Bezeichnung";
         row[1] = fcfMode;
 

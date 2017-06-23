@@ -4,7 +4,6 @@ import dhbw.ka.mwi.businesshorizon2.cf.*;
 import dhbw.ka.mwi.businesshorizon2.demo.CFAlgo;
 import dhbw.ka.mwi.businesshorizon2.demo.CFCalculator;
 import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
-import dhbw.ka.mwi.businesshorizon2.demo.models.ModelCopier;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvExport;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvImport;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.ExportListener;
@@ -12,7 +11,6 @@ import dhbw.ka.mwi.businesshorizon2.demo.saving.ExportListener;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import javax.swing.table.TableModel;
 
 public class MainWindow extends JFrame {
 
@@ -46,10 +44,8 @@ public class MainWindow extends JFrame {
         stochiResultPanel = new StochiResultPanel();
 
         final ChangeListener yearAndPeriodenListener = e -> {
-            final TableModel oldCompany = company.getModel();
-            final TableModel newCompany = CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode());
-            ModelCopier.copyModel(oldCompany, newCompany, header.getCurrentMode());
-            company.setModel(newCompany);
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
         };
 
         header.getPerioden().addChangeListener(yearAndPeriodenListener);
@@ -57,11 +53,13 @@ public class MainWindow extends JFrame {
 
         header.getStochi().addActionListener(e -> {
             company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             setTabs(tab);
         });
 
         header.getDeter().addActionListener(e -> {
             company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             setTabs(tab);
         });
 

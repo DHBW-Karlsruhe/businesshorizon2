@@ -4,6 +4,7 @@ import dhbw.ka.mwi.businesshorizon2.demo.FCFMode;
 import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import java.awt.*;
@@ -67,11 +68,24 @@ public class CompanyPanel extends JPanel {
         c.weighty = 0;
         c.fill = GridBagConstraints.HORIZONTAL;
         c.gridwidth = 1;
+        remove.addActionListener(e -> {
+            final int row = detailTable.getSelectedRow();
+            if(row == -1){
+                JOptionPane.showMessageDialog(null, "Erst Zeile markieren, dann löschen");
+                return;
+            }
+            final DefaultTableModel tableModel = (DefaultTableModel) detailTable.getModel();
+            tableModel.removeRow(detailTable.getSelectedRow());
+        });
         detailPanel.add(remove,c);
         final JButton add = new JButton("Zeile hinzufügen");
         c.gridx = 1;
         c.gridy = 1;
         detailPanel.add(add,c);
+        add.addActionListener(e -> {
+            final DefaultTableModel tableModel = (DefaultTableModel) detailTable.getModel();
+            tableModel.addRow(CompanyModelProvider.getDetailRow((Integer) headerPanel.getPerioden().getValue(),FCFMode.AUSGABEN,headerPanel.getCurrentMode()));
+        });
 
         c.gridx = 0;
         c.gridy = 2;
@@ -82,9 +96,6 @@ public class CompanyPanel extends JPanel {
         add(detailPanel,c);
 
         detailButton.addChangeListener(e -> detailPanel.setVisible(detailButton.isSelected()));
-
-
-
     }
 
     public void setModel(final TableModel model){
@@ -93,6 +104,16 @@ public class CompanyPanel extends JPanel {
 
     public TableModel getModel(){
         return table.getModel();
+    }
+
+
+
+    public void setDetailModel(final TableModel model){
+        detailTable.setModel(model);
+    }
+
+    public TableModel getDetailModel(){
+        return detailTable.getModel();
     }
 
 }
