@@ -5,17 +5,18 @@ import dhbw.ka.mwi.businesshorizon2.demo.FCFMode;
 import dhbw.ka.mwi.businesshorizon2.demo.Texts;
 
 import javax.swing.table.DefaultTableModel;
+import java.util.function.Supplier;
 
 public final class CompanyModelProvider {
     private CompanyModelProvider() {
     }
 
-    public static DefaultTableModel getModel(final int basisjahr, final int perioden, final CFMode mode) {
+    public static DefaultTableModel getModel(final int basisjahr, final int perioden, final CFMode mode, final Supplier<Boolean> detailmode) {
 
         final DefaultTableModel model = new DefaultTableModel() {
             @Override
             public boolean isCellEditable(final int row, final int column) {
-                return (row > 0 || column > (mode == CFMode.DETER ? 1 : 0)) && super.isCellEditable(row, column);
+                return (row > 0 || column > (mode == CFMode.DETER ? 1 : 0)) && (!detailmode.get() || row > 0) && super.isCellEditable(row, column);
             }
 
             @Override

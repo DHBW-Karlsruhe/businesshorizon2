@@ -2,21 +2,27 @@ package dhbw.ka.mwi.businesshorizon2.demo.ui;
 
 import dhbw.ka.mwi.businesshorizon2.demo.FCFMode;
 import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
+import dhbw.ka.mwi.businesshorizon2.demo.models.FCFCalculator;
 
 import javax.swing.*;
+import javax.swing.event.TableModelListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableCellEditor;
 import javax.swing.table.TableModel;
 import java.awt.*;
+import java.util.function.Supplier;
 
 public class CompanyPanel extends JPanel {
 
     private final JTable table;
     private final JTable detailTable;
+    private final JToggleButton detailButton = new JToggleButton("FCF aufdröseln");
+    private final Supplier<Boolean> detailMode = detailButton::isSelected;
+    private final TableModelListener fcfRefresher;
 
     CompanyPanel(final HeaderPanel headerPanel) {
         setLayout(new GridBagLayout());
-        table = new JTable(CompanyModelProvider.getModel((Integer) headerPanel.getBasisjahr().getValue(),(Integer) headerPanel.getPerioden().getValue(), headerPanel.getCurrentMode()));
+        table = new JTable(CompanyModelProvider.getModel((Integer) headerPanel.getBasisjahr().getValue(),(Integer) headerPanel.getPerioden().getValue(), headerPanel.getCurrentMode(),detailMode));
 
         final JScrollPane scroller = new JScrollPane(table);
         scroller.setMaximumSize(new Dimension(0,10));
@@ -30,7 +36,6 @@ public class CompanyPanel extends JPanel {
         c.gridwidth = 2;
         add(scroller,c);
 
-        final JToggleButton detailButton = new JToggleButton("FCF aufdröseln");
         c.gridx = 0;
         c.gridy = 1;
         c.weightx = 0;
@@ -48,6 +53,10 @@ public class CompanyPanel extends JPanel {
                 return super.getCellEditor(row, column);
             }
         };
+
+        fcfRefresher = e -> FCFCalculator.calculateFCF(getModel(), getDetailModel(), headerPanel.getCurrentMode());
+
+        detailTable.getModel().addTableModelListener(fcfRefresher);
 
         final JPanel detailPanel = new JPanel(new GridBagLayout());
         final JScrollPane detailScroller = new JScrollPane(detailTable);
@@ -102,18 +111,20 @@ public class CompanyPanel extends JPanel {
         table.setModel(model);
     }
 
-    public TableModel getModel(){
-        return table.getModel();
+    public DefaultTableModel getModel(){
+        return (DefaultTableModel) table.getModel();
     }
-
-
 
     public void setDetailModel(final TableModel model){
         detailTable.setModel(model);
+        model.addTableModelListener(fcfRefresher);
     }
 
-    public TableModel getDetailModel(){
-        return detailTable.getModel();
+    public DefaultTableModel getDetailModel(){
+        return (DefaultTableModel) detailTable.getModel();
     }
 
+    public Supplier<Boolean> getDetailMode() {
+        return detailMode;
+    }
 }

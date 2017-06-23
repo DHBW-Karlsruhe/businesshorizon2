@@ -44,7 +44,7 @@ public class MainWindow extends JFrame {
         stochiResultPanel = new StochiResultPanel();
 
         final ChangeListener yearAndPeriodenListener = e -> {
-            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode(),company.getDetailMode()));
             company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
         };
 
@@ -52,13 +52,13 @@ public class MainWindow extends JFrame {
         header.getBasisjahr().addChangeListener(yearAndPeriodenListener);
 
         header.getStochi().addActionListener(e -> {
-            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode(),company.getDetailMode()));
             company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             setTabs(tab);
         });
 
         header.getDeter().addActionListener(e -> {
-            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode(),company.getDetailMode()));
             company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             setTabs(tab);
         });

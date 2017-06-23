@@ -50,7 +50,8 @@ public final class CsvImport {
             assertHeader(perioden, Texts.PERIODEN);
             headerPanel.getPerioden().setValue(Integer.parseInt(perioden.get(1)));
 
-            final DefaultTableModel model = CompanyModelProvider.getModel((Integer) headerPanel.getBasisjahr().getValue(),(Integer) headerPanel.getPerioden().getValue(), headerPanel.getCurrentMode());
+            //TODO detailmode must be saved
+            final DefaultTableModel model = CompanyModelProvider.getModel((Integer) headerPanel.getBasisjahr().getValue(),(Integer) headerPanel.getPerioden().getValue(), headerPanel.getCurrentMode(),companyPanel.getDetailMode());
 
             final CSVRecord fcf =  records.get(3);
             assertHeader(fcf, Texts.FCF);
