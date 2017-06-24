@@ -129,4 +129,8 @@ public class CompanyPanel extends JPanel {
     public Supplier<Boolean> getDetailMode() {
         return detailMode;
     }
+
+    public JToggleButton getDetailButton() {
+        return detailButton;
+    }
 }

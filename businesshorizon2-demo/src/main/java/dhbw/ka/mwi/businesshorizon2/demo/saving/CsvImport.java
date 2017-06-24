@@ -1,6 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.demo.saving;
 
 import dhbw.ka.mwi.businesshorizon2.demo.CFMode;
+import dhbw.ka.mwi.businesshorizon2.demo.FCFMode;
 import dhbw.ka.mwi.businesshorizon2.demo.Texts;
 import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.ui.CompanyPanel;
@@ -50,7 +51,6 @@ public final class CsvImport {
             assertHeader(perioden, Texts.PERIODEN);
             headerPanel.getPerioden().setValue(Integer.parseInt(perioden.get(1)));
 
-            //TODO detailmode must be saved
             final DefaultTableModel model = CompanyModelProvider.getModel((Integer) headerPanel.getBasisjahr().getValue(),(Integer) headerPanel.getPerioden().getValue(), headerPanel.getCurrentMode(),companyPanel.getDetailMode());
 
             final CSVRecord fcf =  records.get(3);
@@ -63,7 +63,7 @@ public final class CsvImport {
                 model.setValueAt(Double.parseDouble(fcf.get(i)), 0, i);
             }
 
-            final CSVRecord fk =  records.get(4);
+            final CSVRecord fk = records.get(4);
             assertHeader(fk, Texts.FK);
             if(fk.size() - 1 != (Integer) headerPanel.getPerioden().getValue()){
                 throw new IllegalArgumentException("Perioden sollte " + headerPanel.getPerioden().getValue() + " sein, es wurden aber " + (fk.size() - 1) + " FKs angegeben");
@@ -74,16 +74,39 @@ public final class CsvImport {
 
             companyPanel.setModel(model);
 
-            final CSVRecord ekKost =  records.get(5);
+            final CSVRecord details = records.get(5);
+            assertHeader(details, Texts.DETAILS);
+            final int numDetails = Integer.parseInt(details.get(1));
+            companyPanel.getDetailButton().setSelected(numDetails > 0);
+            final DefaultTableModel detailModel = CompanyModelProvider.getDetailModel((Integer) headerPanel.getBasisjahr().getValue(),(Integer) headerPanel.getPerioden().getValue(), headerPanel.getCurrentMode());
+
+            for (int i = 0; i < numDetails; i++) {
+                final CSVRecord detailRow = records.get(6 + i);
+
+                if(detailRow.size() - 2 != (Integer) headerPanel.getPerioden().getValue() - (headerPanel.getCurrentMode() == CFMode.DETER ? 1 : 0)){
+                    throw new IllegalArgumentException("Perioden sollte " + ((Integer) headerPanel.getPerioden().getValue() - (headerPanel.getCurrentMode() == CFMode.DETER ? 1 : 0)) + " sein, es wurden aber " + (detailRow.size() - 2) + " FCFs angegeben");
+                }
+
+                detailModel.setValueAt(detailRow.get(0), i, 0);
+                detailModel.setValueAt(FCFMode.valueOf(detailRow.get(1)), i, 1);
+
+                for (int j = 2; j < detailRow.size(); j++) {
+                    detailModel.setValueAt(Double.parseDouble(detailRow.get(j)), i, j);
+                }
+            }
+
+            companyPanel.setDetailModel(detailModel);
+
+            final CSVRecord ekKost =  records.get(6 + numDetails);
             assertHeader(ekKost, Texts.EK_KOSTEN);
             szenarioPanel.getEkKosten().setValue(Double.parseDouble(ekKost.get(1)) / 100);
 
 
-            final CSVRecord fkKost =  records.get(6);
+            final CSVRecord fkKost =  records.get(7 + numDetails);
             assertHeader(fkKost, Texts.FK_KOSTEN);
             szenarioPanel.getFkKosten().setValue(Double.parseDouble(fkKost.get(1)) / 100);
 
-            final CSVRecord steuSatz =  records.get(7);
+            final CSVRecord steuSatz =  records.get(8 + numDetails);
             assertHeader(steuSatz, Texts.STEUSATZ);
             szenarioPanel.getuSteusatz().setValue(Double.parseDouble(steuSatz.get(1)) / 100);
         }
