@@ -8,9 +8,13 @@ public final class ModelToArrayConverter {
     }
 
     public static double[] getRow(final TableModel model, final int row){
-        final double[] data = new double[model.getColumnCount() - 1];
-        for (int col = 0; col < data.length; col++) {
-            data[col] = (double) model.getValueAt(row,col + 1);
+        return getRow(model,row,1);
+    }
+
+    public static double[] getRow(final TableModel model, final int row, final int start){
+        final double[] data = new double[model.getColumnCount() - start];
+        for (int col = start; col < data.length; col++) {
+            data[col] = (double) model.getValueAt(row,col + start);
         }
         return data;
     }

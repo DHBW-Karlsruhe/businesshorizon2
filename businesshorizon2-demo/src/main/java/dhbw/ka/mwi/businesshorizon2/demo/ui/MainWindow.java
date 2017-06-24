@@ -2,7 +2,7 @@ package dhbw.ka.mwi.businesshorizon2.demo.ui;
 
 import dhbw.ka.mwi.businesshorizon2.cf.*;
 import dhbw.ka.mwi.businesshorizon2.demo.CFAlgo;
-import dhbw.ka.mwi.businesshorizon2.demo.CFCalculator;
+import dhbw.ka.mwi.businesshorizon2.demo.calc.CFCalculator;
 import dhbw.ka.mwi.businesshorizon2.demo.models.CompanyModelProvider;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvExport;
 import dhbw.ka.mwi.businesshorizon2.demo.saving.CsvImport;
