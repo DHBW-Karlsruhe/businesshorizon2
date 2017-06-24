@@ -76,7 +76,7 @@ public class MainWindow extends JFrame {
                 }
             }
         });
-        header.getSave().addActionListener(new ExportListener(file -> CsvExport.export(header, szenario, company.getModel(), file)));
+        header.getSave().addActionListener(new ExportListener(file -> CsvExport.export(header, szenario, company, file)));
 
         stochiResultPanel.getCalculate().addActionListener(e -> {
             try {

@@ -9,7 +9,8 @@ public enum Texts {
     STEUSATZ("Steuersatz"),
     MODUS("Modus"),
     BASISJAHR("Basisjahr"),
-    PERIODEN("Perioden");
+    PERIODEN("Perioden"),
+    DETAILS("Cashflows");
 
     private final String text;
 
