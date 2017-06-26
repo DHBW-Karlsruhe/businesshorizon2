@@ -22,4 +22,16 @@ final class Stepper {
         }
         return intermediate;
     }
+
+    private static double[] getInitArray(final int numPerioden){
+        final double[] init = new double[numPerioden];
+        for (int i = 0; i < init.length; i++) {
+            init[i] = 1;
+        }
+        return init;
+    }
+
+    static CFIntermediateResult getStartResult(final int numPerioden){
+        return new CFIntermediateResult(getInitArray(numPerioden), getInitArray(numPerioden));
+    }
 }

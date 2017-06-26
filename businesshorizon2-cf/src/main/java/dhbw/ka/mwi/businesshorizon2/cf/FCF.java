@@ -1,17 +1,17 @@
 package dhbw.ka.mwi.businesshorizon2.cf;
 
 /**
- * 
+ *
  */
 public class FCF implements CFAlgorithm<FCFResult> {
 
 	/**
 	 * calculateWACC berechnet den WACC einer bestimmten Periode
-	 * 
-	 * @param parameter CFParameter enthält das Parameterset welches zur Berechnung der DCF Methoden benötigt wird 
+	 *
+	 * @param parameter CFParameter enthält das Parameterset welches zur Berechnung der DCF Methoden benötigt wird
 	 * @param intermediate speichert die Eigenkapitalkosten und den Unternehmenswert in der Iteration als Zwischenergebenisse
 	 * @param periode gibt an von welche Periode der WACC berechnet werden soll
-	 * 
+	 *
 	 * @return gibt den WACC der bestimmten Periode zurück
 	 */
     private static double calculateWACC(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
@@ -23,11 +23,11 @@ public class FCF implements CFAlgorithm<FCFResult> {
 
     /**
      * calculateGK berechnet das Gesamtkapital einer bestimmten Periode
-     * 
+     *
      * @param parameter CFParameter enthält das Parameterset welches zur Berechnung der DCF Methoden benötigt wird
      * @param intermediate speichert die Eigenkapitalkosten und den Unternehmenswert in der Iteration als Zwischenergebenisse
      * @param periode gibt an von welche Periode der WACC berechnet werden soll
-     * 
+     *
      * @return gibt das berechnete Gesamtkapital einer bestimmten Periode zurück
      */
     private static double calculateGK(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
@@ -38,8 +38,8 @@ public class FCF implements CFAlgorithm<FCFResult> {
     }
 
     /**
-     * calculateUWert 
-     * 
+     * calculateUWert
+     *
      * @param parameter
      * @param intermediate
      * @param periode
@@ -49,19 +49,9 @@ public class FCF implements CFAlgorithm<FCFResult> {
         return calculateGK(parameter,intermediate,periode) - parameter.getFK()[periode];
     }
 
-    private static double[] getInit(final int numPerioden){
-        final double[] init = new double[numPerioden];
-        for (int i = 0; i < init.length; i++) {
-            init[i] = 1;
-        }
-        return init;
-    }
-
-    
     @Override
     public FCFResult calculateUWert(final CFParameter parameter) {
-        final CFIntermediateResult start = new CFIntermediateResult(getInit(parameter.numPerioden()),getInit(parameter.numPerioden()));
-        final CFIntermediateResult result = Stepper.performStepping(start, cfIntermediateResult -> {
+        final CFIntermediateResult result = Stepper.performStepping(Stepper.getStartResult(parameter.numPerioden()), cfIntermediateResult -> {
             final double[] uWert = new double[parameter.numPerioden()];
             final double[] ekKost = new double[parameter.numPerioden()];
 
