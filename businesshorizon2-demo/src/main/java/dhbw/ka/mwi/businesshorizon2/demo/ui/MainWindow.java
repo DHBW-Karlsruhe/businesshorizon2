@@ -11,7 +11,6 @@ import dhbw.ka.mwi.businesshorizon2.demo.saving.ExportListener;
 import javax.swing.*;
 import javax.swing.event.ChangeListener;
 import javax.swing.filechooser.FileNameExtensionFilter;
-import java.util.Random;
 
 public class MainWindow extends JFrame {
 
@@ -81,28 +80,6 @@ public class MainWindow extends JFrame {
 
         stochiResultPanel.getCalculate().addActionListener(e -> {
             try {
-                if(new Random().nextBoolean()) {
-                    if (JOptionPane.showConfirmDialog(this, "Die Berechnung wird länger als 5 Sekunden dauern, fortfahren?", "5 Sekunden Warnung", JOptionPane.OK_CANCEL_OPTION) == JOptionPane.OK_OPTION) {
-                        final JFrame dialog = new JFrame();
-                        final JProgressBar progressBar = new JProgressBar();
-                        dialog.add(progressBar);
-                        dialog.setBounds(getBounds());
-                        dialog.setUndecorated(true);
-                        dialog.setVisible(true);
-                        int progress = 0;
-                        final Random random = new Random();
-                        while (progress < 100){
-                            Thread.sleep(100);
-                            progress += Math.min(random.nextDouble() * 10 - 1,2);
-                            progressBar.setValue(progress);
-                            progressBar.paintImmediately(progressBar.getBounds());
-                        }
-                        dialog.setVisible(false);
-                    } else {
-                        return;
-                    }
-                }
-
                 final long was = System.nanoTime();
                 final double[] uWerts = CFCalculator.calculateStochi(company,szenario,stochiResultPanel, (CFAlgo) deterResultPanel.getAlgo().getSelectedItem());
                 final double uWert = CFCalculator.avg(uWerts);
