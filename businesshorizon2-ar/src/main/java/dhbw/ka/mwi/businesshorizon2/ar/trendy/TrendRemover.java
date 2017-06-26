@@ -22,15 +22,14 @@ public final class TrendRemover {
         //Ermittle den Trend der Zeitreihe
         final SimpleRegression regression = getRegression(timeSeriesWithTrend);
         final double slope = regression.getSlope();
-        final double intercept = regression.getIntercept();
 
         //Entferne den Trend
         for (int i = 0; i < timeSeriesWithTrend.length; i++) {
-            double trend = i * slope + intercept;
+            double trend = i * slope;
             timeSeriesWithoutTrend[i] = timeSeriesWithTrend[i] - trend;
         }
         //Kapsele den Trend und die Zeitreihe in ein Objekt und gebe es aus
-        return new TrendRemovedTimeSeries(timeSeriesWithoutTrend,slope,intercept);
+        return new TrendRemovedTimeSeries(timeSeriesWithoutTrend,slope);
     }
 
     private static SimpleRegression getRegression(final double[] timeSeries){

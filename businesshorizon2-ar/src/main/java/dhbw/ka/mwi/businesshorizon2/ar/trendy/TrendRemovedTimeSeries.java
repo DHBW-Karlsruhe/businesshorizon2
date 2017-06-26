@@ -7,12 +7,10 @@ public class TrendRemovedTimeSeries {
 
     private final double[] timeSeriesWithoutTrend;
     private final double slope;
-    private final double intercept;
 
-    TrendRemovedTimeSeries(final double[] timeSeriesWithoutTrend, final double slope, final double intercept) {
+    TrendRemovedTimeSeries(final double[] timeSeriesWithoutTrend, final double slope) {
         this.timeSeriesWithoutTrend = timeSeriesWithoutTrend;
         this.slope = slope;
-        this.intercept = intercept;
     }
 
     public double[] getTimeSeriesWithoutTrend() {
@@ -28,7 +26,7 @@ public class TrendRemovedTimeSeries {
         final double[] timeSeriesWithTrend = new double[timeSeriesWithoutTrend.length];
 
         for (int i = 0; i < timeSeriesWithoutTrend.length; i++) {
-            double trend = (this.timeSeriesWithoutTrend.length + i) * slope + intercept;
+            double trend = (this.timeSeriesWithoutTrend.length + i) * slope;
             timeSeriesWithTrend[i] = timeSeriesWithoutTrend[i] + trend;
         }
         return timeSeriesWithTrend;
