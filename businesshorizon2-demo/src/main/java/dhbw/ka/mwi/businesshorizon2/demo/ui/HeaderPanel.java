@@ -51,6 +51,10 @@ public class HeaderPanel extends JPanel {
         c.gridy = 2;
         innerPanel.add(new JLabel(Texts.BASISJAHR.toString()),c);
         basisjahr.setModel(new SpinnerNumberModel(new GregorianCalendar().get(Calendar.YEAR), 1900, 3000, 1));
+        
+        //Tausender-Punkt im Spinner entfernen
+        basisjahr.setEditor(new JSpinner.NumberEditor(basisjahr, "#"));
+        
         c.gridx = 1;
         c.gridy = 2;
         innerPanel.add(basisjahr,c);
