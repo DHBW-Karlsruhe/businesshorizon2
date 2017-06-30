@@ -34,4 +34,30 @@ public class TestAPV {
         assertEquals(2413.50,result.getUwFiktiv(),2413.50 / 10000);
         assertEquals(2829.19,result.getGk(),2829.19 / 10000);
     }
+    
+    //Testverfahren Excel-Pohl
+    
+    //0€-Test
+    //Alle Casflows und Fremdkapitalwerte besitzen den Wert 0 (Zu jeder Periode)
+    @Test
+    public void nullEuroWerte() throws Exception {
+    	final CFParameter parameter = new CFParameter(new double[]{0,0,0,0,0},new double[]{0,0,0,0,0},0.1006,0.3063,0.08);
+        final APVResult result = new APV().calculateUWert(parameter);
+        assertEquals(0.0, result.getuWert(), 0);
+        assertEquals(0.0, result.getTaxShield(), 0);
+        assertEquals(0.0, result.getUwFiktiv(), 0);
+        assertEquals(0.0, result.getGk(), 0);
+    }
+    
+    //1€-Test
+    //Alle Casflows und Fremdkapitalwerte besitzen den Wert 1 (Zu jeder Periode)
+    @Test
+    public void testEinEuroWerte() throws Exception {
+    	final CFParameter parameter = new CFParameter(new double[]{0,1.0,1.0,1.0,1.0},new double[]{1.0,1.0,1.0,1.0,1.0},0.1006,0.3063,0.08);
+        final APVResult result = new APV().calculateUWert(parameter);
+        assertEquals(9.25, result.getuWert(), 0.01);
+        assertEquals(0.31, result.getTaxShield(), 0.01); //Ergebis 0.30629
+        assertEquals(9.94, result.getUwFiktiv(), 0.011);
+        assertEquals(10.25, result.getGk(), 0.01); //Ergebnis 10.2465
+    }
 }
