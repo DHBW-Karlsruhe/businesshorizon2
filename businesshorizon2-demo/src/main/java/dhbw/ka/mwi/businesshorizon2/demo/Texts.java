@@ -18,18 +18,18 @@ public enum Texts {
         this.text = text;
     }
 
-    @Override
-    public String toString() {
-        return text;
-    }
-
-    public static Texts get(final String text){
+    public static Texts get(final String text) {
         for (final Texts txt : values()) {
-            if (txt.toString().equals(text)){
+            if (txt.toString().equals(text)) {
                 return txt;
             }
         }
         throw new IllegalArgumentException("Text " + text + " does not exist");
+    }
+
+    @Override
+    public String toString() {
+        return text;
     }
 
 }

@@ -15,6 +15,44 @@ import java.util.function.Supplier;
 
 class DetailFCFSupplier implements Supplier<double[]> {
 
+    private final Collection<CF> cfs = new ArrayList<>();
+    private final int numPeriods;
+    DetailFCFSupplier(final CompanyPanel companyPanel, final int numPeriods, final int grad) {
+        final DefaultTableModel detailModel = companyPanel.getDetailModel();
+        for (int row = 0; row < detailModel.getRowCount(); row++) {
+            final TrendRemovedTimeSeries timeSeries = TrendRemover.removeTrend(ModelToArrayConverter.getRow(detailModel, row, 2));
+            cfs.add(new CF(timeSeries, (FCFMode) detailModel.getValueAt(row, 1), AR.getModel(timeSeries.getTimeSeriesWithoutTrend(), grad)));
+        }
+
+        this.numPeriods = numPeriods;
+    }
+
+    @Override
+    public double[] get() {
+        final double[] fcf = new double[numPeriods];
+
+        for (final CF cf : cfs) {
+            final double[] cfPrediction = cf.getTimeSeries().getTimeSeriesWithTrend(cf.getModel().predict(numPeriods));
+            add(fcf, cfPrediction, cf.getFcfMode());
+        }
+
+        return fcf;
+    }
+
+    private static void add(final double[] fcf, final double[] cf, final FCFMode mode) {
+        for (int i = 0; i < fcf.length; i++) {
+            switch (mode) {
+                case EINNAHMEN:
+                    fcf[i] += cf[i];
+                    break;
+                case AUSGABEN:
+                    fcf[i] -= cf[i];
+                    break;
+            }
+
+        }
+    }
+
     private static final class CF {
         private final TrendRemovedTimeSeries timeSeries;
         private final FCFMode fcfMode;
@@ -36,44 +74,6 @@ class DetailFCFSupplier implements Supplier<double[]> {
 
         private ARModel getModel() {
             return model;
-        }
-    }
-    private final Collection<CF> cfs = new ArrayList<>();
-    private final int numPeriods;
-
-    DetailFCFSupplier(final CompanyPanel companyPanel, final int numPeriods){
-        final DefaultTableModel detailModel = companyPanel.getDetailModel();
-        for (int row = 0; row < detailModel.getRowCount(); row++) {
-            final TrendRemovedTimeSeries timeSeries = TrendRemover.removeTrend(ModelToArrayConverter.getRow(detailModel,row,2));
-            cfs.add(new CF(timeSeries, (FCFMode) detailModel.getValueAt(row, 1), AR.getModel(timeSeries.getTimeSeriesWithoutTrend())));
-        }
-
-        this.numPeriods = numPeriods;
-    }
-
-    @Override
-    public double[] get() {
-        final double[] fcf = new double[numPeriods];
-
-        for (final CF cf : cfs) {
-            final double[] cfPrediction = cf.getTimeSeries().getTimeSeriesWithTrend(cf.getModel().predict(numPeriods));
-            add(fcf,cfPrediction,cf.getFcfMode());
-        }
-
-        return fcf;
-    }
-
-    private static void add(final double[] fcf, final double[] cf, final FCFMode mode){
-        for (int i = 0; i < fcf.length; i++) {
-            switch (mode){
-                case EINNAHMEN:
-                    fcf[i] += cf[i];
-                    break;
-                case AUSGABEN:
-                    fcf[i] -= cf[i];
-                    break;
-            }
-
         }
     }
 }

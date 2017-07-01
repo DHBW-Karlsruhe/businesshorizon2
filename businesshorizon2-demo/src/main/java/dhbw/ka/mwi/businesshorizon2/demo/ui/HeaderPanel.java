@@ -21,7 +21,7 @@ public class HeaderPanel extends JPanel {
     HeaderPanel() {
         final JPanel innerPanel = new JPanel(new GridBagLayout());
         setLayout(new BorderLayout());
-        add(innerPanel,BorderLayout.NORTH);
+        add(innerPanel, BorderLayout.NORTH);
 
         final GridBagConstraints c = new GridBagConstraints();
         c.fill = GridBagConstraints.BOTH;
@@ -42,30 +42,30 @@ public class HeaderPanel extends JPanel {
         deter.setSelected(true);
         c.gridx = 0;
         c.gridy = 1;
-        innerPanel.add(deter,c);
+        innerPanel.add(deter, c);
         c.gridx = 1;
         c.gridy = 1;
-        innerPanel.add(stochi,c);
+        innerPanel.add(stochi, c);
 
         c.gridx = 0;
         c.gridy = 2;
-        innerPanel.add(new JLabel(Texts.BASISJAHR.toString()),c);
+        innerPanel.add(new JLabel(Texts.BASISJAHR.toString()), c);
         basisjahr.setModel(new SpinnerNumberModel(new GregorianCalendar().get(Calendar.YEAR), 1900, 3000, 1));
-        
+
         //Tausender-Punkt im Spinner entfernen
         basisjahr.setEditor(new JSpinner.NumberEditor(basisjahr, "#"));
-        
+
         c.gridx = 1;
         c.gridy = 2;
-        innerPanel.add(basisjahr,c);
+        innerPanel.add(basisjahr, c);
 
         c.gridx = 0;
         c.gridy = 3;
-        innerPanel.add(new JLabel(Texts.PERIODEN.toString()),c);
+        innerPanel.add(new JLabel(Texts.PERIODEN.toString()), c);
         perioden.setModel(new SpinnerNumberModel(3, 3, 10, 1));
         c.gridx = 1;
         c.gridy = 3;
-        innerPanel.add(perioden,c);
+        innerPanel.add(perioden, c);
     }
 
     public JSpinner getPerioden() {
@@ -80,7 +80,7 @@ public class HeaderPanel extends JPanel {
         return stochi;
     }
 
-    public CFMode getCurrentMode(){
+    public CFMode getCurrentMode() {
         return deter.isSelected() ? CFMode.DETER : CFMode.STOCHI;
     }
 

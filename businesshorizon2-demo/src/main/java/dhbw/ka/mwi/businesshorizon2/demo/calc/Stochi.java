@@ -8,7 +8,7 @@ final class Stochi {
     private Stochi() {
     }
 
-    static double[] doStochi(final int iterations, final DoubleSupplier supplier){
-        return IntStream.range(0,iterations).parallel().mapToDouble(value -> supplier.getAsDouble()).toArray();
+    static double[] doStochi(final int iterations, final DoubleSupplier supplier) {
+        return IntStream.range(0, iterations).parallel().mapToDouble(value -> supplier.getAsDouble()).toArray();
     }
 }

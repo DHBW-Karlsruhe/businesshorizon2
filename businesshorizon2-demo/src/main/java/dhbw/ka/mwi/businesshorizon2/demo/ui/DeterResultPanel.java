@@ -22,7 +22,7 @@ import java.awt.*;
 
 class DeterResultPanel extends JPanel {
 
-    private final JLabel uWert = new JLabel("0",SwingConstants.CENTER);
+    private final JLabel uWert = new JLabel("0", SwingConstants.CENTER);
     private final JButton calculate = new JButton("Berechnen");
     private final JButton export = new JButton("Exportieren");
     private final JFreeChart chart;
@@ -42,25 +42,25 @@ class DeterResultPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = 0;
-        northPanel.add(new JLabel("Algo"),c);
+        northPanel.add(new JLabel("Algo"), c);
 
         c.gridx = 1;
         c.gridy = 0;
-        northPanel.add(algo,c);
+        northPanel.add(algo, c);
 
         c.gridx = 0;
         c.gridy = 1;
-        northPanel.add(calculate,c);
+        northPanel.add(calculate, c);
 
         c.gridx = 1;
         c.gridy = 1;
-        northPanel.add(uWert,c);
+        northPanel.add(uWert, c);
 
         c.gridx = 0;
         c.gridy = 2;
-        northPanel.add(export,c);
+        northPanel.add(export, c);
 
-        add(northPanel,BorderLayout.NORTH);
+        add(northPanel, BorderLayout.NORTH);
         chart = createChart();
         add(new ChartPanel(chart));
     }
@@ -71,7 +71,7 @@ class DeterResultPanel extends JPanel {
         final IntervalBarRenderer renderer = new IntervalBarRenderer();
         renderer.setBaseToolTipGenerator(new IntervalCategoryToolTipGenerator());
         renderer.setBaseToolTipGenerator((dataset, row, column) -> {
-            final IntervalCategoryDataset icd = (IntervalCategoryDataset)dataset;
+            final IntervalCategoryDataset icd = (IntervalCategoryDataset) dataset;
             return icd.getRowKey(row) + ": " + (icd.getEndValue(row, column).doubleValue() - icd.getStartValue(row, column).doubleValue());
         });
 
@@ -92,24 +92,24 @@ class DeterResultPanel extends JPanel {
         return calculate;
     }
 
-    void displayAPV(final APVResult result, final double fk){
-        final double[][] starts = {{0}, {0},{result.getUwFiktiv()},{result.getuWert()},{0}};
-        final double[][] ends = {{result.getGk()}, {result.getUwFiktiv()},{result.getUwFiktiv() + result.getTaxShield()},{result.getuWert() + fk},{result.getuWert()}};
-        final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Gesamtkapital","EK (eigenfinanziert)","Tax shield","Fremdkapital","Unternehmenswert"},new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
+    void displayAPV(final APVResult result, final double fk) {
+        final double[][] starts = {{0}, {0}, {result.getUwFiktiv()}, {result.getuWert()}, {0}};
+        final double[][] ends = {{result.getGk()}, {result.getUwFiktiv()}, {result.getUwFiktiv() + result.getTaxShield()}, {result.getuWert() + fk}, {result.getuWert()}};
+        final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Gesamtkapital", "EK (eigenfinanziert)", "Tax shield", "Fremdkapital", "Unternehmenswert"}, new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
         chart.getCategoryPlot().setDataset(dataset);
     }
 
-    void displayFTE(final CFResult result){
+    void displayFTE(final CFResult result) {
         final double[][] starts = {{0}};
         final double[][] ends = {{result.getuWert()}};
-        final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Unternehmenswert"},new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
+        final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Unternehmenswert"}, new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
         chart.getCategoryPlot().setDataset(dataset);
     }
 
-    void displayFCF(final FCFResult result, final double fk){
-        final double[][] starts = {{0},{result.getuWert()},{0}};
-        final double[][] ends = {{result.getGk()}, {result.getuWert() + fk},{result.getuWert()}};
-        final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Gesamtkapital","Fremdkapital","Unternehmenswert"},new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
+    void displayFCF(final FCFResult result, final double fk) {
+        final double[][] starts = {{0}, {result.getuWert()}, {0}};
+        final double[][] ends = {{result.getGk()}, {result.getuWert() + fk}, {result.getuWert()}};
+        final CategoryDataset dataset = new DefaultIntervalCategoryDataset(new String[]{"Gesamtkapital", "Fremdkapital", "Unternehmenswert"}, new String[]{""}, DataUtilities.createNumberArray2D(starts), DataUtilities.createNumberArray2D(ends));
         chart.getCategoryPlot().setDataset(dataset);
     }
 

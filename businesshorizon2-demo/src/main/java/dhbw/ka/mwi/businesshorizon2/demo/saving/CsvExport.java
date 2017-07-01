@@ -21,7 +21,7 @@ public final class CsvExport {
     }
 
     public static void export(final HeaderPanel headerPanel, final SzenarioPanel szenarioPanel, final CompanyPanel companyPanel, final File file) throws IOException {
-        try (FileOutputStream fw = new FileOutputStream(file); OutputStreamWriter osw = new OutputStreamWriter(fw,Charset.forName("ISO-8859-1")); CSVPrinter printer = CSVFormat.DEFAULT.withDelimiter(';').print(osw) ) {
+        try (FileOutputStream fw = new FileOutputStream(file); OutputStreamWriter osw = new OutputStreamWriter(fw, Charset.forName("ISO-8859-1")); CSVPrinter printer = CSVFormat.DEFAULT.withDelimiter(';').print(osw)) {
 
             printer.printRecord(Texts.MODUS, headerPanel.getCurrentMode());
             printer.printRecord(Texts.BASISJAHR, headerPanel.getBasisjahr().getValue());
@@ -35,8 +35,8 @@ public final class CsvExport {
                 printer.printRecord(vals);
             }
 
-            if (companyPanel.getDetailMode().get()){
-                printer.printRecord(Texts.DETAILS,companyPanel.getDetailModel().getRowCount());
+            if (companyPanel.getDetailMode().get()) {
+                printer.printRecord(Texts.DETAILS, companyPanel.getDetailModel().getRowCount());
                 for (int row = 0; row < companyPanel.getDetailModel().getRowCount(); row++) {
                     final Collection<Object> vals = new ArrayList<>();
                     for (int col = 0; col < companyPanel.getDetailModel().getColumnCount(); col++) {
@@ -44,8 +44,8 @@ public final class CsvExport {
                     }
                     printer.printRecord(vals);
                 }
-            }else {
-                printer.printRecord(Texts.DETAILS,0);
+            } else {
+                printer.printRecord(Texts.DETAILS, 0);
             }
 
             printer.printRecord(Texts.EK_KOSTEN, (Double) szenarioPanel.getEkKosten().getValue() * 100);
@@ -55,7 +55,7 @@ public final class CsvExport {
     }
 
     public static void exportResults(final File file, final double[] uWerts) throws IOException {
-        try (FileOutputStream fw = new FileOutputStream(file); OutputStreamWriter osw = new OutputStreamWriter(fw,Charset.forName("ISO-8859-1")); CSVPrinter printer = CSVFormat.DEFAULT.withDelimiter(';').print(osw) ) {
+        try (FileOutputStream fw = new FileOutputStream(file); OutputStreamWriter osw = new OutputStreamWriter(fw, Charset.forName("ISO-8859-1")); CSVPrinter printer = CSVFormat.DEFAULT.withDelimiter(';').print(osw)) {
             for (final double uWert : uWerts) {
                 printer.printRecord(uWert);
             }

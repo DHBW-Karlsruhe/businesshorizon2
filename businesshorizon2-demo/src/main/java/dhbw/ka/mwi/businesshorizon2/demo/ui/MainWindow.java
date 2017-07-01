@@ -30,13 +30,13 @@ public class MainWindow extends JFrame {
         add(tab);
 
         header = new HeaderPanel();
-        tab.addTab("Kopf",header);
+        tab.addTab("Kopf", header);
 
         company = new CompanyPanel(header);
         tab.addTab("Unternehmenswerte", company);
 
         szenario = new SzenarioPanel();
-        tab.addTab("Szenario",szenario);
+        tab.addTab("Szenario", szenario);
 
         deterResultPanel = new DeterResultPanel();
         tab.addTab("Unternehmenswert", deterResultPanel);
@@ -44,22 +44,22 @@ public class MainWindow extends JFrame {
         stochiResultPanel = new StochiResultPanel();
 
         final ChangeListener yearAndPeriodenListener = e -> {
-            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode(),company.getDetailMode()));
-            company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode(), company.getDetailMode()));
+            company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode()));
         };
 
         header.getPerioden().addChangeListener(yearAndPeriodenListener);
         header.getBasisjahr().addChangeListener(yearAndPeriodenListener);
 
         header.getStochi().addActionListener(e -> {
-            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode(),company.getDetailMode()));
-            company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode(), company.getDetailMode()));
+            company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             setTabs(tab);
         });
 
         header.getDeter().addActionListener(e -> {
-            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode(),company.getDetailMode()));
-            company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(),(Integer) header.getPerioden().getValue(), header.getCurrentMode()));
+            company.setModel(CompanyModelProvider.getModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode(), company.getDetailMode()));
+            company.setDetailModel(CompanyModelProvider.getDetailModel((Integer) header.getBasisjahr().getValue(), (Integer) header.getPerioden().getValue(), header.getCurrentMode()));
             setTabs(tab);
         });
 
@@ -68,7 +68,7 @@ public class MainWindow extends JFrame {
             chooser.setFileFilter(new FileNameExtensionFilter("CSV", "csv"));
             if (chooser.showOpenDialog(this) == JFileChooser.APPROVE_OPTION) {
                 try {
-                    CsvImport.importCSV(chooser.getSelectedFile(),header,company,szenario);
+                    CsvImport.importCSV(chooser.getSelectedFile(), header, company, szenario);
                     setTabs(tab);
                 } catch (final Exception e1) {
                     e1.printStackTrace();
@@ -81,7 +81,7 @@ public class MainWindow extends JFrame {
         stochiResultPanel.getCalculate().addActionListener(e -> {
             try {
                 final long was = System.nanoTime();
-                final double[] uWerts = CFCalculator.calculateStochi(company,szenario,stochiResultPanel, (CFAlgo) deterResultPanel.getAlgo().getSelectedItem());
+                final double[] uWerts = CFCalculator.calculateStochi(company, szenario, stochiResultPanel, (CFAlgo) deterResultPanel.getAlgo().getSelectedItem());
                 final double uWert = CFCalculator.avg(uWerts);
                 System.out.println("Dauer Stochi:" + (System.nanoTime() - was) / 1000000 + " ms");
                 stochiResultPanel.setLastResult(uWerts);
@@ -92,19 +92,18 @@ public class MainWindow extends JFrame {
             }
         });
 
-
         deterResultPanel.getCalculate().addActionListener(e -> {
             try {
-                final CFParameter parameter = CFCalculator.getParameter(company,szenario);
-                switch ((CFAlgo) deterResultPanel.getAlgo().getSelectedItem()){
+                final CFParameter parameter = CFCalculator.getParameter(company, szenario);
+                switch ((CFAlgo) deterResultPanel.getAlgo().getSelectedItem()) {
                     case APV:
                         final APVResult apvResult = new APV().calculateUWert(parameter);
-                        deterResultPanel.displayAPV(apvResult,parameter.getFK()[0]);
+                        deterResultPanel.displayAPV(apvResult, parameter.getFK()[0]);
                         deterResultPanel.getuWert().setText(String.valueOf(apvResult.getuWert()));
                         break;
                     case FCF:
                         final FCFResult fcfResult = new FCF().calculateUWert(parameter);
-                        deterResultPanel.displayFCF(fcfResult,parameter.getFK()[0]);
+                        deterResultPanel.displayFCF(fcfResult, parameter.getFK()[0]);
                         deterResultPanel.getuWert().setText(String.valueOf(fcfResult.getuWert()));
                         break;
                     case FTE:
@@ -120,12 +119,12 @@ public class MainWindow extends JFrame {
             }
         });
 
-        deterResultPanel.getExport().addActionListener(new ExportListener(file -> CsvExport.exportResults(file,new double[]{Double.parseDouble(deterResultPanel.getuWert().getText())})));
-        stochiResultPanel.getExport().addActionListener(new ExportListener(file -> CsvExport.exportResults(file,stochiResultPanel.getLastResult())));
+        deterResultPanel.getExport().addActionListener(new ExportListener(file -> CsvExport.exportResults(file, new double[]{Double.parseDouble(deterResultPanel.getuWert().getText())})));
+        stochiResultPanel.getExport().addActionListener(new ExportListener(file -> CsvExport.exportResults(file, stochiResultPanel.getLastResult())));
     }
 
     private void setTabs(final JTabbedPane tab) {
-        switch (header.getCurrentMode()){
+        switch (header.getCurrentMode()) {
             case STOCHI:
                 tab.remove(deterResultPanel);
                 tab.addTab("Unternehmenswert", stochiResultPanel);

@@ -15,14 +15,14 @@ class SimpleFCFSupplier implements Supplier<double[]> {
     private final ARModel fcfModel;
     private final int numPeriods;
 
-    SimpleFCFSupplier(final CompanyPanel companyPanel, final int numPeriods){
-        fcfSeries = TrendRemover.removeTrend(ModelToArrayConverter.getRow(companyPanel.getModel(),0));
-        fcfModel = AR.getModel(fcfSeries.getTimeSeriesWithoutTrend());
+    SimpleFCFSupplier(final CompanyPanel companyPanel, final int numPeriods, final int grad) {
+        fcfSeries = TrendRemover.removeTrend(ModelToArrayConverter.getRow(companyPanel.getModel(), 0));
+        fcfModel = AR.getModel(fcfSeries.getTimeSeriesWithoutTrend(), grad);
         this.numPeriods = numPeriods;
     }
 
     @Override
     public double[] get() {
-        return  fcfSeries.getTimeSeriesWithTrend(fcfModel.predict(numPeriods));
+        return fcfSeries.getTimeSeriesWithTrend(fcfModel.predict(numPeriods));
     }
 }

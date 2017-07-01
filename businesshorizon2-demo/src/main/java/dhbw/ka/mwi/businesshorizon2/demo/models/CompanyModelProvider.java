@@ -29,7 +29,7 @@ public final class CompanyModelProvider {
             model.addColumn((mode == CFMode.DETER ? i : -perioden + i + 1) + basisjahr);
         }
 
-        model.addRow(getRow(perioden, Texts.FCF,mode));
+        model.addRow(getRow(perioden, Texts.FCF, mode));
         model.addRow(getRow(perioden, Texts.FK, mode));
 
         return model;
@@ -39,7 +39,7 @@ public final class CompanyModelProvider {
         final Object[] row = new Object[perioden + 1];
         row[0] = text;
         for (int i = 1; i < row.length; i++) {
-            if(i == 1 && mode == CFMode.DETER && text == Texts.FCF){
+            if (i == 1 && mode == CFMode.DETER && text == Texts.FCF) {
                 row[1] = Double.NaN;
             } else {
                 row[i] = 0d;
@@ -48,17 +48,16 @@ public final class CompanyModelProvider {
         return row;
     }
 
-
     public static DefaultTableModel getDetailModel(final int basisjahr, final int perioden, final CFMode mode) {
 
         final DefaultTableModel model = new DefaultTableModel() {
 
             @Override
             public Class<?> getColumnClass(final int columnIndex) {
-                if(columnIndex == 0){
+                if (columnIndex == 0) {
                     return String.class;
                 }
-                if (columnIndex == 1){
+                if (columnIndex == 1) {
                     return FCFMode.class;
                 }
 
@@ -71,12 +70,11 @@ public final class CompanyModelProvider {
             model.addColumn((mode == CFMode.DETER ? i : -perioden + i + 1) + basisjahr);
         }
 
-        model.addRow(getDetailRow(perioden, FCFMode.EINNAHMEN,mode));
-        model.addRow(getDetailRow(perioden, FCFMode.AUSGABEN,mode));
+        model.addRow(getDetailRow(perioden, FCFMode.EINNAHMEN, mode));
+        model.addRow(getDetailRow(perioden, FCFMode.AUSGABEN, mode));
 
         return model;
     }
-
 
     public static Object[] getDetailRow(final int perioden, final FCFMode fcfMode, final CFMode mode) {
         final Object[] row = new Object[perioden + (mode == CFMode.DETER ? 1 : 2)];

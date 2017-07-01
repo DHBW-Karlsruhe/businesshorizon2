@@ -9,7 +9,6 @@ import java.text.ParseException;
 //Angepasst von http://stackoverflow.com/a/7599686
 public class JPercentField extends JSpinner {
 
-
     public JPercentField() {
         setModel(new SpinnerNumberModel(0d, 0d, 1d, 0.01d));
         initSpinnerTextField();
@@ -54,8 +53,8 @@ public class JPercentField extends JSpinner {
         }
 
         @Override
-        protected NavigationFilter getNavigationFilter() {
-            return navigationFilter;
+        public Class<?> getValueClass() {
+            return Double.class;
         }
 
         @Override
@@ -64,8 +63,8 @@ public class JPercentField extends JSpinner {
         }
 
         @Override
-        public Class<?> getValueClass() {
-            return Double.class;
+        protected NavigationFilter getNavigationFilter() {
+            return navigationFilter;
         }
 
         @Override
@@ -112,16 +111,16 @@ public class JPercentField extends JSpinner {
         }
 
         @Override
+        public void remove(final FilterBypass fb, final int offset, final int length) throws BadLocationException {
+            // Mapping a remove as a replace without inserting
+            replace(fb, offset, length, "", SimpleAttributeSet.EMPTY);
+        }
+
+        @Override
         public void insertString(final FilterBypass fb, final int offset, final String text, final AttributeSet attrs)
                 throws BadLocationException {
             // Mapping an insert as a replace without removing
             replace(fb, offset, 0, text, attrs);
-        }
-
-        @Override
-        public void remove(final FilterBypass fb, final int offset, final int length) throws BadLocationException {
-            // Mapping a remove as a replace without inserting
-            replace(fb, offset, length, "", SimpleAttributeSet.EMPTY);
         }
 
         @Override
@@ -132,17 +131,12 @@ public class JPercentField extends JSpinner {
             super.replace(fb, offset, replaceLength, cleanInput, attrs);
         }
 
-        /**
-         * Removes all non-digit characters
-         */
-        private static String filterDigits(final String text) {
-            final StringBuilder sb = new StringBuilder(text);
-            for (int i = 0, n = sb.length(); i < n; i++) {
-                if (!Character.isDigit(text.charAt(i)) && text.charAt(i) != ',') {
-                    sb.deleteCharAt(i);
-                }
+        private static int correctReplaceLength(final FilterBypass fb, final int offset, final int length) {
+            if (offset + length >= fb.getDocument().getLength()) {
+                // Don't delete the percent sign
+                return offset + length - fb.getDocument().getLength();
             }
-            return sb.toString();
+            return length;
         }
 
         /**
@@ -157,12 +151,17 @@ public class JPercentField extends JSpinner {
             return sb.toString();
         }
 
-        private static int correctReplaceLength(final FilterBypass fb, final int offset, final int length) {
-            if (offset + length >= fb.getDocument().getLength()) {
-                // Don't delete the percent sign
-                return offset + length - fb.getDocument().getLength();
+        /**
+         * Removes all non-digit characters
+         */
+        private static String filterDigits(final String text) {
+            final StringBuilder sb = new StringBuilder(text);
+            for (int i = 0, n = sb.length(); i < n; i++) {
+                if (!Character.isDigit(text.charAt(i)) && text.charAt(i) != ',') {
+                    sb.deleteCharAt(i);
+                }
             }
-            return length;
+            return sb.toString();
         }
     }
 
