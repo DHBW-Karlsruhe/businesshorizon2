@@ -31,10 +31,10 @@ public class TestAPV {
     public void testFCFPohl() throws Exception {
         final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.100582,0.30625,0.08);
         final APVResult result = new APV().calculateUWert(parameter);
-        assertRelative(1569.19,result.getuWert());
-        assertRelative(415.69,result.getTaxShield());
-        assertRelative(2413.50,result.getUwFiktiv());
-        assertRelative(2829.19,result.getGk());
+        assertRelative(1569.18934438987,result.getuWert());
+        assertRelative(415.694038002337,result.getTaxShield());
+        assertRelative(2413.49530638754,result.getUwFiktiv());
+        assertRelative(2829.18934438987,result.getGk());
     }
     
     //Randbereiche und Sonderfälle, Excel-Pohl *********************************************************************************************
@@ -94,5 +94,16 @@ public class TestAPV {
         assertRelative(0.172464509348168, result.getTaxShield());
         assertRelative(9.61406800431095, result.getUwFiktiv());
         assertRelative(9.7865325137, result.getGk());
+    }
+    
+    //Differenzierte Steuersätze
+    @Test
+    public void differenzierteSteuersätzeTest() throws Exception {
+        final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.080722,0.349,0.06);
+        final APVResult result = new APV().calculateUWert(parameter);
+        assertRelative(2146.60456861283,result.getuWert());
+        assertRelative(476.938035962573,result.getTaxShield());
+        assertRelative(2929.66653265026,result.getUwFiktiv());
+        assertRelative(3406.60456861283,result.getGk());
     }
 }

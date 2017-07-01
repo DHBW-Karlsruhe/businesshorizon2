@@ -15,7 +15,7 @@ public class TestFTE {
     @Test
     public void testFTEPohl() throws Exception {
         final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.100582,0.30625,0.08);
-        assertRelative(1569.19,new FTE().calculateUWert(parameter).getuWert());
+        assertRelative(1569.18934438987,new FTE().calculateUWert(parameter).getuWert());
     }
     
     //Randbereiche und Sonderfälle, Excel-Pohl *********************************************************************************************
@@ -55,5 +55,12 @@ public class TestFTE {
     public void kleineGemischteEuroWerte() throws Exception {
     	final CFParameter parameter = new CFParameter(new double[]{0, 1.12, 0.78, 0.56, 1.01},new double[]{0.34, 1.2, 0.8, 0.51, 0.51},0.100582,0.30625,0.08);
         assertRelative(9.4465325137, new FTE().calculateUWert(parameter).getuWert());
+    }
+    
+    //Differenzierte Steuersätze
+    @Test
+    public void differenzierteSteuersätzeTest() throws Exception {
+        final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.080722,0.349,0.06);
+        assertRelative(2146.60456861283, new FTE().calculateUWert(parameter).getuWert());
     }
 }
