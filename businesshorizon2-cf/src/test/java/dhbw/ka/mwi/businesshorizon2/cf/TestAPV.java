@@ -28,7 +28,7 @@ public class TestAPV {
     }
 
     @Test
-    public void testFCFPohl() throws Exception {
+    public void testAPVPohl() throws Exception {
         final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.100582,0.30625,0.08);
         final APVResult result = new APV().calculateUWert(parameter);
         assertRelative(1569.18934438987,result.getuWert());
