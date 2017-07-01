@@ -82,7 +82,7 @@ public class TestAPV {
         assertRelative(-601.6495353431,result.getuWert());
         assertRelative(-376.796258192349,result.getTaxShield());
         assertRelative(-1484.85327715077,result.getUwFiktiv());
-        assertRelative(-1861.6495353431,result.getGk());
+        assertRelative(-1861.6495353431,result.getGk()); 
     }
     
     //Kleine, gemischte Werte-Test

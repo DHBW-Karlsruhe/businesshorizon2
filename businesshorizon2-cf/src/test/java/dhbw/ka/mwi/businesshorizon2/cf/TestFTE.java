@@ -48,7 +48,7 @@ public class TestFTE {
     public void negativeEuroWerte() throws Exception {
     	final CFParameter parameter = new CFParameter(new double[]{0, 176.76, -520.13, 404.87, -203.78},new double[]{-1260, -1300, 1000, -1400, -1400},0.100582,0.30625,0.08);
     	assertRelative(-601.6495353431, new FTE().calculateUWert(parameter).getuWert());
-    }
+    } 
     
     //Kleine, gemischte Werte-Test
     @Test
