@@ -1,5 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.cf;
 
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static dhbw.ka.mwi.businesshorizon2.cf.AssertRelative.assertRelative;
@@ -27,12 +28,12 @@ public class TestFCF {
     //0€-Test
     //Alle Casflows und Fremdkapitalwerte besitzen den Wert 0 (Zu jeder Periode)
     @Test
+    @Ignore("NaN bei FCF")
     public void nullEuroWerte() throws Exception {
     	final CFParameter parameter = new CFParameter(new double[]{0,0,0,0,0},new double[]{0,0,0,0,0},0.100582,0.30625,0.08);
         final FCFResult result = new FCF().calculateUWert(parameter);
-//        Fehler NaN
-//        assertRelative(0.0, result.getuWert());
-//        assertRelative(0.0, result.getGk());
+        assertRelative(0.0, result.getuWert());
+        assertRelative(0.0, result.getGk());
     }
 
     //1€-Test
@@ -71,7 +72,7 @@ public class TestFCF {
         assertRelative(9.4465325137, result.getuWert());
         assertRelative(9.7865325137, result.getGk());
     }
-    
+
     //Differenzierte Steuersätze
     @Test
     public void differenzierteSteuersätzeTest() throws Exception {
