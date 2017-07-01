@@ -10,46 +10,47 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
  */
 public class ARPredictorRunner {
 
-	private final ARPredictor predictor;
+    private final ARPredictor predictor;
 
-	public ARPredictorRunner(final ARPredictor predictor) {
-		this.predictor = predictor;
-	}
-
-	private static SlidingWindow fillSlidingWindowFromTimeSeries(final double[] timeSeries, final int size, final double avg){
-		final SlidingWindow lastValues = new SlidingWindow(size);
-
-		// Zentrieren der Zeitreihe
-		for (int i = timeSeries.length - 1 - size; i < timeSeries.length; i++) {
-			lastValues.put(timeSeries[i] - avg);
-		}
-
-		return lastValues;
-	}
+    public ARPredictorRunner(final ARPredictor predictor) {
+        this.predictor = predictor;
+    }
 
     /**
      * Sagt anhand des Predictors zukünftige Werte der Zeitreihe voraus
-     * @param timeSeries Die betrachtete Zeitreihe
+     *
+     * @param timeSeries   Die betrachtete Zeitreihe
      * @param coefficients Die Koeffizeinten der AR-Modellgleichung
-     * @param numPeriods Die Anzahl an zukünftigen Zeitpunkten, die prognostiziert werden
+     * @param numPeriods   Die Anzahl an zukünftigen Zeitpunkten, die prognostiziert werden
      * @return Die prognostizierten Werte der Zeitreihe
      */
-	public double[] runPredictions(final double[] timeSeries, final double[] coefficients, final int numPeriods) {
-		final double[] result = new double[numPeriods];
+    public double[] runPredictions(final double[] timeSeries, final double[] coefficients, final int numPeriods) {
+        final double[] result = new double[numPeriods];
 
-		final double stdDev = new StandardDeviation(false).evaluate(timeSeries);
-		final double avg = new Mean().evaluate(timeSeries);
+        final double stdDev = new StandardDeviation(false).evaluate(timeSeries);
+        final double avg = new Mean().evaluate(timeSeries);
 
-		// Erzeugt einen SlidingWindow mit den zentrierten Werten der Zeitreihe
+        // Erzeugt einen SlidingWindow mit den zentrierten Werten der Zeitreihe
         // lastValues enthält immer die Werte, die für die nächste Prognose wichtig sind.
-		final SlidingWindow lastValues = fillSlidingWindowFromTimeSeries(timeSeries, coefficients.length, avg);
+        final SlidingWindow lastValues = fillSlidingWindowFromTimeSeries(timeSeries, coefficients.length);
 
-		for (int i = 0; i < numPeriods; i++) {
-			result[i] = predictor.predict(lastValues.getData(), coefficients, stdDev, avg);
-			lastValues.put(result[i] - avg);
-		}
+        for (int i = 0; i < numPeriods; i++) {
+            result[i] = predictor.predict(lastValues.getData(), coefficients, stdDev, avg);
+            lastValues.put(result[i]);
+        }
 
-		return result;
-	}
+        return result;
+    }
+
+    private static SlidingWindow fillSlidingWindowFromTimeSeries(final double[] timeSeries, final int size) {
+        final SlidingWindow lastValues = new SlidingWindow(size);
+
+        // Zentrieren der Zeitreihe
+        for (int i = timeSeries.length - 1 - size; i < timeSeries.length; i++) {
+            lastValues.put(timeSeries[i]);
+        }
+
+        return lastValues;
+    }
 
 }

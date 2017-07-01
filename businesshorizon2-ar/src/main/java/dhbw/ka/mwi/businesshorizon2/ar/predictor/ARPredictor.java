@@ -7,36 +7,40 @@ import java.util.Random;
  */
 public class ARPredictor {
 
-	private final Random random;
+    private final Random random;
 
-	public ARPredictor() {
-		this(new Random());
-	}
+    public ARPredictor() {
+        this(new Random());
+    }
 
-	ARPredictor(final Random random) {
-		this.random = random;
-	}
+    ARPredictor(final Random random) {
+        this.random = random;
+    }
 
     /**
      * Berechnet einen zukünftigen Wert der Zeitreihe
-     * @param centeredValues Die zentrierten Werte einer Zeitreihe
+     *
+     * @param timeSeries   Die Zeitreihe
      * @param coefficients Die Koeffizeinten der AR-Modellgleichung
-     * @param stdDev Die Standardabweichung der Zeitreihe
-     * @param avg Der Mittelwert der Zeitreihe
+     * @param stdDev       Die Standardabweichung der Zeitreihe
+     * @param avg          Der Mittelwert der Zeitreihe
      * @return Die Prognose des nächsten Wertes der Zeitreihe
      */
-	public double predict(final double[] centeredValues, final double[] coefficients, final double stdDev, final double avg) {
-		if (centeredValues.length != coefficients.length) {
-			throw new IllegalArgumentException("Length of values and length of coeffs does not match");
-		}
+    public double predict(final double[] timeSeries, final double[] coefficients, final double stdDev, final double avg) {
+        return predict(timeSeries, coefficients, avg) + stdDev * (random.nextBoolean() ? 1 : -1);
+    }
 
-		double result = 0;
-		for (int i = 0; i < coefficients.length; i++) {
-			result += coefficients[i] * centeredValues[i];
-		}
+    public static double predict(final double[] timeSeries, final double[] coefficients, final double avg) {
+        if (timeSeries.length != coefficients.length) {
+            throw new IllegalArgumentException("Length of values and length of coeffs does not match");
+        }
+        double result = 0;
+        for (int i = 0; i < coefficients.length; i++) {
+            result += coefficients[i] * (timeSeries[i] - avg);
+        }
 
-		return result + stdDev * (random.nextBoolean() ? 1 : -1) + avg;
+        return result + avg;
 
-	}
+    }
 
 }

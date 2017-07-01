@@ -19,14 +19,15 @@ public class TrendRemovedTimeSeries {
 
     /**
      * Setzt den Trend für eine andere Zeitreihe fort
+     *
      * @param timeSeriesWithoutTrend Die Zeitreihe auf dem der Trend hinzugefügt wird
      * @return Die Zeitreihe addiert mit dem Trend
      */
-    public double[] getTimeSeriesWithTrend(final double[] timeSeriesWithoutTrend){
+    public double[] getTimeSeriesWithTrend(final double[] timeSeriesWithoutTrend) {
         final double[] timeSeriesWithTrend = new double[timeSeriesWithoutTrend.length];
 
         for (int i = 0; i < timeSeriesWithoutTrend.length; i++) {
-            double trend = (this.timeSeriesWithoutTrend.length + i) * slope;
+            final double trend = (this.timeSeriesWithoutTrend.length + i) * slope;
             timeSeriesWithTrend[i] = timeSeriesWithoutTrend[i] + trend;
         }
         return timeSeriesWithTrend;
