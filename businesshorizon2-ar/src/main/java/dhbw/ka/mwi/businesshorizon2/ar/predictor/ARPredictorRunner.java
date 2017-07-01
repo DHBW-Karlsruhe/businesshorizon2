@@ -1,7 +1,6 @@
 package dhbw.ka.mwi.businesshorizon2.ar.predictor;
 
 import org.apache.commons.math3.stat.descriptive.moment.Mean;
-import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 /**
  * Beinhaltet in einem {@link SlidingWindow} stets die Werte einer Zeitreihe,
@@ -27,7 +26,6 @@ public class ARPredictorRunner {
     public double[] runPredictions(final double[] timeSeries, final double[] coefficients, final int numPeriods) {
         final double[] result = new double[numPeriods];
 
-        final double stdDev = new StandardDeviation(false).evaluate(timeSeries);
         final double avg = new Mean().evaluate(timeSeries);
 
         // Erzeugt einen SlidingWindow mit den zentrierten Werten der Zeitreihe
@@ -35,7 +33,7 @@ public class ARPredictorRunner {
         final SlidingWindow lastValues = fillSlidingWindowFromTimeSeries(timeSeries, coefficients.length);
 
         for (int i = 0; i < numPeriods; i++) {
-            result[i] = predictor.predict(lastValues.getData(), coefficients, stdDev, avg);
+            result[i] = predictor.predict(lastValues.getData(), coefficients, avg);
             lastValues.put(result[i]);
         }
 
