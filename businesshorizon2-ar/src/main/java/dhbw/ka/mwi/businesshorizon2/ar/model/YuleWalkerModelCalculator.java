@@ -19,6 +19,10 @@ public class YuleWalkerModelCalculator implements ARModelCalculator {
      */
 	@Override
 	public ARModel getModel(final double[] timeSeries, final int p) {
+		if(p > timeSeries.length - 2){
+		    throw new IllegalArgumentException("Maximaler Grad für angegebene Zeitreihe ist " + (timeSeries.length - 2));
+        }
+
 		if(new Variance(false).evaluate(timeSeries) == 0){
 			return new ARModel(new double[p],timeSeries);
 		}
