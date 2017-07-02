@@ -6,7 +6,7 @@ public class CFResult {
 
     /**
      * Konstruktor für den aktuellen Unternehmenswert in Form eines double Werts
-     * @param uWert der finale Unternehmenswert
+     * @param uWert der finale Unternehmenswert 
      */
     CFResult(final double uWert) {
         this.uWert = uWert;

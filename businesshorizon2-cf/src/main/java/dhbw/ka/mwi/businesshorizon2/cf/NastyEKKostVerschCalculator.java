@@ -3,6 +3,11 @@ package dhbw.ka.mwi.businesshorizon2.cf;
 public class NastyEKKostVerschCalculator implements EKKostVerschCalculator{
 
     @Override
+    /**
+     * Einer der mehreren Methoden zur Berechnung der EK Kosten
+     * Implementiert das EKKostVerschCalculator Interface
+     * Enthält den spezifischen Code
+     */
     public double calculateEKKostenVersch(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         double summe = 0;
 

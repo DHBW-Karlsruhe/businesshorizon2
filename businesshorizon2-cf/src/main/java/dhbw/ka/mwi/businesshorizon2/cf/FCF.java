@@ -12,7 +12,7 @@ public class FCF implements CFAlgorithm<FCFResult> {
 	 * @param intermediate speichert die Eigenkapitalkosten und den Unternehmenswert in der Iteration als Zwischenergebenisse
 	 * @param periode gibt an von welche Periode der WACC berechnet werden soll
 	 *
-	 * @return gibt den WACC der bestimmten Periode zurück
+	 * @return gibt den WACC der bestimmten Periode zurück 
 	 */
     private static double calculateWACC(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         final double gk = intermediate.getuWert()[periode - 1] + parameter.getFK()[periode - 1];
@@ -38,18 +38,26 @@ public class FCF implements CFAlgorithm<FCFResult> {
     }
 
     /**
-     * calculateUWert
+     * calculateUWert berechnet den Unternehmenswert mittel FCF Verfahren aus
+     * Dies ist die interne Methode um nur den Unternehmenswert auszurechnen
      *
-     * @param parameter
-     * @param intermediate
-     * @param periode
-     * @return
+     * @param parameter enthält die Parameter aller Perioden
+     * @param intermediate enthält die Zwischenergebnisse (Stichwort Iteration)
+     * @param periode beschreibt die Periode für die der Unternehmenswert berechnet werden soll
+     * @return gibt den Unternehmenswert als double Wert zurück
      */
     private static double calculateUWert(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         return calculateGK(parameter,intermediate,periode) - parameter.getFK()[periode];
     }
 
     @Override
+    /**
+     * Berechnet den Unternehmenswert mittels der Free Cashflow Methode aus
+     * Dies ist die öffentliche Methode zur Berechnung des Unternehmenswert
+     * 
+     * @param parameter enthält die Parameter aller Perioden
+     * @return gibt den Unternehmenswert inklusive aller wichtigen Parameter als FCFResult Objekt zurück
+     */
     public FCFResult calculateUWert(final CFParameter parameter) {
         final CFIntermediateResult result = Stepper.performStepping(Stepper.getStartResult(parameter.numPerioden()), cfIntermediateResult -> {
             final double[] uWert = new double[parameter.numPerioden()];

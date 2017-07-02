@@ -6,6 +6,17 @@ public class APVResult extends CFResult{
     private final double taxShield;
     private final double gk;
 
+    /**
+     * 
+     * Der Konstruktor für APVResult und speichert alle Daten die in der Berechnung des APV-Unternehmenswerts ist
+     * Enthält nur die Daten der spezifischen Periode für die der Unternehmenswert berechnet wurde
+     * Die Klasse erbt von CFResult; durch Aufruf des super-Konstruktor wird das Ergebnis der Unternehmenswertberechnung mit übergeben
+     * 
+     * @param uWert entspricht dem berechneten Unternehmenswert
+     * @param uwFiktiv entspricht dem fiktiven Unternehmenswert
+     * @param taxShield entspricht dem TaxShield
+     * @param gk entspricht dem Gesamtkapital
+     */
     APVResult(final double uWert, final double uwFiktiv, final double taxShield, final double gk) {
         super(uWert);
         this.uwFiktiv = uwFiktiv;
@@ -13,14 +24,27 @@ public class APVResult extends CFResult{
         this.gk = gk;
     }
 
+    /**
+     * Getter Methode für den fiktiven Unternehmenswert
+     * @return gibt den fiktiven Unternehmenswert als double zurück
+     */
     public double getUwFiktiv() {
         return uwFiktiv;
     }
 
+    /**
+     * Getter Methode für das Tax Shield
+     * 
+     * @return gibt das Tax Shield als double zurück
+     */
     public double getTaxShield() {
         return taxShield;
     }
 
+    /**
+     * Getter Methode für das Gesamtkapital
+     * @return gibt das Gesamtkapital als double zurück
+     */
     public double getGk() {
         return gk;
     }

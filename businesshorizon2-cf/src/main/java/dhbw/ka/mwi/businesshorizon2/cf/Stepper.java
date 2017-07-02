@@ -6,9 +6,19 @@ final class Stepper {
 
     private static final int MAX_LOOPS = 500;
 
+    /**
+     * Privater Konstruktor für den Stepper
+     */
     private Stepper() {
     }
 
+    //TODO
+    /**
+     * 
+     * @param startValues
+     * @param stepFunction
+     * @return
+     */
     static CFIntermediateResult performStepping(final CFIntermediateResult startValues, final Function<CFIntermediateResult, CFIntermediateResult> stepFunction){
         CFIntermediateResult intermediate = startValues;
         int loops = 0;
@@ -23,6 +33,11 @@ final class Stepper {
         return intermediate;
     }
 
+    /**
+     * getInitArray initialisiert das Array wo die Unternehmeswert-Zwischenergebnisse drin gespeichert werden
+     * @param numPerioden entspricht den Anzahl an Perioden 
+     * @return gibt ein double Array zurück wo alle Felder mit einer 1 gefüllt sind
+     */
     private static double[] getInitArray(final int numPerioden){
         final double[] init = new double[numPerioden];
         for (int i = 0; i < init.length; i++) {
@@ -31,6 +46,12 @@ final class Stepper {
         return init;
     }
 
+    //TODO
+    /**
+     * 
+     * @param numPerioden
+     * @return
+     */
     static CFIntermediateResult getStartResult(final int numPerioden){
         return new CFIntermediateResult(getInitArray(numPerioden), getInitArray(numPerioden));
     }

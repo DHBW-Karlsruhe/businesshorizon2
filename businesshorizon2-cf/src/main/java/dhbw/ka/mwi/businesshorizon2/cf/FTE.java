@@ -2,6 +2,14 @@ package dhbw.ka.mwi.businesshorizon2.cf;
 
 public class FTE implements CFAlgorithm<CFResult> {
 
+	/**
+	 * calculateUWert berechnet den Unternehmenswert mittels FTE Verfahren
+	 * 
+	 * @param parameter enthält alle Paramter die zur Berechnung des Unternehmenswer wichtig sind
+	 * @param intermediate enthält die Zwischenergebnisse (Stichwort Iteration)
+	 * @param periode gibt die Periode an für die der Unternehmenswert berechnet werden soll
+	 * @return gibt den Unternehmenswert als double Wert zurück
+	 */
     private static double calculateUWert(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         if(periode >= parameter.numPerioden() - 1){
             return parameter.getFTE()[periode] / intermediate.getEkKost()[periode];
@@ -10,6 +18,10 @@ public class FTE implements CFAlgorithm<CFResult> {
     }
 
     @Override
+    /**
+     * calculateUWert ist die öffentliche Methode zur Berechnung des Unternehmenswert
+     * @return gibt alle Parameter die zur Berechnung des Unternehmenswert inklusive den Unternehmenswert als CFResult zurück
+     */
     public CFResult calculateUWert(final CFParameter parameter) {
         final CFIntermediateResult result = Stepper.performStepping(Stepper.getStartResult(parameter.numPerioden()), cfIntermediateResult -> {
             final double[] uWert = new double[parameter.numPerioden()];
