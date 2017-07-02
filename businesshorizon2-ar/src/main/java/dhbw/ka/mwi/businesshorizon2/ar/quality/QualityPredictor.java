@@ -10,6 +10,11 @@ final class QualityPredictor {
     private QualityPredictor() {
     }
 
+    /**
+     * Prognostiziert die Werte einer Zeitreihe, um sie mit den realen Werten der Zeitreihe zu vergleichen
+     * @param model Das AR-Modell der Zeitreihe
+     * @return Alle Prognosen ab dem Zeitpunkt p+1, da immer p Werte für die Prognose gebraucht werden
+     */
     static double[] predict(final ARModel model) {
         final double avg = new Mean().evaluate(model.getTimeSeries());
         final double[] predictions = new double[model.getTimeSeries().length - model.getCoefficients().length];

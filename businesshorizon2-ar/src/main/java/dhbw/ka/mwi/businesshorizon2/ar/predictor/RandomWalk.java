@@ -2,6 +2,10 @@ package dhbw.ka.mwi.businesshorizon2.ar.predictor;
 
 import java.util.Random;
 
+/**
+ * Speichert die Informationen, die zu einem RandomWalk benötigt werden
+ * Und kann dadurch über die @calculateNextRandomNumber Methode die nächste Zufallzahl berechnen
+ */
 public class RandomWalk {
 
     private final Random random;
@@ -16,7 +20,7 @@ public class RandomWalk {
         this.stdDev = stdDev;
     }
 
-    double getRandomWalk() {
+    double calculateNextRandomNumber() {
         return stdDev * (random.nextBoolean() ? 1 : -1);
     }
 

@@ -30,24 +30,6 @@ public class ARModel {
         return new ARPredictorRunner(new RandomWalkPredictor(new RandomWalk(stdDev))).runPredictions(timeSeries, coefficients, numPeriods);
     }
 
-    /* Berechnet die Güte des AR-Modells
-     * Also wie gut das AR-Modell auf die Zeitreihe passt
-     */
-    public double calculateQuality() {
-        double result = 0;
-        final double avg = new Mean().evaluate(timeSeries);
-        for (int i = coefficients.length + 1; i < timeSeries.length; i++) {
-            double prognose = 0;
-            for (int j = 0; j < coefficients.length; j++) {
-                prognose += coefficients[j] * (timeSeries[j] - avg);
-            }
-            final double error = timeSeries[i] - avg - prognose;
-
-            result += error * error;
-        }
-        return Math.sqrt(result / (timeSeries.length - coefficients.length)) / avg;
-    }
-
     public double[] getCoefficients() {
         return coefficients;
     }
