@@ -7,12 +7,13 @@ public class FCF implements CFAlgorithm<FCFResult> {
 
 	/**
 	 * calculateWACC berechnet den WACC einer bestimmten Periode
+     * Basiert auf Formel 72 vom Ballwieser
 	 *
 	 * @param parameter CFParameter enthält das Parameterset, welches zur Berechnung der DCF-Methoden benötigt wird
 	 * @param intermediate speichert die Eigenkapitalkosten und den Unternehmenswert in der Iteration als Zwischenergebenisse
 	 * @param periode gibt an, von welcher Periode der WACC berechnet werden soll
 	 *
-	 * @return gibt den WACC der bestimmten Periode zurück 
+	 * @return gibt den WACC der bestimmten Periode zurück
 	 */
     private static double calculateWACC(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         final double gk = intermediate.getuWert()[periode - 1] + parameter.getFK()[periode - 1];
@@ -23,6 +24,7 @@ public class FCF implements CFAlgorithm<FCFResult> {
 
     /**
      * calculateGK berechnet das Gesamtkapital einer bestimmten Periode
+     * Basiert auf Formel 73 vom Ballwieser
      *
      * @param parameter CFParameter enthält das Parameterset, welches zur Berechnung der DCF-Methoden benötigt wird
      * @param intermediate speichert die Eigenkapitalkosten und den Unternehmenswert in der Iteration als Zwischenergebenisse
@@ -40,6 +42,7 @@ public class FCF implements CFAlgorithm<FCFResult> {
     /**
      * calculateUWert berechnet den Unternehmenswert mittel FCF Verfahren aus
      * Dies ist die interne Methode um nur den Unternehmenswert auszurechnen
+     * Basiert auf Formel 71 vom Ballwieser
      *
      * @param parameter enthält die Parameter aller Perioden
      * @param intermediate enthält die Zwischenergebnisse (Stichwort Iteration)
@@ -53,7 +56,7 @@ public class FCF implements CFAlgorithm<FCFResult> {
 
     /**
      * Berechnet den Unternehmenswert mittels der Free-Cashflow-Methode aus
-     * 
+     *
      * @param parameter enthält die Daten, welche für das FCF-Verfahren benötigt werden
      * @return gibt den Unternehmenswert inklusive aller wichtigen Parameter als FCFResult Objekt zurück
      */

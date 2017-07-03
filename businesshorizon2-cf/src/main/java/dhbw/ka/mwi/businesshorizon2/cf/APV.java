@@ -5,7 +5,8 @@ public class APV implements CFAlgorithm<APVResult> {
 
 	/**
 	 * getUWFiktiv berechnet den Unternehmenswert eines fiktiv unverschuldeten Unternehmens
-	 * 
+     * Basiert auf Formel 57 vom Ballwieser
+	 *
 	 * @param parameter enthält alle Parameter zur Bestimmung des Unternehmenswerts benötigt werden
 	 * @param periode gibt die Periode an, für den der Unternehmenswert zu berechnen ist
 	 * @return gibt den Unternehmenswert eines fiktiv unverschuldeten Unternehmens der definierten Periode als double Wert zurück
@@ -23,7 +24,8 @@ public class APV implements CFAlgorithm<APVResult> {
     /**
      * calculateUWert überschreibt die Methode aus dem implementierten Interface
      * Und berechnet den Unternehmenswert mittels APV Verfahren
-     * 
+     * Basiert auf Formel auf Formel 37 vom Ballwieser
+     *
      * @return gibt alle Parameter der Berechnung inklusive des Unternehmenswertes als APVResult zurück
      */
     @Override

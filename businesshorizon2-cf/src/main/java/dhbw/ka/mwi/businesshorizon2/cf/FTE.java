@@ -4,7 +4,8 @@ public class FTE implements CFAlgorithm<CFResult> {
 
 	/**
 	 * calculateUWert berechnet den Unternehmenswert mittels des FTE-Verfahrens
-	 * 
+     * Basiert auf Formel 95 vom Ballwieser
+	 *
 	 * @param parameter enthält alle Paramter, die für die Berechnung des Unternehmenswer wichtig sind
 	 * @param intermediate enthält die Zwischenergebnisse (Stichwort Iteration)
 	 * @param periode gibt die Periode an, für die der Unternehmenswert berechnet werden soll

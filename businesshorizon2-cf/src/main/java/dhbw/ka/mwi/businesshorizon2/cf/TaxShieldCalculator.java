@@ -10,7 +10,8 @@ final class TaxShieldCalculator {
 
     /**
      * calculateTaxShield berechnet das TaxShield
-     * 
+     * Basiert auf Formel 58a vom Ballwieser
+     *
      * @param parameter enthält alle Parameter zur Berechnung des Unternehmenswerts
      * @param periode entspricht der Periode für die der Unternehmenswert berechnet werden soll
      * @return gibt das TaxShield der spezifischen Periode zurück
