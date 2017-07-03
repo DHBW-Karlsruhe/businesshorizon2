@@ -88,7 +88,7 @@ public class TestAPV {
     
     //Andere Steuersätze
     @Test
-    public void differenzierteSteuersätzeTest() throws Exception {
+    public void andereSteuersaetzeTest() throws Exception {
         final CFParameter parameter = new CFParameter(new double[]{0,176.76,520.13,404.87,203.78},new double[]{1260,1300,1000,1400,1400},0.080722,0.349,0.06);
         final APVResult result = new APV().calculateUWert(parameter);
         assertRelative(2146.60456861283,result.getuWert());
