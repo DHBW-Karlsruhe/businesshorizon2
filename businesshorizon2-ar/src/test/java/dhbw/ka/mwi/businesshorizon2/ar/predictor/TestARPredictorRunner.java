@@ -5,7 +5,7 @@ import org.junit.Test;
 
 import java.util.Random;
 
-import static org.junit.Assert.assertArrayEquals;
+import static dhbw.ka.mwi.businesshorizon2.ar.AssertRelative.assertRelative;
 
 public class TestARPredictorRunner {
 
@@ -16,7 +16,7 @@ public class TestARPredictorRunner {
         final double[] coeffs = {-0.21244, -0.79116};
 
         final double[] predictions = new ARPredictorRunner(new ARPredictor()).runPredictions(timeSeries, coeffs, 2);
-        assertArrayEquals(new double[]{73383.35, 77485.07}, predictions, 0.01);
+        assertRelative(new double[]{73383.35, 77485.07}, predictions);
     }
 
     @Test
@@ -27,6 +27,6 @@ public class TestARPredictorRunner {
 
         final double stdDev = new StandardDeviation(false).evaluate(timeSeries);
         final double[] predictions = new ARPredictorRunner(new RandomWalkPredictor(new RandomWalk(new Random(1), stdDev))).runPredictions(timeSeries, coeffs, 2);
-        assertArrayEquals(new double[]{75584.95, 73541.64}, predictions, 0.01);
+        assertRelative(new double[]{75584.95, 73541.64}, predictions);
     }
 }
