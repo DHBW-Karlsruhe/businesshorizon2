@@ -21,7 +21,7 @@ public class ARModel {
 
     /**
      * Prognostizert die zukünftigen Werte der Zeitreihe
-     *
+     * Die Formel für die Prognose befindet sich in Schlittgen, Rainer & Streitberg, Bernd (2001). Zeitreihenanalyse (9. Aufl.) Seite 121
      * @param numPeriods Die Anzahl an zukünftigen Zeitpunkten, die prognostiziert werden
      * @return Die prognostizierten Werte der Zeitreihe
      */
