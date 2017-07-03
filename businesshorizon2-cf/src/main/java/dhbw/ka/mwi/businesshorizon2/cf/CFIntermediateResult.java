@@ -19,7 +19,7 @@ class CFIntermediateResult {
     }
 
     /**
-     * Getter Methode für den Unternehmenswert
+     * Getter Methode für den Unternehmenswert 
      * @return gibt das Unternehmenswert Array zurück
      */
     double[] getuWert() {

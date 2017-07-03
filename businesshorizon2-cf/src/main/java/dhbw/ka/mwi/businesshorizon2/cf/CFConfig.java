@@ -6,9 +6,18 @@ public final class CFConfig {
 
     private static EKKostVerschCalculator ekKostVerschCalculator = new TaxShieldEKKostVerschCalculator();
 
+    /**
+     * Konstruktor für CFConfig
+     */
     private CFConfig() {
     }
 
+    /**
+     * getEKKostVerschCalculator gibt einen EKKostVerschCalculator zurück
+     * Dieses berechnent die EK Kosten
+     * 
+     * @return gibt einen EKKostVerschCalculator zurück
+     */
     public static EKKostVerschCalculator getEkKostVerschCalculator() {
         return ekKostVerschCalculator;
     }
@@ -17,10 +26,19 @@ public final class CFConfig {
         CFConfig.ekKostVerschCalculator = ekKostVerschCalculator;
     }
 
+    /**
+     * Getter Methode für die Präzision des Modells
+     * 
+     * @return gibt die Präzision als double Wert zurück
+     */
     public static double getPrecision() {
         return precision;
     }
 
+    /**
+     * Setter Methode um die Präzision der Unternehmenswertberechnung über alle Verfahren hinweg gleich zu setzen
+     * @param precision double Wert für die Präzision; empfohlen: 0.001
+     */
     public static void setPrecision(final double precision) {
         CFConfig.precision = precision;
     }

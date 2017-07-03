@@ -14,7 +14,7 @@ public class CFParameter {
     private final double FKKosten;
 
     /**
-     * Konstruktor um das CFParameter Objekt zu erstellen
+     * Konstruktor um das CFParameter Objekt zu erstellen 
      * CFParameter enthält die Mindestanzahl an Parameter die benötigt werden um die DCF Verfahren zu berechnen
      * Alle Werte sind final, da die einzelnen Werte nicht verändert werden dürfen; daher auch keine Setter Methoden
      * 
