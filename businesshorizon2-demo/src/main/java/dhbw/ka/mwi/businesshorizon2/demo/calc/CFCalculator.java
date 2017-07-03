@@ -2,8 +2,6 @@ package dhbw.ka.mwi.businesshorizon2.demo.calc;
 
 import dhbw.ka.mwi.businesshorizon2.ar.AR;
 import dhbw.ka.mwi.businesshorizon2.ar.model.ARModel;
-import dhbw.ka.mwi.businesshorizon2.ar.trendy.TrendRemovedTimeSeries;
-import dhbw.ka.mwi.businesshorizon2.ar.trendy.TrendRemover;
 import dhbw.ka.mwi.businesshorizon2.cf.*;
 import dhbw.ka.mwi.businesshorizon2.demo.CFAlgo;
 import dhbw.ka.mwi.businesshorizon2.demo.converter.ModelToArrayConverter;
@@ -20,16 +18,17 @@ public final class CFCalculator {
     }
 
     public static double[] calculateStochi(final CompanyPanel companyPanel, final SzenarioPanel szenarioPanel, final StochiResultPanel stochiResultPanel, final CFAlgo algo) {
-        final TrendRemovedTimeSeries fkSeries = TrendRemover.removeTrend(ModelToArrayConverter.getRow(companyPanel.getModel(), 1));
+        final TimeSeries fkSeries = stochiResultPanel.getTrendy().isSelected() ? new TrendyTimeSeries(ModelToArrayConverter.getRow(companyPanel.getModel(), 1)) : new TimeSeries(ModelToArrayConverter.getRow(companyPanel.getModel(), 1));
+
         final int numPeriods = (Integer) stochiResultPanel.getHorizont().getValue();
 
-        final Supplier<double[]> fcfSupplier = companyPanel.getDetailMode().get() ? new DetailFCFSupplier(companyPanel, numPeriods, (Integer) stochiResultPanel.getGrad().getValue()) : new SimpleFCFSupplier(companyPanel, numPeriods, (Integer) stochiResultPanel.getGrad().getValue());
+        final Supplier<double[]> fcfSupplier = companyPanel.getDetailMode().get() ? new DetailFCFSupplier(companyPanel, numPeriods, (Integer) stochiResultPanel.getGrad().getValue(), stochiResultPanel.getTrendy().isSelected()) : new SimpleFCFSupplier(companyPanel, numPeriods, (Integer) stochiResultPanel.getGrad().getValue(), stochiResultPanel.getTrendy().isSelected());
 
-        final ARModel fkModel = AR.getModel(fkSeries.getTimeSeriesWithoutTrend(), (Integer) stochiResultPanel.getGrad().getValue());
+        final ARModel fkModel = AR.getModel(fkSeries.getValues(), (Integer) stochiResultPanel.getGrad().getValue());
         final CFAlgorithm cfAlgorithm = getAlgo(algo);
         return Stochi.doStochi((Integer) stochiResultPanel.getIter().getValue(), () -> {
             final double[] fcf = fcfSupplier.get();
-            final double[] fk = fkSeries.getTimeSeriesWithTrend(fkModel.predict(numPeriods - 1));
+            final double[] fk = fkSeries.applyModifications(fkModel.predict(numPeriods - 1));
             final double[] fk2 = appendLastValueAgain(fk);
             return cfAlgorithm.calculateUWert(getParameter(fcf, fk2, szenarioPanel)).getuWert();
         });

@@ -2,8 +2,6 @@ package dhbw.ka.mwi.businesshorizon2.demo.calc;
 
 import dhbw.ka.mwi.businesshorizon2.ar.AR;
 import dhbw.ka.mwi.businesshorizon2.ar.model.ARModel;
-import dhbw.ka.mwi.businesshorizon2.ar.trendy.TrendRemovedTimeSeries;
-import dhbw.ka.mwi.businesshorizon2.ar.trendy.TrendRemover;
 import dhbw.ka.mwi.businesshorizon2.demo.FCFMode;
 import dhbw.ka.mwi.businesshorizon2.demo.converter.ModelToArrayConverter;
 import dhbw.ka.mwi.businesshorizon2.demo.ui.CompanyPanel;
@@ -17,11 +15,13 @@ class DetailFCFSupplier implements Supplier<double[]> {
 
     private final Collection<CF> cfs = new ArrayList<>();
     private final int numPeriods;
-    DetailFCFSupplier(final CompanyPanel companyPanel, final int numPeriods, final int grad) {
+
+    DetailFCFSupplier(final CompanyPanel companyPanel, final int numPeriods, final int grad, final boolean trendy) {
         final DefaultTableModel detailModel = companyPanel.getDetailModel();
         for (int row = 0; row < detailModel.getRowCount(); row++) {
-            final TrendRemovedTimeSeries timeSeries = TrendRemover.removeTrend(ModelToArrayConverter.getRow(detailModel, row, 2));
-            cfs.add(new CF(timeSeries, (FCFMode) detailModel.getValueAt(row, 1), AR.getModel(timeSeries.getTimeSeriesWithoutTrend(), grad)));
+            final TimeSeries timeSeries = trendy ? new TrendyTimeSeries(ModelToArrayConverter.getRow(detailModel, row, 2)) : new TimeSeries(ModelToArrayConverter.getRow(detailModel, row, 2));
+
+            cfs.add(new CF(timeSeries, (FCFMode) detailModel.getValueAt(row, 1), AR.getModel(timeSeries.getValues(), grad)));
         }
 
         this.numPeriods = numPeriods;
@@ -32,7 +32,7 @@ class DetailFCFSupplier implements Supplier<double[]> {
         final double[] fcf = new double[numPeriods];
 
         for (final CF cf : cfs) {
-            final double[] cfPrediction = cf.getTimeSeries().getTimeSeriesWithTrend(cf.getModel().predict(numPeriods));
+            final double[] cfPrediction = cf.getTimeSeries().applyModifications(cf.getModel().predict(numPeriods));
             add(fcf, cfPrediction, cf.getFcfMode());
         }
 
@@ -54,17 +54,17 @@ class DetailFCFSupplier implements Supplier<double[]> {
     }
 
     private static final class CF {
-        private final TrendRemovedTimeSeries timeSeries;
+        private final TimeSeries timeSeries;
         private final FCFMode fcfMode;
         private final ARModel model;
 
-        private CF(final TrendRemovedTimeSeries timeSeries, final FCFMode fcfMode, final ARModel model) {
+        private CF(final TimeSeries timeSeries, final FCFMode fcfMode, final ARModel model) {
             this.timeSeries = timeSeries;
             this.fcfMode = fcfMode;
             this.model = model;
         }
 
-        private TrendRemovedTimeSeries getTimeSeries() {
+        private TimeSeries getTimeSeries() {
             return timeSeries;
         }
 

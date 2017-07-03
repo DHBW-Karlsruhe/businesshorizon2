@@ -21,6 +21,7 @@ public class StochiResultPanel extends JPanel {
     private final JSpinner horizont = new JSpinner();
     private final JSpinner iter = new JSpinner();
     private final JSpinner grad = new JSpinner();
+    private final JCheckBox trendy = new JCheckBox();
 
     private double[] lastResult = {};
 
@@ -73,14 +74,22 @@ public class StochiResultPanel extends JPanel {
 
         c.gridx = 0;
         c.gridy = 5;
-        northPanel.add(calculate, c);
+        northPanel.add(new JLabel("Trend entfernen"), c);
 
         c.gridx = 1;
         c.gridy = 5;
-        northPanel.add(uWert, c);
+        northPanel.add(trendy, c);
 
         c.gridx = 0;
         c.gridy = 6;
+        northPanel.add(calculate, c);
+
+        c.gridx = 1;
+        c.gridy = 6;
+        northPanel.add(uWert, c);
+
+        c.gridx = 0;
+        c.gridy = 7;
         northPanel.add(export, c);
 
         add(northPanel, BorderLayout.NORTH);
@@ -130,5 +139,9 @@ public class StochiResultPanel extends JPanel {
 
     public JSpinner getGrad() {
         return grad;
+    }
+
+    public JCheckBox getTrendy() {
+        return trendy;
     }
 }
