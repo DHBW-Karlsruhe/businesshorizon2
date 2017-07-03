@@ -17,6 +17,7 @@ class SimpleFCFSupplier implements Supplier<double[]> {
         fcfSeries = trendy ? new TrendyTimeSeries(ModelToArrayConverter.getRow(companyPanel.getModel(), 0)) : new TimeSeries(ModelToArrayConverter.getRow(companyPanel.getModel(), 0));
 
         fcfModel = AR.getModel(fcfSeries.getValues(), grad);
+        ARModelChecker.checkARModel(fcfModel);
         this.numPeriods = numPeriods;
     }
 
