@@ -3,6 +3,7 @@ package dhbw.ka.mwi.businesshorizon2.cf;
 /**
  * Eine Klasse zur Berechnung der EK Kosten
  * Implementiert das EKKostVerschCalculator Interface
+ * Basiert auf Formel 84 vom Ballwieser
  */
 public class NastyEKKostVerschCalculator implements EKKostVerschCalculator{
 
