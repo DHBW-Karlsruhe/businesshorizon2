@@ -1,7 +1,7 @@
 package dhbw.ka.mwi.businesshorizon2.cf;
 
 /**
- * Diese Klasse CFParameter speichert die Parameter, die für die Berechnung der DCF-Methoden benötigt werden
+ * Die Klasse CFParameter speichert die Parameter, die für die Berechnung der DCF-Methoden benötigt werden
  */
 public class CFParameter {
 
@@ -16,9 +16,9 @@ public class CFParameter {
     /**
      * Konstruktor um das CFParameter Objekt zu erstellen 
      * CFParameter enthält die Mindestanzahl an Parameter die benötigt werden um die DCF Verfahren zu berechnen
-     * Alle Werte sind final, da die einzelnen Werte nicht verändert werden dürfen; daher auch keine Setter Methoden
+     * Alle Werte sind final, da die einzelnen Werte nicht verändert werden dürfen; daher gibt es auch keine Sette-Methoden
      * 
-     * @param FCF speichert alle Free Cashflow Werte in einem double Array; pro Arrayfeld wird ein Periodenbestand gespeichert
+     * @param FCF speichert alle Free-Cashflow-Werte in einem double Array; pro Arrayfeld wird ein Periodenbestand gespeichert
      * @param FK speichert alle Fremdkapitalbestände in einem double Array; pro Arrayfeld wird ein Periodenbestand gespeichert
      * @param EKKosten speichert den Eigenkapitalkostensatz als double Wert
      * @param uSteusatz speichert den Unternehmenssteuersatz als double Wert
@@ -40,9 +40,9 @@ public class CFParameter {
     }
 
     /**
-     * Berechnet aus den Free Cashflows die Flow to Equitys (Zahlungen an den Eigenkapitalgeber)
+     * Berechnet aus den Free-Cashflows die Flow-to-Equitys (Zahlungen an den Eigenkapitalgeber)
      * 
-     * @return gibt die berechneten FTE Werte als Array zurück
+     * @return gibt die berechneten FTE-Werte als Array zurück
      */
     private double[] calculateFTE(){
         final double[] FTE = new double[FCF.length];
@@ -56,7 +56,7 @@ public class CFParameter {
 
 
     /**
-     * Getter Methode um die Fremdkapitalbestände zu erhalten
+     * Getter-Methode um die Fremdkapitalbestände zu erhalten
      * 
      * @return gibt die Fremdkapitalbestände als double Array zurück
      */
@@ -65,7 +65,7 @@ public class CFParameter {
     }
 
     /**
-     * Getter Methode um den Eigenkapitalkostensatz zu erhalten
+     * Getter-Methode um den Eigenkapitalkostensatz zu erhalten
      * 
      * @return gibt den Eigenkapitalkostensatz als double Wert zurück
      */
@@ -74,7 +74,7 @@ public class CFParameter {
     }
 
     /**
-     * Getter Methode um den Unternehmenssteuersatz zu erhalten
+     * Getter-Methode um den Unternehmenssteuersatz zu erhalten
      * 
      * @return gibt den Unternehmenssteuersatz als double Wert zurück
      */
@@ -83,7 +83,7 @@ public class CFParameter {
     }
 
     /**
-     * Getter Methode um den Fremdkapitalkostensatz zu erhalten
+     * Getter-Methode um den Fremdkapitalkostensatz zu erhalten
      * 
      * @return gibt den Fremdkapitalkostensatz als double Wert zurück
      */
@@ -92,7 +92,7 @@ public class CFParameter {
     }
 
     /**
-     * Getter Methode um die Anzahl der zukünftigen Perioden zu erhalten
+     * Getter-Methode um die Anzahl der zukünftigen Perioden zu erhalten
      * Im Konstruktor wurde schon überprüft ob die FCFs und die FKs die gleiche Anzahl Perioden haben
      * 
      * @return gibt die Anzahl der Perioden als integer Wert zurück
@@ -102,7 +102,7 @@ public class CFParameter {
     }
 
     /**
-     * Getter Methode um die Free Cashflows zu erhalten
+     * Getter-Methode um die Free Cashflows zu erhalten
      * 
      * @return gibt die Free Cashflows als double Array zurück
      */
@@ -111,7 +111,7 @@ public class CFParameter {
     }
 
     /**
-     * Getter Methode um die berechneten FTE Werte zu erhalten
+     * Getter-Methode um die berechneten FTE Werte zu erhalten
      * 
      * @return gibt die berechneten FTE Werte als double Array zurück
      */

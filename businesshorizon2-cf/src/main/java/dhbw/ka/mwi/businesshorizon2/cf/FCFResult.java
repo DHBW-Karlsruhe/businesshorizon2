@@ -4,7 +4,7 @@ public class FCFResult extends CFResult {
     private final double gk;
 
     /**
-     * Konstruktor für FCF Result
+     * Konstruktor für das FCF Result
      * Speichert den Unternehmenswert und das Gesamtkapital
      * 
      * @param uWert entspricht dem zu speichernden Unternehmenswert

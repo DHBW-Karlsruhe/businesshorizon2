@@ -1,5 +1,9 @@
 package dhbw.ka.mwi.businesshorizon2.cf;
 
+/**
+ * Die Klasse erbt von CFResult und speichert alle Daten, die in der Berechnung des APV-Unternehmenswerts vorkommen
+ * Enthält nur die Daten der spezifischen Periode für die der Unternehmenswert berechnet wurde
+ */
 public class APVResult extends CFResult{
 
     private final double uwFiktiv;
@@ -7,10 +11,8 @@ public class APVResult extends CFResult{
     private final double gk;
 
     /**
-     * 
-     * Der Konstruktor für APVResult und speichert alle Daten die in der Berechnung des APV-Unternehmenswerts ist
-     * Enthält nur die Daten der spezifischen Periode für die der Unternehmenswert berechnet wurde
-     * Die Klasse erbt von CFResult; durch Aufruf des super-Konstruktor wird das Ergebnis der Unternehmenswertberechnung mit übergeben
+     * Der Konstruktor für @{@link APVResult}
+     * Über den super-Konstruktor wird das Ergebnis der Unternehmenswertberechnung mit übergeben
      * 
      * @param uWert entspricht dem berechneten Unternehmenswert
      * @param uwFiktiv entspricht dem fiktiven Unternehmenswert

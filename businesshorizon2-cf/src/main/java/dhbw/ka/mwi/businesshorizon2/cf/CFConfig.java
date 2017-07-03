@@ -7,16 +7,15 @@ public final class CFConfig {
     private static EKKostVerschCalculator ekKostVerschCalculator = new TaxShieldEKKostVerschCalculator();
 
     /**
-     * Konstruktor für CFConfig
+     * Konstruktor für CFConfig, der das Initieren verhindern, da alle Methoden statisch sind
      */
     private CFConfig() {
     }
 
     /**
-     * getEKKostVerschCalculator gibt einen EKKostVerschCalculator zurück
-     * Dieses berechnent die EK Kosten
+     * getEKKostVerschCalculator gibt ein Objekt zurück, mit dem die EK Kosten berechnet werden können
      * 
-     * @return gibt einen EKKostVerschCalculator zurück
+     * @return gibt eine Implementierung des @{@link EKKostVerschCalculator} zurück
      */
     public static EKKostVerschCalculator getEkKostVerschCalculator() {
         return ekKostVerschCalculator;

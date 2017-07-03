@@ -8,7 +8,7 @@ class CFIntermediateResult {
 
     /**
      * CFIntermediateResult speichert die übergebenen Unternehmenswerte und Eigenkapitalkosten
-     * CFIntermediateResult wird verwendet um Zwischenergebnisse aller Perioden zu speichern
+     * CFIntermediateResult wird verwendet, um Zwischenergebnisse aller Perioden zu speichern
      * 
      * @param uWert definiert die Unternehmenswerte als double Wert in einem Array
      * @param ekKost definiert die Eigenkapitalkosten als double Wert in einem Array
@@ -20,7 +20,7 @@ class CFIntermediateResult {
 
     /**
      * Getter Methode für den Unternehmenswert 
-     * @return gibt das Unternehmenswert Array zurück
+     * @return gibt die Unternehmenswerte als Array zurück
      */
     double[] getuWert() {
         return uWert;
@@ -28,7 +28,7 @@ class CFIntermediateResult {
 
     /**
      * Getter Methode für die Eigenkapitalkosten
-     * @return gibt das Eigenkapitalkosten Array zurück
+     * @return gibt die Eigenkapitalkosten als Array zurück
      */
     double[] getEkKost() {
         return ekKost;
