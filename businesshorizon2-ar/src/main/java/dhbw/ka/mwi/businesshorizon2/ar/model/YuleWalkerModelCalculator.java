@@ -13,6 +13,7 @@ public class YuleWalkerModelCalculator implements ARModelCalculator {
 
     /**
      * Berechne das AR-Modell indem das Yule-Walker Gleichungssystem aufgebaut und gelöst wird
+     * Vergleiche Schlittgen, Rainer & Streitberg, Bernd (2001). Zeitreihenanalyse (9. Aufl.) Seite 254 für das Gleichungssystem
      *
      * @param timeSeries Die Zeitreihe, für die das Modell erstellt werden soll
      * @param p          Der Grad des AR-Modells
