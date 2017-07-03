@@ -111,11 +111,11 @@ public class TestAPV {
     //Viele Perioden Test
     @Test
     public void vielePeriodenTest() throws Exception {
-        final CFParameter parameter = new CFParameter(new double[]{0,3960000000d,4158000000d,4365900000d,4584195000d,4813404750d,5054074987.5d,4587624568.3d, 5035000562d, 4035550562d},new double[]{162542000000d,177170780000d,193116150200d,210496603718d,229441298053d,250091014877d,185004685023d, 230050408945d, 2468900752014d, 2468900752014d},0.100582,0.30625,0.08);
+        final CFParameter parameter = new CFParameter(new double[]{0,3960,4158,4365,4584,4813,5054,4587,5035,4035},new double[]{1625,1771,1931,2104,2294,2500,1850,2300,2468,2468},0.100582,0.30625,0.08);
         final APVResult result = new APV().calculateUWert(parameter);
-        assertRelative(316865386796d,result.getuWert());
-        assertRelative(436829848435d,result.getTaxShield());
-        assertRelative(42577538360d,result.getUwFiktiv());
-        assertRelative(479407386796d,result.getGk());
+        assertRelative(41640.17149257649,result.getuWert());
+        assertRelative(691.596344433032,result.getTaxShield());
+        assertRelative(42573.575148143456,result.getUwFiktiv());
+        assertRelative(43265.17149257649,result.getGk());
     }
 }
