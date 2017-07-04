@@ -25,6 +25,7 @@ public final class CFCalculator {
         final Supplier<double[]> fcfSupplier = companyPanel.getDetailMode().get() ? new DetailFCFSupplier(companyPanel, numPeriods, (Integer) stochiResultPanel.getGrad().getValue(), stochiResultPanel.getTrendy().isSelected()) : new SimpleFCFSupplier(companyPanel, numPeriods, (Integer) stochiResultPanel.getGrad().getValue(), stochiResultPanel.getTrendy().isSelected());
 
         final ARModel fkModel = AR.getModel(fkSeries.getValues(), (Integer) stochiResultPanel.getGrad().getValue());
+        ARModelChecker.checkARModel(fkModel);
         final CFAlgorithm cfAlgorithm = getAlgo(algo);
         return Stochi.doStochi((Integer) stochiResultPanel.getIter().getValue(), () -> {
             final double[] fcf = fcfSupplier.get();

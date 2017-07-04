@@ -20,8 +20,9 @@ class DetailFCFSupplier implements Supplier<double[]> {
         final DefaultTableModel detailModel = companyPanel.getDetailModel();
         for (int row = 0; row < detailModel.getRowCount(); row++) {
             final TimeSeries timeSeries = trendy ? new TrendyTimeSeries(ModelToArrayConverter.getRow(detailModel, row, 2)) : new TimeSeries(ModelToArrayConverter.getRow(detailModel, row, 2));
-
-            cfs.add(new CF(timeSeries, (FCFMode) detailModel.getValueAt(row, 1), AR.getModel(timeSeries.getValues(), grad)));
+            final ARModel tsModel = AR.getModel(timeSeries.getValues(), grad);
+            ARModelChecker.checkARModel(tsModel);
+            cfs.add(new CF(timeSeries, (FCFMode) detailModel.getValueAt(row, 1), tsModel));
         }
 
         this.numPeriods = numPeriods;
