@@ -1,15 +1,18 @@
 package dhbw.ka.mwi.businesshorizon2.cf;
 
+/**
+ * Das Flow-to-Equity-Verfahren zur Berechnung des Unternehmenswertes.
+ */
 public class FTE implements CFAlgorithm<CFResult> {
 
 	/**
-	 * calculateUWert berechnet den Unternehmenswert mittels des FTE-Verfahrens
-     * Basiert auf Formel 95 vom Ballwieser
+	 * Berechnet den Unternehmenswert mittels des FTE-Verfahrens.
+     * Basiert auf Formel 95 vom Ballwieser.
 	 *
-	 * @param parameter enthält alle Paramter, die für die Berechnung des Unternehmenswer wichtig sind
-	 * @param intermediate enthält die Zwischenergebnisse (Stichwort Iteration)
-	 * @param periode gibt die Periode an, für die der Unternehmenswert berechnet werden soll
-	 * @return gibt den Unternehmenswert als double Wert zurück
+	 * @param parameter enthält alle Paramter, die für die Berechnung des Unternehmenswer wichtig sind.
+	 * @param intermediate enthält die Zwischenergebnisse (Stichwort Iteration).
+	 * @param periode gibt die Periode an, für die der Unternehmenswert berechnet werden soll.
+	 * @return Gibt den Unternehmenswert als double Wert zurück.
 	 */
     private static double calculateUWert(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         if(periode >= parameter.numPerioden() - 1){
@@ -19,8 +22,8 @@ public class FTE implements CFAlgorithm<CFResult> {
     }
 
     /**
-     * calculateUWert ist die öffentliche Methode zur Berechnung des Unternehmenswertes
-     * @return gibt alle Daten, die bei Berechnung des Unternehmenswertes relevant sind, inklusive des Unternehmenswertes als @{@link CFResult} zurück
+     * Die öffentliche Methode zur Berechnung des Unternehmenswertes.
+     * @return Gibt alle Daten, die bei Berechnung des Unternehmenswertes relevant sind, inklusive des Unternehmenswertes als @{@link CFResult} zurück.
      */
     @Override
     public CFResult calculateUWert(final CFParameter parameter) {

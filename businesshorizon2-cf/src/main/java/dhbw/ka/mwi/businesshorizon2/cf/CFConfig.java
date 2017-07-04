@@ -1,5 +1,10 @@
 package dhbw.ka.mwi.businesshorizon2.cf;
 
+/**
+ * Enthält die Einstellungen der Libary:
+ *      -gewünschte Präzension bei Iterationen
+ *      -Implementierung des @{@link EKKostVerschCalculator}-Inteface
+ */
 public final class CFConfig {
 
     private static double precision = 0.001;
@@ -7,15 +12,15 @@ public final class CFConfig {
     private static EKKostVerschCalculator ekKostVerschCalculator = new TaxShieldEKKostVerschCalculator();
 
     /**
-     * Konstruktor für CFConfig, der das Initieren verhindern, da alle Methoden statisch sind
+     * Konstruktor für CFConfig, der das Initieren verhindern, da alle Methoden statisch sind.
      */
     private CFConfig() {
     }
 
     /**
-     * getEKKostVerschCalculator gibt ein Objekt zurück, mit dem die EK Kosten berechnet werden können
+     * Gibt ein Objekt zurück, mit dem die EK-Kosten berechnet werden können.
      * 
-     * @return gibt eine Implementierung des @{@link EKKostVerschCalculator} zurück
+     * @return Gibt eine Implementierung des @{@link EKKostVerschCalculator} zurück.
      */
     public static EKKostVerschCalculator getEkKostVerschCalculator() {
         return ekKostVerschCalculator;
@@ -26,16 +31,16 @@ public final class CFConfig {
     }
 
     /**
-     * Getter Methode für die Präzision des Modells
+     * Getter Methode für die gewünschte Präzision.
      * 
-     * @return gibt die Präzision als double Wert zurück
+     * @return Gibt die Präzision als double Wert zurück.
      */
     public static double getPrecision() {
         return precision;
     }
 
     /**
-     * Setter Methode um die Präzision der Unternehmenswertberechnung über alle Verfahren hinweg gleich zu setzen
+     * Setter Methode um die Präzision der Unternehmenswertberechnung über alle Verfahren hinweg gleich zu setzen.
      * @param precision double Wert für die Präzision; empfohlen: 0.001
      */
     public static void setPrecision(final double precision) {

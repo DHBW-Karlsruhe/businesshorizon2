@@ -7,20 +7,20 @@ import org.apache.commons.math3.stat.descriptive.moment.Variance;
 import java.util.Arrays;
 
 /**
- * Die Yule Walker Implementierung des ModelCalculators
+ * Die Yule Walker Implementierung des ModelCalculators.
  */
 public class YuleWalkerModelCalculator implements ARModelCalculator {
 
     /**
-     * Berechne das AR-Modell indem das Yule-Walker Gleichungssystem aufgebaut und gelöst wird
-     * Vergleiche Schlittgen, Rainer & Streitberg, Bernd (2001). Zeitreihenanalyse (9. Aufl.) Seite 254 für das Gleichungssystem
+     * Berechne das AR-Modell indem das Yule-Walker Gleichungssystem aufgebaut und gelöst wird.
      *
-     * @param timeSeries Die Zeitreihe, für die das Modell erstellt werden soll
-     * @param p          Der Grad des AR-Modells
-     * @return Das AR Modell für die Zeitreihe
+     * @param timeSeries Die Zeitreihe, für die das Modell erstellt werden soll.
+     * @param p          Der Grad des AR-Modells.
+     * @return Das AR-Modell für die Zeitreihe.
      */
     @Override
     public ARModel getModel(final double[] timeSeries, final int p) {
+        // Vgl. Schlittgen, Rainer & Streitberg, Bernd (2001). Zeitreihenanalyse (9. Aufl.) Seite 254 für das Yule-Walke-Gleichungssystem
         if (p > timeSeries.length - 2) {
             throw new IllegalArgumentException("Maximaler Grad für angegebene Zeitreihe ist " + (timeSeries.length - 2));
         }
@@ -51,11 +51,11 @@ public class YuleWalkerModelCalculator implements ARModelCalculator {
     }
 
     /**
-     * Berechne die Autokorrelationsfunktion für die Zeitreihe in Abhängigkeit von lamda
+     * Berechne die Autokorrelationsfunktion für die Zeitreihe in Abhängigkeit von lamda.
      *
-     * @param timeSeries Dgie Zeitreihe für die die Autokorrelation berechnet werden soll
-     * @param lamda      Lamda-Operator
-     * @return Autokorrelationsfunktion
+     * @param timeSeries Dgie Zeitreihe für die die Autokorrelation berechnet werden soll.
+     * @param lamda      Lamda-Operator.
+     * @return Autokorrelationsfunktion.
      */
     private static double getAutocorrelation(final double[] timeSeries, final int lamda) {
         final double covariance = new Covariance().covariance(Arrays.copyOfRange(timeSeries, 0, timeSeries.length - lamda),

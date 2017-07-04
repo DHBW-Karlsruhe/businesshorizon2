@@ -1,9 +1,9 @@
 package dhbw.ka.mwi.businesshorizon2.cf;
 
 /**
- * Eine Klasse zur Berechnung der EK Kosten
+ * Eine Klasse zur Berechnung der EK Kosten.
  * Implementiert das EKKostVerschCalculator Interface
- * Basiert auf Formel 86 vom Ballwieser
+ * und basiert auf Formel 86 vom Ballwieser.
  */
 public class TaxShieldEKKostVerschCalculator2 implements EKKostVerschCalculator {
 

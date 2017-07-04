@@ -1,19 +1,19 @@
 package dhbw.ka.mwi.businesshorizon2.cf;
 
 /**
- * Der Free-Cashflow-Algoritmus zur Berechnung des Unternehmenswertes
+ * Das Free-Cashflow-Verfahren zur Berechnung des Unternehmenswertes.
  */
 public class FCF implements CFAlgorithm<FCFResult> {
 
 	/**
-	 * calculateWACC berechnet den WACC einer bestimmten Periode
-     * Basiert auf Formel 72 vom Ballwieser
+	 * Berechnet den WACC einer bestimmten Periode.
+     * Basiert auf Formel 72 vom Ballwieser.
 	 *
-	 * @param parameter CFParameter enthält das Parameterset, welches zur Berechnung der DCF-Methoden benötigt wird
-	 * @param intermediate speichert die Eigenkapitalkosten und den Unternehmenswert in der Iteration als Zwischenergebenisse
-	 * @param periode gibt an, von welcher Periode der WACC berechnet werden soll
+	 * @param parameter CFParameter enthält das Parameterset, welches zur Berechnung der DCF-Methoden benötigt wird.
+	 * @param intermediate speichert die Eigenkapitalkosten und den Unternehmenswert in der Iteration als Zwischenergebenisse.
+	 * @param periode gibt an, von welcher Periode der WACC berechnet werden soll.
 	 *
-	 * @return gibt den WACC der bestimmten Periode zurück
+	 * @return Gibt den WACC der bestimmten Periode zurück.
 	 */
     private static double calculateWACC(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         final double gk = intermediate.getuWert()[periode - 1] + parameter.getFK()[periode - 1];
@@ -23,14 +23,14 @@ public class FCF implements CFAlgorithm<FCFResult> {
     }
 
     /**
-     * calculateGK berechnet das Gesamtkapital einer bestimmten Periode
-     * Basiert auf Formel 73 vom Ballwieser
+     * Berechnet das Gesamtkapital einer bestimmten Periode.
+     * Basiert auf Formel 73 vom Ballwieser.
      *
-     * @param parameter CFParameter enthält das Parameterset, welches zur Berechnung der DCF-Methoden benötigt wird
-     * @param intermediate speichert die Eigenkapitalkosten und den Unternehmenswert in der Iteration als Zwischenergebenisse
-     * @param periode gibt an, von welcher Periode das Gesamtkapital berechnet werden soll
+     * @param parameter CFParameter enthält das Parameterset, welches zur Berechnung der DCF-Methoden benötigt wird.
+     * @param intermediate speichert die Eigenkapitalkosten und den Unternehmenswert in der Iteration als Zwischenergebenisse.
+     * @param periode gibt an, von welcher Periode das Gesamtkapital berechnet werden soll.
      *
-     * @return gibt das berechnete Gesamtkapital einer bestimmten Periode zurück
+     * @return Gibt das berechnete Gesamtkapital einer bestimmten Periode zurück.
      */
     private static double calculateGK(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         if(periode >= parameter.numPerioden() - 1){
@@ -40,14 +40,14 @@ public class FCF implements CFAlgorithm<FCFResult> {
     }
 
     /**
-     * calculateUWert berechnet den Unternehmenswert mittel FCF Verfahren aus
-     * Dies ist die interne Methode um nur den Unternehmenswert auszurechnen
-     * Basiert auf Formel 71 vom Ballwieser
+     * Berechnet den Unternehmenswert mittel FCF Verfahren aus.
+     * Dies ist die interne Methode um nur den Unternehmenswert auszurechnen.
+     * Basiert auf Formel 71 vom Ballwieser.
      *
-     * @param parameter enthält die Parameter aller Perioden
-     * @param intermediate enthält die Zwischenergebnisse (Stichwort Iteration)
-     * @param periode beschreibt die Periode, für die der Unternehmenswert berechnet werden soll
-     * @return gibt den Unternehmenswert als double Wert zurück
+     * @param parameter enthält die Parameter aller Perioden.
+     * @param intermediate enthält die Zwischenergebnisse (Stichwort Iteration).
+     * @param periode beschreibt die Periode, für die der Unternehmenswert berechnet werden soll.
+     * @return Gibt den Unternehmenswert als double Wert zurück.
      */
     private static double calculateUWert(final CFParameter parameter, final CFIntermediateResult intermediate, final int periode){
         return calculateGK(parameter,intermediate,periode) - parameter.getFK()[periode];
@@ -55,15 +55,15 @@ public class FCF implements CFAlgorithm<FCFResult> {
 
 
     /**
-     * Berechnet den Unternehmenswert mittels der Free-Cashflow-Methode aus
+     * Berechnet den Unternehmenswert mittels der Free-Cashflow-Methode aus.
      *
-     * @param parameter enthält die Daten, welche für das FCF-Verfahren benötigt werden
-     * @return gibt den Unternehmenswert inklusive aller wichtigen Parameter als FCFResult Objekt zurück
+     * @param parameter enthält die Daten, welche für das FCF-Verfahren benötigt werden.
+     * @return Gibt den Unternehmenswert inklusive aller wichtigen Parameter als FCFResult Objekt zurück.
      */
     @Override
     public FCFResult calculateUWert(final CFParameter parameter) {
-        // Gibt dem Stepper mit, wie eine Iteration der Unternehmenswertberechnung bei dem FCF-Verfahren implementiert ist
-        // Mit dieser führt der Stepper solange Iteration durch bis eine gewünschte Präzension erreicht ist
+        // Gibt dem Stepper mit, wie eine Iteration der Unternehmenswertberechnung bei dem FCF-Verfahren implementiert ist.
+        // Mit dieser führt der Stepper solange Iteration durch bis eine gewünschte Präzension erreicht ist.
         final CFIntermediateResult result = Stepper.performStepping(Stepper.getStartResult(parameter.numPerioden()), cfIntermediateResult -> {
             final double[] uWert = new double[parameter.numPerioden()];
             final double[] ekKost = new double[parameter.numPerioden()];

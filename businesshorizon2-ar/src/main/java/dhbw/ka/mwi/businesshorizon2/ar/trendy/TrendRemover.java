@@ -3,7 +3,7 @@ package dhbw.ka.mwi.businesshorizon2.ar.trendy;
 import org.apache.commons.math3.stat.regression.SimpleRegression;
 
 /**
- * Enfernt den Trend von einer Zeitreihe und speichert diese beiden in ein Objekt
+ * Enfernt den Trend von einer Zeitreihe und speichert diese beiden in ein Objekt.
  */
 public final class TrendRemover {
 
@@ -11,10 +11,11 @@ public final class TrendRemover {
     }
 
     /**
-     * Enfernt den Trend von einer Zeitreihe und speichert diese beiden in ein Objekt
+     * Enfernt den Trend von einer Zeitreihe
+     * und speichert diese beiden in ein Objekt der @{@link TrendRemovedTimeSeries}-Klasse.
      *
-     * @param timeSeriesWithTrend Zeitreihe von dem der Trend entfernt wird
-     * @return Ein Objekt, welche die trendbereinigte Zeitreihe und den Trend enthält
+     * @param timeSeriesWithTrend Zeitreihe von dem der Trend entfernt wird.
+     * @return Ein Objekt, welche die trendbereinigte Zeitreihe und den Trend enthält.
      */
     public static TrendRemovedTimeSeries removeTrend(final double[] timeSeriesWithTrend) {
         final double[] timeSeriesWithoutTrend = new double[timeSeriesWithTrend.length];

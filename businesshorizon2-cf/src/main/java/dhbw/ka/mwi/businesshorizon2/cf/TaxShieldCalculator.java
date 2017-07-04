@@ -3,18 +3,18 @@ package dhbw.ka.mwi.businesshorizon2.cf;
 final class TaxShieldCalculator {
 
 	/**
-	 * Konstruktor für den TaxShieldCalculator
+	 * Verhinder von Objekten, da alle Methoden statisch sind.
 	 */
     private TaxShieldCalculator() {
     }
 
     /**
-     * calculateTaxShield berechnet das TaxShield
-     * Basiert auf Formel 58a vom Ballwieser
+     * Berechnet das TaxShield.
+     * Basiert auf Formel 58a vom Ballwieser.
      *
-     * @param parameter enthält alle Parameter zur Berechnung des Unternehmenswerts
-     * @param periode entspricht der Periode für die der Unternehmenswert berechnet werden soll
-     * @return gibt das TaxShield der spezifischen Periode zurück
+     * @param parameter enthält alle Parameter zur Berechnung des Unternehmenswerts.
+     * @param periode entspricht der Periode für die der Unternehmenswert berechnet werden soll.
+     * @return Gibt das TaxShield der spezifischen Periode zurück.
      */
     static double calculateTaxShield(final CFParameter parameter, final int periode) {
         double summe = 0;

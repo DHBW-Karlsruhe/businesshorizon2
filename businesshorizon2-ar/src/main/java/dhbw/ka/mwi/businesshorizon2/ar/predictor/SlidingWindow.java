@@ -3,13 +3,13 @@ package dhbw.ka.mwi.businesshorizon2.ar.predictor;
 import java.util.Arrays;
 
 /**
- * Datentyp der ein feste Anzahl an Werten speichern kann
- * Dies funktioniert über ein Array, welches einen künstlichen Anfang hat(pos)
+ * Datentyp der ein feste Anzahl an Werten speichern kann.
+ * Dies funktioniert über ein Array, welches einen künstlichen Anfang hat(pos).
  */
 class SlidingWindow {
     private final double[] data;
     /**
-     * Position des eigentlichen Anfangs
+     * Position des eigentlichen Anfangs.
      */
     private int pos;
 
@@ -29,9 +29,9 @@ class SlidingWindow {
 
     /**
      * Gibt einem alle Werte vom index pos bis zum Ende des Arrays
-     * und vom Anfang des Arrays bis zum index pos-1 zurück
+     * und vom Anfang des Arrays bis zum index pos-1 zurück.
      *
-     * @return Die Werte des SlidingWindows
+     * @return Die Werte des SlidingWindows.
      */
     double[] getData() {
         final double[] res = new double[data.length];

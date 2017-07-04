@@ -4,7 +4,7 @@ import java.util.Random;
 
 /**
  * Speichert die Informationen, die zu einem RandomWalk benötigt werden
- * Und kann dadurch über die @calculateNextRandomNumber Methode die nächste Zufallzahl berechnen
+ * und kann dadurch über die calculateNextRandomNumber-Methode die nächste Zufallzahl berechnen.
  */
 public class RandomWalk {
 

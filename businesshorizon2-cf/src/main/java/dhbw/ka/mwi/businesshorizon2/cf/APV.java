@@ -1,15 +1,17 @@
 package dhbw.ka.mwi.businesshorizon2.cf;
 
-
+/**
+ * Das Adjusted-Present-Value-Verfahren zur Berechnung des Unternehmenswertes.
+ */
 public class APV implements CFAlgorithm<APVResult> {
 
 	/**
-	 * getUWFiktiv berechnet den Unternehmenswert eines fiktiv unverschuldeten Unternehmens
-     * Basiert auf Formel 57 vom Ballwieser
+	 * Berechnet den Unternehmenswert eines fiktiv unverschuldeten Unternehmens.
+     * Basiert auf Formel 57 vom Ballwieser.
 	 *
-	 * @param parameter enthält alle Parameter zur Bestimmung des Unternehmenswerts benötigt werden
-	 * @param periode gibt die Periode an, für den der Unternehmenswert zu berechnen ist
-	 * @return gibt den Unternehmenswert eines fiktiv unverschuldeten Unternehmens der definierten Periode als double Wert zurück
+	 * @param parameter enthält alle Parameter zur Bestimmung des Unternehmenswerts benötigt werden.
+	 * @param periode gibt die Periode an, für den der Unternehmenswert zu berechnen ist.
+	 * @return Gibt den Unternehmenswert eines fiktiv unverschuldeten Unternehmens der definierten Periode als double Wert zurück.
 	 */
     private static double getUWFiktiv(final CFParameter parameter, final int periode) {
         double summe = 0;
@@ -22,11 +24,10 @@ public class APV implements CFAlgorithm<APVResult> {
     }
 
     /**
-     * calculateUWert überschreibt die Methode aus dem implementierten Interface
-     * Und berechnet den Unternehmenswert mittels APV Verfahren
-     * Basiert auf Formel auf Formel 37 vom Ballwieser
+     * Berechnet den Unternehmenswert mithilfe des APV-Verfahrens.
+     * Basiert auf Formel 37 vom Ballwieser.
      *
-     * @return gibt alle Parameter der Berechnung inklusive des Unternehmenswertes als APVResult zurück
+     * @return Gibt alle Parameter der Berechnung inklusive des Unternehmenswertes als @{@link APVResult} zurück.
      */
     @Override
     public APVResult calculateUWert(final CFParameter parameter) {

@@ -8,9 +8,6 @@ import org.apache.commons.math3.stat.descriptive.moment.StandardDeviation;
 
 public class ARModel {
 
-    /**
-     * Koeffizienten der AR-Model Gleichung
-     */
     private final double[] coefficients;
     private final double[] timeSeries;
 
@@ -20,16 +17,19 @@ public class ARModel {
     }
 
     /**
-     * Prognostizert die zukünftigen Werte der Zeitreihe
-     * Die Formel für die Prognose befindet sich in Schlittgen, Rainer & Streitberg, Bernd (2001). Zeitreihenanalyse (9. Aufl.) Seite 121
-     * @param numPeriods Die Anzahl an zukünftigen Zeitpunkten, die prognostiziert werden
-     * @return Die prognostizierten Werte der Zeitreihe
+     * Prognostizert die zukünftigen Werte der Zeitreihe mithilfe der @{@link ARPredictorRunner}- und der der @{@link RandomWalkPredictor}-Klasse.
+     * @param numPeriods Die Anzahl an zukünftigen Zeitpunkten, die prognostiziert werden.
+     * @return Die prognostizierten Werte der Zeitreihe.
      */
     public double[] predict(final int numPeriods) {
+        //Die Formel für die Prognose befindet sich in Schlittgen, Rainer & Streitberg, Bernd (2001). Zeitreihenanalyse (9. Aufl.) Seite 121
         final double stdDev = new StandardDeviation(false).evaluate(timeSeries);
         return new ARPredictorRunner(new RandomWalkPredictor(new RandomWalk(stdDev))).runPredictions(timeSeries, coefficients, numPeriods);
     }
 
+    /**
+     * Gibt die Koeffizienten der AR-Model Gleichung zurück.
+     */
     public double[] getCoefficients() {
         return coefficients;
     }
